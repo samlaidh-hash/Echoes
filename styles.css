@@ -1,0 +1,256 @@
+:root {
+  color-scheme: dark;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  background: #0b0f1a;
+  color: #f4f5f7;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #1d2238 0%, #0b0f1a 60%);
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 24px 40px;
+  border-bottom: 1px solid #1d2541;
+  background: rgba(8, 12, 24, 0.9);
+}
+
+.app-header h1 {
+  margin: 0 0 6px;
+  font-size: 1.8rem;
+}
+
+.status {
+  text-align: right;
+  font-weight: 600;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  padding: 32px 40px 60px;
+}
+
+.panel {
+  background: rgba(14, 20, 35, 0.95);
+  border: 1px solid #1d2541;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+}
+
+.panel h2 {
+  margin-top: 0;
+  font-size: 1.25rem;
+}
+
+.hex-map {
+  display: grid;
+  grid-template-columns: repeat(5, 80px);
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.hex {
+  width: 80px;
+  height: 70px;
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  background: #212a46;
+  border: 1px solid #2c3554;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  text-align: center;
+  padding: 6px;
+  transition: transform 0.2s ease, background 0.2s ease;
+  cursor: pointer;
+}
+
+.hex.revealed {
+  background: #2e405f;
+}
+
+.hex.controlled {
+  background: #4b5167;
+  border-color: #8bc5ff;
+}
+
+.hex.fogged {
+  background: #101628;
+  color: #616a85;
+}
+
+.hex:hover {
+  transform: translateY(-2px);
+}
+
+.hex.selected {
+  outline: 2px solid #f5d36b;
+  box-shadow: 0 0 12px rgba(245, 211, 107, 0.6);
+}
+
+.legend {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 0.75rem;
+}
+
+.legend-swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  margin-right: 6px;
+}
+
+.legend-swatch.fog {
+  background: #101628;
+  border: 1px solid #2c3554;
+}
+
+.legend-swatch.revealed {
+  background: #2e405f;
+}
+
+.legend-swatch.occupied {
+  background: #4b5167;
+  border: 1px solid #8bc5ff;
+}
+
+.map-controls button,
+.dice-row button,
+.deck-controls button {
+  background: #3852ff;
+  border: none;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.developer-panel .dev-controls {
+  display: grid;
+  gap: 12px;
+}
+
+.developer-panel .dev-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.developer-panel label {
+  font-size: 0.85rem;
+  color: #cdd5f5;
+}
+
+.developer-panel select {
+  background: #1a223a;
+  border: 1px solid #2c3554;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+.map-controls button:hover,
+.dice-row button:hover,
+.deck-controls button:hover {
+  background: #4a62ff;
+}
+
+.dice-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.dice-results {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.actions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#faction-select {
+  background: #1a223a;
+  border: 1px solid #2c3554;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+.action-list {
+  margin: 12px 0 0;
+  padding-left: 20px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.action-list li {
+  margin-bottom: 8px;
+}
+
+.card {
+  background: #121a30;
+  border-radius: 12px;
+  border: 1px solid #2c3554;
+  padding: 16px;
+  min-height: 220px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 12px;
+}
+
+.card-body {
+  display: grid;
+  gap: 12px;
+}
+
+.card-front,
+.card-back {
+  background: #0f1628;
+  border-radius: 10px;
+  padding: 12px;
+  min-height: 80px;
+  border: 1px solid #1f2b49;
+}
+
+.card-front ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.game-log {
+  max-height: 300px;
+  overflow-y: auto;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.log-entry {
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed #1f2b49;
+}
