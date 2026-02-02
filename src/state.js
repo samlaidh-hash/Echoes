@@ -19,7 +19,3 @@ export const createInitialState = (content) => {
     counters: initCounters,
   };
 };
-
-export const updateState = (state, updater) => {
-  return updater({ ...state });
-};
