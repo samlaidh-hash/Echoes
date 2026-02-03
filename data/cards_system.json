@@ -3,252 +3,173 @@
     "id": "SYS_01",
     "title": "Red Dwarf: Cinder Belt",
     "type": "system",
-    "art": "placeholder/system_red_dwarf.png",
     "choices": [
       {
         "label": "Mine the belt",
         "resolveText": "Gain 3 credits.",
-        "effects": [{ "op": "gainResource", "resource": "credits", "amount": 3 }],
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          }
+        ],
         "placeToken": "mining_outpost"
       },
       {
-        "label": "Chart safe lanes",
-        "resolveText": "Reveal 2 adjacent hexes.",
-        "effects": [{ "op": "revealHex", "mode": "adjacentToFleet", "count": 2 }],
-        "placeToken": "charted_system"
+        "label": "Chart lanes",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "station"
       }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Mining Outpost",
+      "Place: Station"
     ]
   },
   {
     "id": "SYS_02",
     "title": "Ocean World",
     "type": "system",
-    "art": "placeholder/system_ocean.png",
     "choices": [
       {
         "label": "Establish station",
-        "resolveText": "Gain 1 energy each time you visit (log hook). Gain 1 energy now.",
+        "resolveText": "Gain 1 energy now.",
         "effects": [
-          { "op": "gainResource", "resource": "energy", "amount": 1 },
-          { "op": "log", "message": "Ocean World station established (future income hook)." }
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
         ],
         "placeToken": "station"
       },
       {
-        "label": "Extract rare isotopes",
+        "label": "Extract isotopes",
         "resolveText": "Gain 2 energy, cosmic tension +1.",
         "effects": [
-          { "op": "gainResource", "resource": "energy", "amount": 2 },
-          { "op": "modifyCosmicTension", "amount": 1 }
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
         ],
-        "placeToken": "industrial_world"
+        "placeToken": "station"
       }
-    ]
+    ],
+    "placeNote": "Place: Station"
   },
   {
     "id": "SYS_03",
     "title": "Relic Moon",
     "type": "system",
-    "art": "placeholder/system_relic_moon.png",
     "choices": [
       {
         "label": "Excavate",
-        "resolveText": "Gain 2 credits and reveal 1 adjacent hex.",
+        "resolveText": "Gain 2 credits.",
         "effects": [
-          { "op": "gainResource", "resource": "credits", "amount": 2 },
-          { "op": "revealHex", "mode": "adjacentToFleet", "count": 1 }
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
         ],
         "placeToken": "relic_site"
       },
       {
         "label": "Quarantine",
-        "resolveText": "Cosmic tension -1 (if possible).",
-        "effects": [{ "op": "modifyCosmicTension", "amount": -1 }],
-        "placeToken": "quarantine"
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "relic_site"
       }
-    ]
+    ],
+    "placeNote": "Place: Relic Site"
   },
   {
     "id": "SYS_04",
-    "title": "Industrial Sprawl",
-    "type": "system",
-    "art": "placeholder/system_industrial.png",
-    "choices": [
-      {
-        "label": "Demand production",
-        "resolveText": "Gain 4 credits, cosmic tension +1.",
-        "effects": [
-          { "op": "gainResource", "resource": "credits", "amount": 4 },
-          { "op": "modifyCosmicTension", "amount": 1 }
-        ],
-        "placeToken": "factory_world"
-      },
-      {
-        "label": "Invest in infrastructure",
-        "resolveText": "Gain 2 credits now and log improved logistics.",
-        "effects": [
-          { "op": "gainResource", "resource": "credits", "amount": 2 },
-          { "op": "log", "message": "Infrastructure improved (future upgrade hook)." }
-        ],
-        "placeToken": "developed_world"
-      }
-    ]
-  },
-  {
-    "id": "SYS_05",
-    "title": "Shrine World",
-    "type": "system",
-    "art": "placeholder/system_shrine.png",
-    "choices": [
-      {
-        "label": "Seek blessing",
-        "resolveText": "Reveal 1 adjacent hex and cosmic tension -1.",
-        "effects": [
-          { "op": "revealHex", "mode": "adjacentToFleet", "count": 1 },
-          { "op": "modifyCosmicTension", "amount": -1 }
-        ],
-        "placeToken": "shrine"
-      },
-      {
-        "label": "Loot the reliquary",
-        "resolveText": "Gain 3 credits, cosmic tension +2.",
-        "effects": [
-          { "op": "gainResource", "resource": "credits", "amount": 3 },
-          { "op": "modifyCosmicTension", "amount": 2 }
-        ],
-        "placeToken": "ruined_shrine"
-      }
-    ]
-  },
-  {
-    "id": "SYS_06",
     "title": "Frontier Colony",
     "type": "system",
-    "art": "placeholder/system_colony.png",
     "choices": [
       {
         "label": "Offer protection",
-        "resolveText": "Gain 1 fleet and 1 credits.",
+        "resolveText": "Gain 1 fleet.",
         "effects": [
-          { "op": "gainFleet", "amount": 1 },
-          { "op": "gainResource", "resource": "credits", "amount": 1 }
+          {
+            "op": "gainFleet",
+            "amount": 1
+          }
         ],
-        "placeToken": "colony"
+        "placeToken": "station"
       },
       {
         "label": "Conscription",
         "resolveText": "Gain 2 fleets, cosmic tension +1.",
         "effects": [
-          { "op": "gainFleet", "amount": 2 },
-          { "op": "modifyCosmicTension", "amount": 1 }
+          {
+            "op": "gainFleet",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
         ],
-        "placeToken": "colony"
+        "placeToken": "station"
       }
-    ]
+    ],
+    "placeNote": "Place: Station"
   },
   {
-    "id": "SYS_07",
-    "title": "Binary Star: Tidal Forge",
+    "id": "SYS_05",
+    "title": "Shrine World",
     "type": "system",
-    "art": "placeholder/system_binary.png",
     "choices": [
       {
-        "label": "Build shipworks",
-        "resolveText": "Gain 1 fleet and 2 credits.",
+        "label": "Seek blessing",
+        "resolveText": "Cosmic tension -1.",
         "effects": [
-          { "op": "gainFleet", "amount": 1 },
-          { "op": "gainResource", "resource": "credits", "amount": 2 }
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
         ],
-        "placeToken": "shipworks"
+        "placeToken": "station"
       },
       {
-        "label": "Risky extraction",
-        "resolveText": "Gain 5 credits, lose 1 energy.",
+        "label": "Loot the reliquary",
+        "resolveText": "Gain 3 credits, cosmic tension +2.",
         "effects": [
-          { "op": "gainResource", "resource": "credits", "amount": 5 },
-          { "op": "loseResource", "resource": "energy", "amount": 1 }
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 2
+          }
         ],
-        "placeToken": "shipworks"
+        "placeToken": "ruins"
       }
-    ]
-  },
-  {
-    "id": "SYS_08",
-    "title": "Garden World",
-    "type": "system",
-    "art": "placeholder/system_garden.png",
-    "choices": [
-      {
-        "label": "Settle peacefully",
-        "resolveText": "Gain 2 energy and cosmic tension -1.",
-        "effects": [
-          { "op": "gainResource", "resource": "energy", "amount": 2 },
-          { "op": "modifyCosmicTension", "amount": -1 }
-        ],
-        "placeToken": "garden_world"
-      },
-      {
-        "label": "Strip the biosphere",
-        "resolveText": "Gain 3 credits and 2 energy, cosmic tension +2.",
-        "effects": [
-          { "op": "gainResource", "resource": "credits", "amount": 3 },
-          { "op": "gainResource", "resource": "energy", "amount": 2 },
-          { "op": "modifyCosmicTension", "amount": 2 }
-        ],
-        "placeToken": "dead_world"
-      }
-    ]
-  },
-  {
-    "id": "SYS_09",
-    "title": "Penal World",
-    "type": "system",
-    "art": "placeholder/system_prison.png",
-    "choices": [
-      {
-        "label": "Recruit specialists",
-        "resolveText": "Gain 1 fleet and reveal 1 adjacent hex.",
-        "effects": [
-          { "op": "gainFleet", "amount": 1 },
-          { "op": "revealHex", "mode": "adjacentToFleet", "count": 1 }
-        ],
-        "placeToken": "penal_world"
-      },
-      {
-        "label": "Break the riots",
-        "resolveText": "Gain 2 credits, cosmic tension +1.",
-        "effects": [
-          { "op": "gainResource", "resource": "credits", "amount": 2 },
-          { "op": "modifyCosmicTension", "amount": 1 }
-        ],
-        "placeToken": "penal_world"
-      }
-    ]
-  },
-  {
-    "id": "SYS_10",
-    "title": "Silent Starport",
-    "type": "system",
-    "art": "placeholder/system_starport.png",
-    "choices": [
-      {
-        "label": "Dock and refit",
-        "resolveText": "Gain 2 energy and 1 credits.",
-        "effects": [
-          { "op": "gainResource", "resource": "energy", "amount": 2 },
-          { "op": "gainResource", "resource": "credits", "amount": 1 }
-        ],
-        "placeToken": "starport"
-      },
-      {
-        "label": "Investigate disappearance",
-        "resolveText": "Reveal 2 adjacent hexes, cosmic tension +1.",
-        "effects": [
-          { "op": "revealHex", "mode": "adjacentToFleet", "count": 2 },
-          { "op": "modifyCosmicTension", "amount": 1 }
-        ],
-        "placeToken": "abandoned_port"
-      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Station",
+      "Place: Ruins"
     ]
   }
 ]

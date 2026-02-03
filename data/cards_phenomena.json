@@ -1,122 +1,187 @@
 [
   {
-    "id": "PULSAR_01",
-    "title": "The Singing Star",
-    "type": "phenomena",
-    "art": "pulsar.jpg",
-    "front": ["Harvest energy", "Study the signal", "Silence the star"],
-    "back": {
-      "Harvest energy": "Gain 3 Energy. Lose 1 fleet.",
-      "Study the signal": "Upgrade Action #15.",
-      "Silence the star": "Place Dead Star token."
-    }
-  },
-  {
-    "id": "PULSAR_02",
-    "title": "Derelict Armada",
-    "type": "phenomena",
-    "art": "armada.jpg",
-    "front": ["Salvage ships", "Scan logs", "Ignore"],
-    "back": {
-      "Salvage ships": "Gain 2 fleets, draw Pirate card.",
-      "Scan logs": "Peek at 3 cards.",
-      "Ignore": "Nothing."
-    }
-  },
-  {
-    "id": "PULSAR_03",
-    "title": "Ancient Jump Gate",
-    "type": "phenomena",
-    "art": "gate.jpg",
-    "front": ["Reactivate", "Dismantle", "Seal"],
-    "back": {
-      "Reactivate": "Place Gate token.",
-      "Dismantle": "Gain 5 resources.",
-      "Seal": "Gate collapses forever."
-    }
-  },
-  {
-    "id": "PULSAR_04",
-    "title": "Black Hole Choir",
-    "type": "phenomena",
-    "art": "black-hole.jpg",
-    "front": ["Study event horizon", "Harvest matter", "Send probe"],
-    "back": {
-      "Study event horizon": "Upgrade random action.",
-      "Harvest matter": "Gain 4 resources, lose unit.",
-      "Send probe": "Remove hex from map."
-    }
-  },
-  {
-    "id": "PULSAR_05",
-    "title": "Megastructure Ruins",
-    "type": "phenomena",
-    "art": "ruins.jpg",
-    "front": ["Restore", "Plunder", "Quarantine"],
-    "back": {
-      "Restore": "Place Ancient Hub.",
-      "Plunder": "Gain relic.",
-      "Quarantine": "Prevent all entry."
-    }
-  },
-  {
-    "id": "PULSAR_06",
-    "title": "Time Fracture",
-    "type": "phenomena",
-    "art": "fracture.jpg",
-    "front": ["Stabilise", "Exploit", "Escape"],
-    "back": {
-      "Stabilise": "Prevent next crisis.",
-      "Exploit": "Take two turns.",
-      "Escape": "Lose current hex."
-    }
-  },
-  {
-    "id": "PULSAR_07",
+    "id": "PHE_01",
     "title": "Dead Civilization",
     "type": "phenomena",
-    "art": "civilization.jpg",
-    "front": ["Study remains", "Harvest tech", "Memorialise"],
-    "back": {
-      "Study remains": "Gain lore (future bonus).",
-      "Harvest tech": "Upgrade 2 actions.",
-      "Memorialise": "Gain diplomatic immunity."
-    }
+    "choices": [
+      {
+        "label": "Study remains",
+        "resolveText": "Gain 1 energy and reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          },
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "ruins"
+      },
+      {
+        "label": "Harvest tech",
+        "resolveText": "Gain 3 credits, cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNote": "Place: Ruins"
   },
   {
-    "id": "PULSAR_08",
-    "title": "Rogue AI Core",
+    "id": "PHE_02",
+    "title": "Ancient Jump Gate",
     "type": "phenomena",
-    "art": "ai-core.jpg",
-    "front": ["Integrate", "Contain", "Destroy"],
-    "back": {
-      "Integrate": "Choir bonus.",
-      "Contain": "Gate control.",
-      "Destroy": "Cosmic tension +2."
-    }
+    "choices": [
+      {
+        "label": "Reactivate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Dismantle",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
   },
   {
-    "id": "PULSAR_09",
-    "title": "Stellar Leviathan",
+    "id": "PHE_03",
+    "title": "Black Hole Choir",
     "type": "phenomena",
-    "art": "leviathan.jpg",
-    "front": ["Hunt", "Observe", "Flee"],
-    "back": {
-      "Hunt": "Gain relic or lose fleet.",
-      "Observe": "Predict next crisis.",
-      "Flee": "Hex becomes blocked."
-    }
+    "choices": [
+      {
+        "label": "Study event horizon",
+        "resolveText": "Gain 2 energy, cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      },
+      {
+        "label": "Harvest matter",
+        "resolveText": "Gain 5 credits, lose 1 fleet.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 5
+          },
+          {
+            "op": "loseFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNote": "Place: Anomaly"
   },
   {
-    "id": "PULSAR_10",
-    "title": "The Last Signal",
+    "id": "PHE_04",
+    "title": "The Singing Star",
     "type": "phenomena",
-    "art": "signal.jpg",
-    "front": ["Answer", "Trace", "Ignore"],
-    "back": {
-      "Answer": "Trigger narrative arc.",
-      "Trace": "Reveal 3 hexes.",
-      "Ignore": "Nothing (but log it)."
-    }
+    "choices": [
+      {
+        "label": "Harvest energy",
+        "resolveText": "Gain 3 energy, lose 1 fleet.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 3
+          },
+          {
+            "op": "loseFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "dead_star"
+      },
+      {
+        "label": "Silence the star",
+        "resolveText": "Cosmic tension +2.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 2
+          }
+        ],
+        "placeToken": "dead_star"
+      }
+    ],
+    "placeNote": "Place: Dead Star"
+  },
+  {
+    "id": "PHE_05",
+    "title": "Megastructure Ruins",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Plunder",
+        "resolveText": "Gain 2 credits and 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "ruins"
+      },
+      {
+        "label": "Quarantine",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNote": "Place: Ruins"
   }
 ]
