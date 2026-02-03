@@ -8,12 +8,16 @@ export async function loadContent() {
   const [
     hexMap,
     tokens,
+    factions,
+    actions,
     cardsEmpty,
     cardsSystem,
     cardsPhenomena
   ] = await Promise.all([
     loadJson("./data/hex_map.json"),
     loadJson("./data/tokens.json"),
+    loadJson("./data/factions.json"),
+    loadJson("./data/actions.json"),
     loadJson("./data/cards_empty.json"),
     loadJson("./data/cards_system.json"),
     loadJson("./data/cards_phenomena.json")
@@ -36,6 +40,8 @@ export async function loadContent() {
   return {
     hexMap,
     tokens,
+    factions,
+    actions,
     cards: {
       empty: normalize(cardsEmpty, "empty"),
       system: normalize(cardsSystem, "system"),

@@ -113,6 +113,8 @@ async function runSmoke(state, rng, cardIndex, handlers) {
 
   try {
     for (const step of forced) {
+      state.ui.pending = null;
+
       // Ensure hex exists
       const hex = state.map.hexes.find(h => h.id === step.hexId);
       if (!hex) throw new Error(`Missing hex ${step.hexId}`);
@@ -123,19 +125,17 @@ async function runSmoke(state, rng, cardIndex, handlers) {
       hex.token = null;
 
       // Reveal with forced type
-      handlers.onHexClick(step.hexId);
-
-      // If drawn deck mismatched, fix by explicitly forcing reveal
-      // (re-run reveal forcing the deck type)
-      if (!state.ui.pending || state.ui.pending.deckType !== step.deck) {
-        // Force direct reveal (without relying on weightedPick)
-        revealHex(state, rng, cardIndex, step.hexId, step.deck);
-        render(state, handlers);
-      }
+      revealHex(state, rng, cardIndex, step.hexId, step.deck);
+      render(state, handlers);
 
       const pending = state.ui.pending;
       if (!pending) throw new Error(`Card panel did not open for ${step.deck} at ${step.hexId}`);
-      const card = pending.card;
+      if (pending.deckType !== step.deck) {
+        const got = pending.deckType ?? "none";
+        const cardId = pending.card?.id ?? "unknown";
+        throw new Error(`Deck mismatch: expected ${step.deck} got ${got} (card=${cardId})`);
+      }
+      let card = pending.card;
 
       // Find a card whose choice 0 has measurable effects. If current doesn't, cycle draws until found (bounded).
       let tries = 0;
@@ -144,18 +144,20 @@ async function runSmoke(state, rng, cardIndex, handlers) {
         const hasMeasurable = (c0?.effects ?? []).some(e => measurableOps.has(e.op));
         if (hasMeasurable) break;
 
-        // Discard and draw next card by simulating "choice 0" anyway (keeps engine consistent)
-        handlers.onCardChoice(0);
-
-        // Re-enter hex to draw again (hex is revealed; force a new draw by flipping it back just for smoke)
-        hex.revealed = false;
-        hex.type = "unknown";
-        hex.token = null;
+        // Discard and draw next card from the same forced deck
+        state.decks[step.deck].discard.push(card.id);
+        state.ui.pending = null;
         revealHex(state, rng, cardIndex, step.hexId, step.deck);
         render(state, handlers);
 
         tries++;
         if (!state.ui.pending) throw new Error(`Could not draw a card for ${step.deck} after cycling.`);
+        if (state.ui.pending.deckType !== step.deck) {
+          const got = state.ui.pending.deckType ?? "none";
+          const cardId = state.ui.pending.card?.id ?? "unknown";
+          throw new Error(`Deck mismatch: expected ${step.deck} got ${got} (card=${cardId})`);
+        }
+        card = state.ui.pending.card;
       }
 
       // Snapshot before resolve
@@ -170,6 +172,9 @@ async function runSmoke(state, rng, cardIndex, handlers) {
       render(state, handlers);
 
       if (!res.ok) throw new Error(`Resolve failed: ${res.reason}`);
+      if (res.deckType !== step.deck) {
+        throw new Error(`Deck mismatch: expected ${step.deck} got ${res.deckType} (card=${res.cardId})`);
+      }
 
       // Validate state change
       const after = snapshotState(state);
@@ -181,7 +186,7 @@ async function runSmoke(state, rng, cardIndex, handlers) {
       if (!hexAfter || !hexAfter.token) throw new Error(`Token not placed for ${step.hexId} deck=${step.deck}`);
 
       // Log required line
-      logLine(state, `SMOKE: deck=${step.deck} card=${res.cardId} choice=${res.choiceLabel} token=${hexAfter.token}`);
+      logLine(state, `SMOKE: deck=${res.deckType} card=${res.cardId} choice=${res.choiceLabel} token=${hexAfter.token}`);
       render(state, handlers);
     }
 

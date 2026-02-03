@@ -1,7 +1,17 @@
 // Pure-ish rules: all mutations happen on the passed-in state object for baseline simplicity.
 
 export function logLine(state, msg) {
-  state.log.push(`[Round ${state.meta.round}] ${msg}`);
+  const round = state.turn?.round ?? 1;
+  state.log.push(`[Round ${round}] ${msg}`);
+}
+
+export function getActivePlayer(state) {
+  const idx = state.turn?.activePlayerIndex ?? 0;
+  return state.players?.[idx] ?? null;
+}
+
+export function getActivePlayerIndex(state) {
+  return state.turn?.activePlayerIndex ?? 0;
 }
 
 export function weightedPick(rng, entries) {
@@ -39,6 +49,7 @@ export function drawCard(state, deckType, cardById) {
 
 export function applyEffects(state, effects, context) {
   const before = snapshotState(state);
+  const player = getActivePlayer(state);
 
   for (const eff of effects) {
     switch (eff.op) {
@@ -47,19 +58,19 @@ export function applyEffects(state, effects, context) {
         break;
 
       case "gainResource":
-        state.player[eff.resource] = (state.player[eff.resource] ?? 0) + (eff.amount ?? 0);
+        if (player) player[eff.resource] = (player[eff.resource] ?? 0) + (eff.amount ?? 0);
         break;
 
       case "loseResource":
-        state.player[eff.resource] = Math.max(0, (state.player[eff.resource] ?? 0) - (eff.amount ?? 0));
+        if (player) player[eff.resource] = Math.max(0, (player[eff.resource] ?? 0) - (eff.amount ?? 0));
         break;
 
       case "gainFleet":
-        state.player.fleets += (eff.amount ?? 0);
+        if (player) player.fleets += (eff.amount ?? 0);
         break;
 
       case "loseFleet":
-        state.player.fleets = Math.max(0, state.player.fleets - (eff.amount ?? 0));
+        if (player) player.fleets = Math.max(0, player.fleets - (eff.amount ?? 0));
         break;
 
       case "modifyCosmicTension":
@@ -77,6 +88,97 @@ export function applyEffects(state, effects, context) {
         break;
       }
 
+      case "moveFleet": {
+        if (!player) {
+          logLine(state, "No active player for movement.");
+          break;
+        }
+        if (player.fleets <= 0) {
+          logLine(state, "No fleets available to move.");
+          break;
+        }
+        const destinationId = context.selectedHexId ?? state.ui.selectedHexId;
+        if (!destinationId) {
+          logLine(state, "Select a destination hex to move.");
+          break;
+        }
+        const originId = player.positionHexId;
+        const adjacent = getAdjacentHexes(state, originId).some(h => h.id === destinationId);
+        if (!adjacent) {
+          logLine(state, "Destination must be adjacent.");
+          break;
+        }
+        player.positionHexId = destinationId;
+        const destHex = getHex(state, destinationId);
+        if (destHex && !destHex.revealed) {
+          if (context.rng && context.cardIndex) {
+            revealHex(state, context.rng, context.cardIndex, destinationId, null);
+          } else {
+            logLine(state, "Cannot reveal: missing RNG/context.");
+          }
+        }
+        break;
+      }
+
+      case "peekDeckTop": {
+        const deckType = context.selectedDeckType;
+        const deck = deckType ? state.decks[deckType] : null;
+        if (!deckType || !deck) {
+          logLine(state, "Choose a deck to probe.");
+          break;
+        }
+        const topId = deck.draw[0];
+        if (!topId) {
+          logLine(state, `Data Probe: ${deckType} deck is empty.`);
+          break;
+        }
+        const card = context.cardIndex?.[topId];
+        const title = card?.title ?? topId;
+        logLine(state, `Data Probe: top of ${deckType} is "${title}".`);
+        break;
+      }
+
+      case "modifyDie": {
+        const activeIndex = getActivePlayerIndex(state);
+        if (state.turn?.oncePerRoundFlags?.modifyDie?.[activeIndex]) {
+          logLine(state, "Probability Drift already used this round.");
+          break;
+        }
+        const dieId = context.modifyDie?.die;
+        const delta = context.modifyDie?.delta ?? 0;
+        if (!dieId || (delta !== 1 && delta !== -1)) {
+          logLine(state, "Choose a die and adjustment (+1 or -1).");
+          break;
+        }
+        const dice = state.turn?.diceByPlayer?.[activeIndex];
+        if (!dice || dice[dieId] == null) {
+          logLine(state, "No die available to modify.");
+          break;
+        }
+        const next = Math.min(6, Math.max(1, dice[dieId] + delta));
+        dice[dieId] = next;
+        state.turn.oncePerRoundFlags.modifyDie[activeIndex] = true;
+        logLine(state, `Probability Drift: die ${dieId.toUpperCase()} is now ${next}.`);
+        break;
+      }
+
+      case "placeTokenAdjacent": {
+        const originId = player?.positionHexId;
+        const destinationId = context.selectedHexId ?? state.ui.selectedHexId;
+        if (!originId || !destinationId) {
+          logLine(state, "Select an adjacent hex for token placement.");
+          break;
+        }
+        const adjacent = getAdjacentHexes(state, originId).some(h => h.id === destinationId);
+        if (!adjacent) {
+          logLine(state, "Destination must be adjacent.");
+          break;
+        }
+        const hex = getHex(state, destinationId);
+        if (hex) hex.token = eff.tokenId ?? null;
+        break;
+      }
+
       default:
         logLine(state, `Unknown effect op: ${eff.op}`);
         break;
@@ -88,10 +190,11 @@ export function applyEffects(state, effects, context) {
 }
 
 export function snapshotState(state) {
+  const player = getActivePlayer(state);
   return {
-    credits: state.player.credits,
-    energy: state.player.energy,
-    fleets: state.player.fleets,
+    credits: player?.credits ?? 0,
+    energy: player?.energy ?? 0,
+    fleets: player?.fleets ?? 0,
     cosmicTension: state.cosmicTension
   };
 }
@@ -107,28 +210,47 @@ export function getHex(state, hexId) {
   return state.map.hexes.find(h => h.id === hexId) ?? null;
 }
 
+export function getAdjacentHexes(state, hexId) {
+  const hex = getHex(state, hexId);
+  if (!hex) return [];
+  const [col, row] = [hex.col, hex.row];
+  const candidates = [
+    { c: col, r: row - 1 },
+    { c: col, r: row + 1 },
+    { c: col - 1, r: row },
+    { c: col + 1, r: row }
+  ].filter(p => p.c >= 0 && p.c < state.map.width && p.r >= 0 && p.r < state.map.height);
+
+  return candidates
+    .map(p => state.map.hexes.find(h => h.col === p.c && h.row === p.r))
+    .filter(Boolean);
+}
+
 export function revealHex(state, rng, cardIndex, hexId, forcedType = null) {
   const hex = getHex(state, hexId);
   if (!hex) return null;
 
   hex.revealed = true;
 
-  if (hex.type === "unknown") {
-    hex.type = forcedType ?? weightedPick(rng, [
+  if (forcedType) {
+    hex.type = forcedType;
+  } else if (hex.type === "unknown") {
+    hex.type = weightedPick(rng, [
       { value: "empty", weight: 55 },
       { value: "system", weight: 30 },
       { value: "phenomena", weight: 15 }
     ]);
   }
 
-  const card = drawCard(state, hex.type, cardIndex);
+  const deckType = forcedType ?? hex.type;
+  const card = drawCard(state, deckType, cardIndex);
   if (!card) {
-    logLine(state, `No card available for deck: ${hex.type}`);
+    logLine(state, `No card available for deck: ${deckType}`);
     return null;
   }
 
-  state.ui.pending = { deckType: hex.type, card, hexId };
-  logLine(state, `Card drawn (${hex.type}): ${card.title}`);
+  state.ui.pending = { deckType, card, hexId };
+  logLine(state, `Card drawn (${deckType}): ${card.title}`);
   return state.ui.pending;
 }
 
@@ -160,21 +282,11 @@ export function resolveChoice(state, cardIndex, choiceIndex) {
 export function revealAdjacentHexes(state, context, count) {
   // Simple square-grid adjacency on IDs like A1..G7:
   // neighbors = N,S,E,W (good enough for baseline)
-  const hex = getHex(state, context.hexId);
-  if (!hex) return;
-
-  const [col, row] = [hex.col, hex.row];
-  const candidates = [
-    { c: col, r: row - 1 },
-    { c: col, r: row + 1 },
-    { c: col - 1, r: row },
-    { c: col + 1, r: row }
-  ].filter(p => p.c >= 0 && p.c < state.map.width && p.r >= 0 && p.r < state.map.height);
+  const candidates = getAdjacentHexes(state, context.hexId);
 
   let revealed = 0;
-  for (const p of candidates) {
+  for (const neighbor of candidates) {
     if (revealed >= count) break;
-    const neighbor = state.map.hexes.find(h => h.col === p.c && h.row === p.r);
     if (neighbor && !neighbor.revealed) {
       neighbor.revealed = true;
       // do not auto-assign type or draw card (baseline: "scan" only)
