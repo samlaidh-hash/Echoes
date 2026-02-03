@@ -20,11 +20,13 @@
       </div>
     </header>
 
+    <div id="hud" class="hud" data-testid="hud"></div>
+
     <main class="layout">
       <section class="map-panel">
         <div class="panel-title">GALAXY MAP</div>
         <div id="map" class="map" data-testid="hex-map"></div>
-        <div class="map-hint">Click a fogged hex to reveal it.</div>
+        <div class="map-hint">Reveal fog via an action (scan) or by moving a fleet into the hex.</div>
       </section>
 
       <aside class="right-panel">
@@ -35,21 +37,11 @@
           </div>
         </div>
 
-        <div class="panel-title">DICE (baseline)</div>
-        <div class="dice">
-          <button id="rollDiceBtn" class="btn" type="button">Roll 2d6</button>
-          <div class="dice-row">
-            <div class="die" data-testid="die-a" id="dieA">-</div>
-            <div class="die" data-testid="die-b" id="dieB">-</div>
-          </div>
-          <div class="dice-note">Dice/actions are present but not yet used for movement in this baseline.</div>
-        </div>
+        <div class="panel-title">LOG</div>
+        <div id="log" class="log" data-testid="game-log"></div>
       </aside>
 
-      <section class="bottom-panel">
-        <div class="panel-title">GAME LOG</div>
-        <div id="log" class="log" data-testid="game-log"></div>
-      </section>
+      <section id="actionPanel" class="action-panel" data-testid="action-panel"></section>
     </main>
 
     <!-- readiness marker -->

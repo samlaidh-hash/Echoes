@@ -7,15 +7,30 @@
       {
         "label": "Follow the wake",
         "resolveText": "Find drifting cargo pods. Gain 2 credits.",
-        "effects": [{ "op": "gainResource", "resource": "credits", "amount": 2 }],
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
         "placeToken": "debris_field"
       },
       {
         "label": "Mark and move on",
         "resolveText": "Nothing else happens.",
-        "effects": [{ "op": "log", "message": "Logged coordinates: Cold Wake." }],
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged coordinates: Cold Wake."
+          }
+        ],
         "placeToken": "empty"
       }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Leave: Nothing"
     ]
   },
   {
@@ -27,17 +42,34 @@
         "label": "Trade openly",
         "resolveText": "Gain 1 credits and 1 energy.",
         "effects": [
-          { "op": "gainResource", "resource": "credits", "amount": 1 },
-          { "op": "gainResource", "resource": "energy", "amount": 1 }
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Ignore",
         "resolveText": "Nothing happens.",
-        "effects": [{ "op": "log", "message": "Ignored a trader." }],
+        "effects": [
+          {
+            "op": "log",
+            "message": "Ignored a trader."
+          }
+        ],
         "placeToken": "empty"
       }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Leave: Nothing"
     ]
   },
   {
@@ -48,16 +80,28 @@
       {
         "label": "Push through",
         "resolveText": "Lose 1 energy.",
-        "effects": [{ "op": "loseResource", "resource": "energy", "amount": 1 }],
+        "effects": [
+          {
+            "op": "loseResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
         "placeToken": "anomaly"
       },
       {
         "label": "Detour",
         "resolveText": "Cosmic tension +1.",
-        "effects": [{ "op": "modifyCosmicTension", "amount": 1 }],
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
         "placeToken": "anomaly"
       }
-    ]
+    ],
+    "placeNote": "Place: Anomaly"
   },
   {
     "id": "EMPTY_04",
@@ -67,15 +111,30 @@
       {
         "label": "Salvage",
         "resolveText": "Gain 2 energy.",
-        "effects": [{ "op": "gainResource", "resource": "energy", "amount": 2 }],
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          }
+        ],
         "placeToken": "debris_field"
       },
       {
         "label": "Map it",
         "resolveText": "Reveal 1 adjacent hex.",
-        "effects": [{ "op": "revealHex", "count": 1 }],
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
         "placeToken": "anomaly"
       }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Place: Anomaly"
     ]
   },
   {
@@ -87,17 +146,33 @@
         "label": "Crack it open",
         "resolveText": "Gain 3 credits, cosmic tension +1.",
         "effects": [
-          { "op": "gainResource", "resource": "credits", "amount": 3 },
-          { "op": "modifyCosmicTension", "amount": 1 }
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Tag for later",
         "resolveText": "Nothing now.",
-        "effects": [{ "op": "log", "message": "Tagged an unclaimed cache (future hook)." }],
+        "effects": [
+          {
+            "op": "log",
+            "message": "Tagged an unclaimed cache (future hook)."
+          }
+        ],
         "placeToken": "empty"
       }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Leave: Nothing"
     ]
   }
 ]

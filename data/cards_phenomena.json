@@ -8,8 +8,15 @@
         "label": "Study remains",
         "resolveText": "Gain 1 energy and reveal 1 adjacent hex.",
         "effects": [
-          { "op": "gainResource", "resource": "energy", "amount": 1 },
-          { "op": "revealHex", "count": 1 }
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          },
+          {
+            "op": "revealHex",
+            "count": 1
+          }
         ],
         "placeToken": "ruins"
       },
@@ -17,12 +24,20 @@
         "label": "Harvest tech",
         "resolveText": "Gain 3 credits, cosmic tension +1.",
         "effects": [
-          { "op": "gainResource", "resource": "credits", "amount": 3 },
-          { "op": "modifyCosmicTension", "amount": 1 }
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
         ],
         "placeToken": "ruins"
       }
-    ]
+    ],
+    "placeNote": "Place: Ruins"
   },
   {
     "id": "PHE_02",
@@ -32,15 +47,30 @@
       {
         "label": "Reactivate",
         "resolveText": "Cosmic tension +1.",
-        "effects": [{ "op": "modifyCosmicTension", "amount": 1 }],
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
         "placeToken": "gate"
       },
       {
         "label": "Dismantle",
         "resolveText": "Gain 4 credits.",
-        "effects": [{ "op": "gainResource", "resource": "credits", "amount": 4 }],
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
         "placeToken": "ruins"
       }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
     ]
   },
   {
@@ -52,8 +82,15 @@
         "label": "Study event horizon",
         "resolveText": "Gain 2 energy, cosmic tension +1.",
         "effects": [
-          { "op": "gainResource", "resource": "energy", "amount": 2 },
-          { "op": "modifyCosmicTension", "amount": 1 }
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
         ],
         "placeToken": "anomaly"
       },
@@ -61,12 +98,20 @@
         "label": "Harvest matter",
         "resolveText": "Gain 5 credits, lose 1 fleet.",
         "effects": [
-          { "op": "gainResource", "resource": "credits", "amount": 5 },
-          { "op": "loseFleet", "amount": 1 }
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 5
+          },
+          {
+            "op": "loseFleet",
+            "amount": 1
+          }
         ],
         "placeToken": "anomaly"
       }
-    ]
+    ],
+    "placeNote": "Place: Anomaly"
   },
   {
     "id": "PHE_04",
@@ -77,18 +122,31 @@
         "label": "Harvest energy",
         "resolveText": "Gain 3 energy, lose 1 fleet.",
         "effects": [
-          { "op": "gainResource", "resource": "energy", "amount": 3 },
-          { "op": "loseFleet", "amount": 1 }
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 3
+          },
+          {
+            "op": "loseFleet",
+            "amount": 1
+          }
         ],
         "placeToken": "dead_star"
       },
       {
         "label": "Silence the star",
         "resolveText": "Cosmic tension +2.",
-        "effects": [{ "op": "modifyCosmicTension", "amount": 2 }],
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 2
+          }
+        ],
         "placeToken": "dead_star"
       }
-    ]
+    ],
+    "placeNote": "Place: Dead Star"
   },
   {
     "id": "PHE_05",
@@ -99,17 +157,31 @@
         "label": "Plunder",
         "resolveText": "Gain 2 credits and 1 energy.",
         "effects": [
-          { "op": "gainResource", "resource": "credits", "amount": 2 },
-          { "op": "gainResource", "resource": "energy", "amount": 1 }
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
         ],
         "placeToken": "ruins"
       },
       {
         "label": "Quarantine",
         "resolveText": "Cosmic tension -1.",
-        "effects": [{ "op": "modifyCosmicTension", "amount": -1 }],
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
         "placeToken": "ruins"
       }
-    ]
+    ],
+    "placeNote": "Place: Ruins"
   }
 ]

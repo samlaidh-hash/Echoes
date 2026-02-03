@@ -7,15 +7,30 @@
       {
         "label": "Mine the belt",
         "resolveText": "Gain 3 credits.",
-        "effects": [{ "op": "gainResource", "resource": "credits", "amount": 3 }],
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          }
+        ],
         "placeToken": "mining_outpost"
       },
       {
         "label": "Chart lanes",
         "resolveText": "Reveal 1 adjacent hex.",
-        "effects": [{ "op": "revealHex", "count": 1 }],
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
         "placeToken": "station"
       }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Mining Outpost",
+      "Place: Station"
     ]
   },
   {
@@ -26,19 +41,33 @@
       {
         "label": "Establish station",
         "resolveText": "Gain 1 energy now.",
-        "effects": [{ "op": "gainResource", "resource": "energy", "amount": 1 }],
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
         "placeToken": "station"
       },
       {
         "label": "Extract isotopes",
         "resolveText": "Gain 2 energy, cosmic tension +1.",
         "effects": [
-          { "op": "gainResource", "resource": "energy", "amount": 2 },
-          { "op": "modifyCosmicTension", "amount": 1 }
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
         ],
         "placeToken": "station"
       }
-    ]
+    ],
+    "placeNote": "Place: Station"
   },
   {
     "id": "SYS_03",
@@ -48,16 +77,28 @@
       {
         "label": "Excavate",
         "resolveText": "Gain 2 credits.",
-        "effects": [{ "op": "gainResource", "resource": "credits", "amount": 2 }],
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
         "placeToken": "relic_site"
       },
       {
         "label": "Quarantine",
         "resolveText": "Cosmic tension -1.",
-        "effects": [{ "op": "modifyCosmicTension", "amount": -1 }],
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
         "placeToken": "relic_site"
       }
-    ]
+    ],
+    "placeNote": "Place: Relic Site"
   },
   {
     "id": "SYS_04",
@@ -67,19 +108,31 @@
       {
         "label": "Offer protection",
         "resolveText": "Gain 1 fleet.",
-        "effects": [{ "op": "gainFleet", "amount": 1 }],
+        "effects": [
+          {
+            "op": "gainFleet",
+            "amount": 1
+          }
+        ],
         "placeToken": "station"
       },
       {
         "label": "Conscription",
         "resolveText": "Gain 2 fleets, cosmic tension +1.",
         "effects": [
-          { "op": "gainFleet", "amount": 2 },
-          { "op": "modifyCosmicTension", "amount": 1 }
+          {
+            "op": "gainFleet",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
         ],
         "placeToken": "station"
       }
-    ]
+    ],
+    "placeNote": "Place: Station"
   },
   {
     "id": "SYS_05",
@@ -89,18 +142,34 @@
       {
         "label": "Seek blessing",
         "resolveText": "Cosmic tension -1.",
-        "effects": [{ "op": "modifyCosmicTension", "amount": -1 }],
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
         "placeToken": "station"
       },
       {
         "label": "Loot the reliquary",
         "resolveText": "Gain 3 credits, cosmic tension +2.",
         "effects": [
-          { "op": "gainResource", "resource": "credits", "amount": 3 },
-          { "op": "modifyCosmicTension", "amount": 2 }
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 2
+          }
         ],
         "placeToken": "ruins"
       }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Station",
+      "Place: Ruins"
     ]
   }
 ]
