@@ -25,4 +25,5 @@ All game data lives in JSON files under `data/` and follows the canonical schema
 
 ## Developer panel
 
-Use the Developer Panel to force draw cards, reveal a selected hex, add/remove fleets, or print the current game state to the console.
+The Developer Panel (bugbot) is disabled by default. Add `?bugbot=1` to the URL to enable it for local debugging.
+Use it to force draw cards, reveal a selected hex, add/remove fleets, or print the current game state to the console.

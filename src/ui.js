@@ -8,7 +8,7 @@ import {
   rollDice,
 } from "./rules.js";
 
-export const createUI = ({ initialState }) => {
+export const createUI = ({ initialState, bugbotEnabled = false }) => {
   let state = initialState;
 
   const factionSelect = document.getElementById("faction-select");
@@ -26,13 +26,20 @@ export const createUI = ({ initialState }) => {
   const cardFront = document.getElementById("card-front");
   const cardBack = document.getElementById("card-back");
   const gameLog = document.getElementById("game-log");
-  const devForceDraw = document.getElementById("dev-force-draw");
-  const devRevealHex = document.getElementById("dev-reveal-hex");
-  const devHexSelect = document.getElementById("dev-hex-select");
-  const devAddFleet = document.getElementById("dev-add-fleet");
-  const devRemoveFleet = document.getElementById("dev-remove-fleet");
-  const devPrintState = document.getElementById("dev-print-state");
-  const devFleetCount = document.getElementById("dev-fleet-count");
+  const devPanel = document.querySelector(".developer-panel");
+  const devControlsEnabled = Boolean(bugbotEnabled && devPanel);
+
+  if (devPanel) {
+    devPanel.hidden = !devControlsEnabled;
+  }
+
+  const devForceDraw = devControlsEnabled ? document.getElementById("dev-force-draw") : null;
+  const devRevealHex = devControlsEnabled ? document.getElementById("dev-reveal-hex") : null;
+  const devHexSelect = devControlsEnabled ? document.getElementById("dev-hex-select") : null;
+  const devAddFleet = devControlsEnabled ? document.getElementById("dev-add-fleet") : null;
+  const devRemoveFleet = devControlsEnabled ? document.getElementById("dev-remove-fleet") : null;
+  const devPrintState = devControlsEnabled ? document.getElementById("dev-print-state") : null;
+  const devFleetCount = devControlsEnabled ? document.getElementById("dev-fleet-count") : null;
 
   const setState = (nextState) => {
     state = nextState;
@@ -143,6 +150,7 @@ export const createUI = ({ initialState }) => {
   };
 
   const renderDeveloperPanel = () => {
+    if (!devControlsEnabled || !devHexSelect || !devFleetCount) return;
     devHexSelect.innerHTML = "";
     state.hexMap.forEach((hex) => {
       const option = document.createElement("option");
@@ -189,22 +197,24 @@ export const createUI = ({ initialState }) => {
   drawCardButton.addEventListener("click", () => applyRule(drawCard(state)));
   revealBackButton.addEventListener("click", () => applyRule(resolveChoice(state, "manual")));
 
-  devForceDraw.addEventListener("click", () => applyRule(drawCard(state)));
-  devRevealHex.addEventListener("click", () => {
-    const target = devHexSelect.value;
-    const hex = state.hexMap.find((item) => item.id === target);
-    if (!hex) return;
-    applyRule(revealHex(state, hex.id, state.currentFactionId, true));
-  });
-  devHexSelect.addEventListener("change", (event) => {
-    setState({ ...state, selectedHexId: event.target.value });
-  });
-  devAddFleet.addEventListener("click", () => applyRule(gainFleet(state, state.currentFactionId, 1)));
-  devRemoveFleet.addEventListener("click", () => applyRule(loseFleet(state, state.currentFactionId, 1)));
-  devPrintState.addEventListener("click", () => {
-    console.log("Current game state:", JSON.stringify(state, null, 2));
-    setState(applyEffects(state, [{ type: "log", message: "Game state printed to console." }]));
-  });
+  if (devControlsEnabled) {
+    devForceDraw?.addEventListener("click", () => applyRule(drawCard(state)));
+    devRevealHex?.addEventListener("click", () => {
+      const target = devHexSelect?.value;
+      const hex = state.hexMap.find((item) => item.id === target);
+      if (!hex) return;
+      applyRule(revealHex(state, hex.id, state.currentFactionId, true));
+    });
+    devHexSelect?.addEventListener("change", (event) => {
+      setState({ ...state, selectedHexId: event.target.value });
+    });
+    devAddFleet?.addEventListener("click", () => applyRule(gainFleet(state, state.currentFactionId, 1)));
+    devRemoveFleet?.addEventListener("click", () => applyRule(loseFleet(state, state.currentFactionId, 1)));
+    devPrintState?.addEventListener("click", () => {
+      console.log("Current game state:", JSON.stringify(state, null, 2));
+      setState(applyEffects(state, [{ type: "log", message: "Game state printed to console." }]));
+    });
+  }
 
   setState(applyEffects(state, [{ type: "log", message: "Prototype ready. Explore the map and draw phenomena." }]));
 };

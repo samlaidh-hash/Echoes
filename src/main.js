@@ -6,7 +6,8 @@ const bootstrap = async () => {
   try {
     const content = await loadGameContent();
     const initialState = createInitialState(content);
-    createUI({ initialState });
+    const bugbotEnabled = new URLSearchParams(window.location.search).has("bugbot");
+    createUI({ initialState, bugbotEnabled });
   } catch (error) {
     console.error("Failed to start prototype:", error);
     const fallback = document.createElement("div");
