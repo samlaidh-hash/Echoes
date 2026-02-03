@@ -1,0 +1,107 @@
+{
+  "directorate": {
+    "1": {
+      "title": "Patrol Sector",
+      "tier": 0,
+      "effect": "Reveal one adjacent hex without moving.",
+      "effects": [{ "type": "revealHex", "mode": "adjacentToFleet", "count": 1 }]
+    },
+    "2": { "title": "Establish Outpost", "tier": 0, "effect": "Place control token." },
+    "3": {
+      "title": "Recruit Fleet",
+      "tier": 0,
+      "effect": "Gain 1 fleet.",
+      "effects": [{ "type": "gainFleet", "amount": 1 }]
+    },
+    "4": { "title": "Escort Convoy", "tier": 0, "effect": "Move 1 fleet + protect." },
+    "5": { "title": "Secure Trade", "tier": 0, "effect": "Gain 2 resources." },
+    "6": { "title": "Enforce Law", "tier": 0, "effect": "Remove pirate/raider." },
+    "7": { "title": "Fortify System", "tier": 0, "effect": "Add defence token." },
+    "8": {
+      "title": "Fleet Manoeuvre",
+      "tier": 0,
+      "effect": "Move 1 fleet 1 hex.",
+      "effects": [{ "type": "moveFleet", "range": 1 }]
+    },
+    "9": { "title": "Blockade", "tier": 0, "effect": "Enemy cannot use system." },
+    "10": { "title": "Bombard World", "tier": 0, "effect": "Damage system." },
+    "11": { "title": "Rapid Deployment", "tier": 0, "effect": "Move fleet anywhere connected." },
+    "12": { "title": "Fleet Mobilisation", "tier": 0, "effect": "Move all fleets 1 hex." },
+    "13": { "title": "Martial Law", "tier": 0, "effect": "Lock hex for 1 round." },
+    "14": { "title": "Strategic Reserve", "tier": 0, "effect": "Store unused die." },
+    "15": { "title": "Grand Inspection", "tier": 0, "effect": "Peek at card deck." },
+    "16": { "title": "Sector Command", "tier": 0, "effect": "Extra action this round." },
+    "17": { "title": "Imperial Decree", "tier": 0, "effect": "Cancel opponent action." },
+    "18": { "title": "Imperial Mandate", "tier": 0, "effect": "Rewrite one rule for round." }
+  },
+  "choir": {
+    "1": {
+      "title": "Data Probe",
+      "tier": 0,
+      "effect": "Peek at card.",
+      "effects": [{ "type": "log", "message": "Data Probe: top card inspected." }]
+    },
+    "2": { "title": "Predictive Model", "tier": 0, "effect": "Reroll one die." },
+    "3": { "title": "Ghost Signal", "tier": 0, "effect": "Reveal distant hex." },
+    "4": {
+      "title": "Probability Drift",
+      "tier": 0,
+      "effect": "Modify ±1.",
+      "effects": [{ "type": "modifyDie", "amount": 1 }]
+    },
+    "5": { "title": "Fork Timeline", "tier": 0, "effect": "Copy last action." },
+    "6": { "title": "Simulate Outcome", "tier": 0, "effect": "Peek next round." },
+    "7": {
+      "title": "Phase Unit",
+      "tier": 0,
+      "effect": "Move ignoring terrain.",
+      "effects": [{ "type": "moveFleet", "range": 1 }]
+    },
+    "8": { "title": "Echo Action", "tier": 0, "effect": "Repeat any action." },
+    "9": { "title": "Steal Initiative", "tier": 0, "effect": "Take bonus die." },
+    "10": { "title": "Collapse Branch", "tier": 0, "effect": "Undo last event." },
+    "11": { "title": "Mirror Reality", "tier": 0, "effect": "Swap two hex states." },
+    "12": { "title": "Rewrite Probability", "tier": 0, "effect": "Change die result." },
+    "13": { "title": "Data Assimilation", "tier": 0, "effect": "Steal upgrade." },
+    "14": { "title": "Observer Effect", "tier": 0, "effect": "Opponent must reveal." },
+    "15": { "title": "Predict Outcome", "tier": 0, "effect": "Peek any deck." },
+    "16": { "title": "Causal Override", "tier": 0, "effect": "Interrupt action." },
+    "17": { "title": "Paradox Engine", "tier": 0, "effect": "Two actions from one die." },
+    "18": { "title": "Reality Edit", "tier": 0, "effect": "Rewrite card outcome." }
+  },
+  "bloom": {
+    "1": {
+      "title": "Spore Drift",
+      "tier": 0,
+      "effect": "Place biomass token.",
+      "effects": [{ "type": "placeToken", "tokenId": "biomass" }]
+    },
+    "2": {
+      "title": "Replicate",
+      "tier": 0,
+      "effect": "Gain 1 unit.",
+      "effects": [{ "type": "gainFleet", "amount": 1 }]
+    },
+    "3": { "title": "Absorb", "tier": 0, "effect": "Convert token into resource." },
+    "4": { "title": "Infest", "tier": 0, "effect": "Claim neutral hex." },
+    "5": { "title": "Regenerate", "tier": 0, "effect": "Recover lost unit." },
+    "6": {
+      "title": "Spread",
+      "tier": 0,
+      "effect": "Duplicate into adjacent hex.",
+      "effects": [{ "type": "placeToken", "tokenId": "biomass" }]
+    },
+    "7": { "title": "Adapt", "tier": 0, "effect": "Modify one action." },
+    "8": { "title": "Overgrow", "tier": 0, "effect": "Replace structure." },
+    "9": { "title": "Consume World", "tier": 0, "effect": "Destroy system." },
+    "10": { "title": "Gestalt Mind", "tier": 0, "effect": "Use bonus die." },
+    "11": { "title": "Rapid Evolution", "tier": 0, "effect": "Upgrade action." },
+    "12": { "title": "Assimilate", "tier": 0, "effect": "Steal enemy token." },
+    "13": { "title": "Hive Surge", "tier": 0, "effect": "All units move." },
+    "14": { "title": "Terraform", "tier": 0, "effect": "Change hex type." },
+    "15": { "title": "Genetic Rewrite", "tier": 0, "effect": "Replace action." },
+    "16": { "title": "Apex Form", "tier": 0, "effect": "Gain super-unit." },
+    "17": { "title": "Planetary Bloom", "tier": 0, "effect": "Convert system." },
+    "18": { "title": "Become Biosphere", "tier": 0, "effect": "Win condition trigger." }
+  }
+}

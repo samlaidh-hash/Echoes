@@ -1,0 +1,226 @@
+[
+  {
+    "id": "EMPTY_01",
+    "title": "Cold Wake",
+    "type": "empty",
+    "art": "placeholder/empty_cold_wake.png",
+    "choices": [
+      {
+        "label": "Follow the wake",
+        "resolveText": "You find drifting cargo pods. Gain 2 credits.",
+        "effects": [{ "op": "gainResource", "resource": "credits", "amount": 2 }],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Mark and move on",
+        "resolveText": "You log the coordinates. Nothing else happens.",
+        "effects": [{ "op": "log", "message": "Coordinates archived: Cold Wake." }],
+        "placeToken": "empty"
+      }
+    ]
+  },
+  {
+    "id": "EMPTY_02",
+    "title": "Pirate Lure Beacon",
+    "type": "empty",
+    "art": "placeholder/empty_pirate_beacon.png",
+    "choices": [
+      {
+        "label": "Spring the trap",
+        "resolveText": "Pirates ambush you. Lose 1 fleet, but seize their stash: gain 3 credits.",
+        "effects": [
+          { "op": "loseFleet", "amount": 1 },
+          { "op": "gainResource", "resource": "credits", "amount": 3 }
+        ],
+        "placeToken": "pirate_den"
+      },
+      {
+        "label": "Jam the beacon",
+        "resolveText": "You silence it. Increase cosmic tension by 1.",
+        "effects": [{ "op": "modifyCosmicTension", "amount": 1 }],
+        "placeToken": "wreckage"
+      }
+    ]
+  },
+  {
+    "id": "EMPTY_03",
+    "title": "Rogue Trader",
+    "type": "empty",
+    "art": "placeholder/empty_rogue_trader.png",
+    "choices": [
+      {
+        "label": "Trade openly",
+        "resolveText": "Clean exchange. Gain 1 credits and 1 energy.",
+        "effects": [
+          { "op": "gainResource", "resource": "credits", "amount": 1 },
+          { "op": "gainResource", "resource": "energy", "amount": 1 }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Shake them down",
+        "resolveText": "You take what you can. Gain 3 credits, cosmic tension +1.",
+        "effects": [
+          { "op": "gainResource", "resource": "credits", "amount": 3 },
+          { "op": "modifyCosmicTension", "amount": 1 }
+        ],
+        "placeToken": "smuggler_wreck"
+      }
+    ]
+  },
+  {
+    "id": "EMPTY_04",
+    "title": "Silent Choir Transmission",
+    "type": "empty",
+    "art": "placeholder/empty_signal.png",
+    "choices": [
+      {
+        "label": "Decode",
+        "resolveText": "You glimpse a pattern. Reveal 1 adjacent hex.",
+        "effects": [{ "op": "revealHex", "mode": "adjacentToFleet", "count": 1 }],
+        "placeToken": "signal_echo"
+      },
+      {
+        "label": "Ignore",
+        "resolveText": "You move on. Nothing happens.",
+        "effects": [{ "op": "log", "message": "Ignored a silent transmission." }],
+        "placeToken": "empty"
+      }
+    ]
+  },
+  {
+    "id": "EMPTY_05",
+    "title": "Micrometeor Swarm",
+    "type": "empty",
+    "art": "placeholder/empty_micrometeors.png",
+    "choices": [
+      {
+        "label": "Push through",
+        "resolveText": "Hull scarring. Lose 1 energy.",
+        "effects": [{ "op": "loseResource", "resource": "energy", "amount": 1 }],
+        "placeToken": "hazard"
+      },
+      {
+        "label": "Detour",
+        "resolveText": "Safe but slow. Cosmic tension +1.",
+        "effects": [{ "op": "modifyCosmicTension", "amount": 1 }],
+        "placeToken": "hazard"
+      }
+    ]
+  },
+  {
+    "id": "EMPTY_06",
+    "title": "Nomad Fleet",
+    "type": "empty",
+    "art": "placeholder/empty_nomads.png",
+    "choices": [
+      {
+        "label": "Offer aid",
+        "resolveText": "They repay you later. Gain 1 energy now and log a favor.",
+        "effects": [
+          { "op": "gainResource", "resource": "energy", "amount": 1 },
+          { "op": "log", "message": "Nomads owe a favor (future hook)." }
+        ],
+        "placeToken": "nomad_camp"
+      },
+      {
+        "label": "Demand tribute",
+        "resolveText": "Gain 2 credits. Cosmic tension +1.",
+        "effects": [
+          { "op": "gainResource", "resource": "credits", "amount": 2 },
+          { "op": "modifyCosmicTension", "amount": 1 }
+        ],
+        "placeToken": "nomad_camp"
+      }
+    ]
+  },
+  {
+    "id": "EMPTY_07",
+    "title": "Derelict Buoy Field",
+    "type": "empty",
+    "art": "placeholder/empty_buoys.png",
+    "choices": [
+      {
+        "label": "Salvage",
+        "resolveText": "Useful parts. Gain 2 energy.",
+        "effects": [{ "op": "gainResource", "resource": "energy", "amount": 2 }],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Map it",
+        "resolveText": "Reveal 2 adjacent hexes.",
+        "effects": [{ "op": "revealHex", "mode": "adjacentToFleet", "count": 2 }],
+        "placeToken": "buoy_field"
+      }
+    ]
+  },
+  {
+    "id": "EMPTY_08",
+    "title": "Void Predators",
+    "type": "empty",
+    "art": "placeholder/empty_void_predators.png",
+    "choices": [
+      {
+        "label": "Drive them off",
+        "resolveText": "Lose 1 energy. The route becomes safer.",
+        "effects": [{ "op": "loseResource", "resource": "energy", "amount": 1 }],
+        "placeToken": "safe_lane"
+      },
+      {
+        "label": "Study them",
+        "resolveText": "You learn their patterns. Reveal 1 adjacent hex and gain 1 energy.",
+        "effects": [
+          { "op": "revealHex", "mode": "adjacentToFleet", "count": 1 },
+          { "op": "gainResource", "resource": "energy", "amount": 1 }
+        ],
+        "placeToken": "anomaly"
+      }
+    ]
+  },
+  {
+    "id": "EMPTY_09",
+    "title": "Ghost Mines",
+    "type": "empty",
+    "art": "placeholder/empty_mines.png",
+    "choices": [
+      {
+        "label": "Sweep carefully",
+        "resolveText": "Gain 1 credits and remove the hazard.",
+        "effects": [{ "op": "gainResource", "resource": "credits", "amount": 1 }],
+        "placeToken": "safe_lane"
+      },
+      {
+        "label": "Rush it",
+        "resolveText": "Lose 1 fleet.",
+        "effects": [{ "op": "loseFleet", "amount": 1 }],
+        "placeToken": "hazard"
+      }
+    ]
+  },
+  {
+    "id": "EMPTY_10",
+    "title": "Unclaimed Cache",
+    "type": "empty",
+    "art": "placeholder/empty_cache.png",
+    "choices": [
+      {
+        "label": "Crack it open",
+        "resolveText": "Gain 4 credits, cosmic tension +1.",
+        "effects": [
+          { "op": "gainResource", "resource": "credits", "amount": 4 },
+          { "op": "modifyCosmicTension", "amount": 1 }
+        ],
+        "placeToken": "cache_looted"
+      },
+      {
+        "label": "Tag for later",
+        "resolveText": "Reveal 1 adjacent hex and log the cache.",
+        "effects": [
+          { "op": "revealHex", "mode": "adjacentToFleet", "count": 1 },
+          { "op": "log", "message": "Tagged an unclaimed cache (future hook)." }
+        ],
+        "placeToken": "cache_tagged"
+      }
+    ]
+  }
+]

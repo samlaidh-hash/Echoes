@@ -1,0 +1,17 @@
+[
+  { "id": "A1", "label": "Outer Verge", "revealed": true, "controlledBy": "directorate", "type": "unknown", "tokens": [] },
+  { "id": "A2", "label": "Shattered Rim", "revealed": false, "controlledBy": null, "type": "unknown", "tokens": [] },
+  { "id": "A3", "label": "Silent Drift", "revealed": false, "controlledBy": null, "type": "unknown", "tokens": [] },
+  { "id": "A4", "label": "Starlit Abyss", "revealed": false, "controlledBy": null, "type": "unknown", "tokens": [] },
+  { "id": "A5", "label": "Ruined Halo", "revealed": false, "controlledBy": null, "type": "unknown", "tokens": [] },
+  { "id": "B1", "label": "Gate Scar", "revealed": false, "controlledBy": null, "type": "unknown", "tokens": [] },
+  { "id": "B2", "label": "Ashen Archive", "revealed": false, "controlledBy": null, "type": "unknown", "tokens": [] },
+  { "id": "B3", "label": "Choirfold", "revealed": false, "controlledBy": null, "type": "unknown", "tokens": [] },
+  { "id": "B4", "label": "Spore Reach", "revealed": false, "controlledBy": null, "type": "unknown", "tokens": [] },
+  { "id": "B5", "label": "Void Delta", "revealed": false, "controlledBy": null, "type": "unknown", "tokens": [] },
+  { "id": "C1", "label": "Nebula Gate", "revealed": false, "controlledBy": null, "type": "unknown", "tokens": [] },
+  { "id": "C2", "label": "Iron Step", "revealed": false, "controlledBy": null, "type": "unknown", "tokens": [] },
+  { "id": "C3", "label": "Lumen Trench", "revealed": false, "controlledBy": null, "type": "unknown", "tokens": [] },
+  { "id": "C4", "label": "Glass Expanse", "revealed": false, "controlledBy": null, "type": "unknown", "tokens": [] },
+  { "id": "C5", "label": "Bloom Cradle", "revealed": false, "controlledBy": null, "type": "unknown", "tokens": [] }
+]
