@@ -5,7 +5,7 @@ A lightweight HTML/CSS/JS prototype that implements the v0.1 core spec data mode
 - 3 factions with 18 Tier 0 actions each.
 - Hex map with fog-of-war.
 - Dice system (2d6 + first player bonus).
-- Phenomena, system, and empty decks (first 10 cards each).
+- Phenomena deck (first 10 cards).
 - Card reveal flow (front choice → flip → permanent outcome).
 - Game log.
 
@@ -19,7 +19,7 @@ All game data lives in JSON files under `data/` and follows the canonical schema
 
 ## Structure
 
-- `data/`: canonical faction, action, deck, and hex map data (phenomena/system/empty).
+- `data/`: canonical faction, action, deck, and hex map data.
 - `src/`: small engine modules (`content`, `state`, `rules`, `ui`, `main`).
 - `index.html` / `styles.css`: UI shell and styling.
 

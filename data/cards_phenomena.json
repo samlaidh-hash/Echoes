@@ -4,65 +4,24 @@
     "title": "The Singing Star",
     "type": "phenomena",
     "art": "pulsar.jpg",
-    "choices": [
-      {
-        "label": "Harvest energy",
-        "resolveText": "Gain 3 Energy. Lose 1 fleet.",
-        "effects": [
-          { "type": "gainResource", "resource": "energy", "amount": 3 },
-          { "type": "loseFleet", "amount": 1 }
-        ],
-        "placeToken": "dead-star"
-      },
-      {
-        "label": "Study the signal",
-        "resolveText": "Upgrade Action #15.",
-        "effects": [
-          { "type": "upgradeActionStub", "actionId": 15 }
-        ],
-        "placeToken": "signal-echo"
-      },
-      {
-        "label": "Silence the star",
-        "resolveText": "Place Dead Star token.",
-        "effects": [
-          { "type": "log", "message": "A dead star token is placed." }
-        ],
-        "placeToken": "dead-star"
-      }
-    ]
+    "front": ["Harvest energy", "Study the signal", "Silence the star"],
+    "back": {
+      "Harvest energy": "Gain 3 Energy. Lose 1 fleet.",
+      "Study the signal": "Upgrade Action #15.",
+      "Silence the star": "Place Dead Star token."
+    }
   },
   {
     "id": "PULSAR_02",
     "title": "Derelict Armada",
     "type": "phenomena",
     "art": "armada.jpg",
-    "choices": [
-      {
-        "label": "Salvage ships",
-        "resolveText": "Gain 2 fleets, draw Pirate card.",
-        "effects": [
-          { "type": "gainFleet", "amount": 2 }
-        ],
-        "placeToken": "salvage-field"
-      },
-      {
-        "label": "Scan logs",
-        "resolveText": "Peek at 3 cards.",
-        "effects": [
-          { "type": "log", "message": "Scan logs recorded in the archive." }
-        ],
-        "placeToken": "scan-beacon"
-      },
-      {
-        "label": "Ignore",
-        "resolveText": "Nothing.",
-        "effects": [
-          { "type": "log", "message": "The armada drifts on, untouched." }
-        ],
-        "placeToken": "derelict-armada"
-      }
-    ]
+    "front": ["Salvage ships", "Scan logs", "Ignore"],
+    "back": {
+      "Salvage ships": "Gain 2 fleets, draw Pirate card.",
+      "Scan logs": "Peek at 3 cards.",
+      "Ignore": "Nothing."
+    }
   },
   {
     "id": "PULSAR_03",

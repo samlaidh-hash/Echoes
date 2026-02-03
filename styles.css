@@ -61,9 +61,6 @@ body {
 }
 
 .hex {
-  border: none;
-  background: transparent;
-  padding: 0;
   width: 80px;
   height: 70px;
   clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
@@ -77,17 +74,6 @@ body {
   padding: 6px;
   transition: transform 0.2s ease, background 0.2s ease;
   cursor: pointer;
-}
-
-.hex-tile {
-  pointer-events: auto;
-}
-
-.fog-overlay,
-.map-overlay,
-.scanlines,
-.vignette {
-  pointer-events: none;
 }
 
 .hex.revealed {
@@ -203,14 +189,6 @@ body {
   align-items: center;
 }
 
-.faction-status {
-  display: flex;
-  gap: 16px;
-  margin: 12px 0;
-  font-size: 0.85rem;
-  color: #cdd5f5;
-}
-
 #faction-select {
   background: #1a223a;
   border: 1px solid #2c3554;
@@ -230,21 +208,6 @@ body {
   margin-bottom: 8px;
 }
 
-.action-button {
-  width: 100%;
-  text-align: left;
-  background: #16203a;
-  border: 1px solid #2c3554;
-  color: #fff;
-  padding: 8px 10px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.action-button:hover {
-  background: #1e2b4d;
-}
-
 .card {
   background: #121a30;
   border-radius: 12px;
@@ -258,13 +221,6 @@ body {
   justify-content: space-between;
   align-items: baseline;
   margin-bottom: 12px;
-}
-
-.card-meta {
-  display: flex;
-  gap: 10px;
-  font-size: 0.8rem;
-  color: #9db0d1;
 }
 
 .card-body {
@@ -284,27 +240,6 @@ body {
 .card-front ul {
   margin: 0;
   padding-left: 18px;
-}
-
-.choice-button {
-  background: #1a223a;
-  border: 1px solid #2c3554;
-  color: #fff;
-  padding: 6px 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  width: 100%;
-  text-align: left;
-}
-
-.choice-button.selected {
-  border-color: #8bc5ff;
-  background: #243056;
-}
-
-.choice-button:disabled {
-  cursor: default;
-  opacity: 0.7;
 }
 
 .game-log {

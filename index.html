@@ -35,26 +35,13 @@
       <section class="panel">
         <h2>Dice & Actions</h2>
         <div class="dice-row">
-          <button id="roll-dice">Roll 2d6 (+bonus d6 for first player)</button>
-          <div class="dice-results" id="dice-results">
-            <span data-testid="die-a">—</span>
-            +
-            <span data-testid="die-b">—</span>
-            +
-            <span data-testid="die-bonus">—</span>
-            =
-            <span data-testid="dice-total">—</span>
-          </div>
+          <button id="roll-dice">Roll 2d6 (+1 for first player)</button>
+          <div class="dice-results" id="dice-results">—</div>
         </div>
         <div class="actions">
           <div class="actions-header">
             <h3>Tier 0 Actions</h3>
             <select id="faction-select"></select>
-          </div>
-          <div class="faction-status">
-            <div>Credits: <span id="faction-credits">0</span></div>
-            <div>Energy: <span id="faction-energy">0</span></div>
-            <div>Fleets: <span id="faction-fleets">0</span></div>
           </div>
           <ol id="action-list" class="action-list"></ol>
         </div>
@@ -66,13 +53,10 @@
           <button id="draw-card">Draw Card</button>
           <button id="reveal-back" disabled>Reveal Outcome</button>
         </div>
-        <div id="card" class="card" data-testid="card-panel">
+        <div id="card" class="card">
           <div class="card-header">
-            <h3 id="card-title" data-testid="card-title">No card drawn</h3>
-            <div class="card-meta">
-              <span id="card-deck">—</span>
-              <span id="card-id">—</span>
-            </div>
+            <h3 id="card-title">No card drawn</h3>
+            <span id="card-id">—</span>
           </div>
           <div class="card-body">
             <div class="card-front" id="card-front"></div>
@@ -83,7 +67,7 @@
 
       <section class="panel">
         <h2>Game Log</h2>
-        <div id="game-log" class="game-log" data-testid="game-log"></div>
+        <div id="game-log" class="game-log"></div>
       </section>
 
       <section class="panel developer-panel">
