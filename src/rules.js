@@ -1,178 +1,185 @@
-const clone = (value) => structuredClone(value);
+// Pure-ish rules: all mutations happen on the passed-in state object for baseline simplicity.
 
-export const applyEffects = (state, effects) => {
-  if (!effects || effects.length === 0) return state;
-  const next = clone(state);
+export function logLine(state, msg) {
+  state.log.push(`[Round ${state.meta.round}] ${msg}`);
+}
 
-  effects.forEach((effect) => {
-    switch (effect.type) {
-      case "gainResource": {
-        next.counters[effect.factionId].resources += effect.amount;
+export function weightedPick(rng, entries) {
+  // entries: [{value, weight}]
+  const total = entries.reduce((s, e) => s + e.weight, 0);
+  let r = rng.nextFloat() * total;
+  for (const e of entries) {
+    r -= e.weight;
+    if (r <= 0) return e.value;
+  }
+  return entries[entries.length - 1].value;
+}
+
+export function initDeck(state, rng, deckType, cards) {
+  const ids = cards.map(c => c.id);
+  // Fisher-Yates shuffle
+  for (let i = ids.length - 1; i > 0; i--) {
+    const j = rng.nextInt(i + 1);
+    [ids[i], ids[j]] = [ids[j], ids[i]];
+  }
+  state.decks[deckType].draw = ids;
+  state.decks[deckType].discard = [];
+}
+
+export function drawCard(state, deckType, cardById) {
+  const deck = state.decks[deckType];
+  if (deck.draw.length === 0 && deck.discard.length > 0) {
+    // reshuffle discard into draw
+    deck.draw = deck.discard.splice(0);
+  }
+  const id = deck.draw.shift();
+  if (!id) return null;
+  return cardById[id] ?? null;
+}
+
+export function applyEffects(state, effects, context) {
+  const before = snapshotState(state);
+
+  for (const eff of effects) {
+    switch (eff.op) {
+      case "log":
+        logLine(state, eff.message ?? "Something happens.");
         break;
-      }
-      case "loseResource": {
-        next.counters[effect.factionId].resources = Math.max(
-          0,
-          next.counters[effect.factionId].resources - effect.amount,
-        );
+
+      case "gainResource":
+        state.player[eff.resource] = (state.player[eff.resource] ?? 0) + (eff.amount ?? 0);
         break;
-      }
-      case "gainFleet": {
-        next.counters[effect.factionId].fleets += effect.amount;
+
+      case "loseResource":
+        state.player[eff.resource] = Math.max(0, (state.player[eff.resource] ?? 0) - (eff.amount ?? 0));
         break;
-      }
-      case "loseFleet": {
-        next.counters[effect.factionId].fleets = Math.max(
-          0,
-          next.counters[effect.factionId].fleets - effect.amount,
-        );
+
+      case "gainFleet":
+        state.player.fleets += (eff.amount ?? 0);
         break;
-      }
-      case "revealHex": {
-        next.hexMap = next.hexMap.map((hex) => {
-          if (hex.id !== effect.hexId) return hex;
-          return {
-            ...hex,
-            revealed: effect.revealed,
-            controlledBy: effect.controlledBy ?? (effect.revealed ? hex.controlledBy : null),
-          };
-        });
+
+      case "loseFleet":
+        state.player.fleets = Math.max(0, state.player.fleets - (eff.amount ?? 0));
         break;
-      }
+
+      case "modifyCosmicTension":
+        state.cosmicTension += (eff.amount ?? 0);
+        break;
+
       case "placeToken": {
-        next.hexMap = next.hexMap.map((hex) => {
-          if (hex.id !== effect.hexId) return hex;
-          const tokens = hex.tokens ? [...hex.tokens] : [];
-          tokens.push(effect.token);
-          return { ...hex, tokens };
-        });
+        const hex = getHex(state, context.hexId);
+        if (hex) hex.token = eff.tokenId ?? null;
         break;
       }
-      case "drawCard": {
-        next.currentCard = {
-          index: effect.index,
-          revealed: false,
-          choice: null,
-        };
+
+      case "revealHex": {
+        revealAdjacentHexes(state, context, eff.count ?? 1);
         break;
       }
-      case "upgradeActionStub": {
+
+      default:
+        logLine(state, `Unknown effect op: ${eff.op}`);
         break;
-      }
-      case "log": {
-        next.log.unshift(effect.message);
-        break;
-      }
-      default: {
-        break;
-      }
     }
-  });
+  }
 
-  return next;
-};
+  const after = snapshotState(state);
+  return { before, after };
+}
 
-export const rollDice = (state, bonus = 1) => {
-  const roll = () => Math.ceil(Math.random() * 6);
-  const die1 = roll();
-  const die2 = roll();
-  const total = die1 + die2 + bonus;
-  const dice = { die1, die2, bonus, total };
-
-  const effects = [
-    {
-      type: "log",
-      message: `Rolled dice: ${die1} + ${die2} (+${bonus} first player) = ${total}.`,
-    },
-  ];
-
+export function snapshotState(state) {
   return {
-    state: { ...state, dice },
-    effects,
+    credits: state.player.credits,
+    energy: state.player.energy,
+    fleets: state.player.fleets,
+    cosmicTension: state.cosmicTension
   };
-};
+}
 
-export const spendDiceSplit = (state, die1Action, die2Action) => {
-  const effects = [
-    {
-      type: "log",
-      message: `Split dice spent on ${die1Action} and ${die2Action}.`,
-    },
-  ];
-  return { state, effects };
-};
+export function didStateChange(a, b) {
+  return a.credits !== b.credits ||
+         a.energy !== b.energy ||
+         a.fleets !== b.fleets ||
+         a.cosmicTension !== b.cosmicTension;
+}
 
-export const spendDiceCombine = (state, action) => {
-  const effects = [
-    {
-      type: "log",
-      message: `Combined dice spent on ${action}.`,
-    },
-  ];
-  return { state, effects };
-};
+export function getHex(state, hexId) {
+  return state.map.hexes.find(h => h.id === hexId) ?? null;
+}
 
-export const moveFleet = (state, factionId, fromHexId, toHexId) => {
-  const effects = [
-    {
-      type: "log",
-      message: `${factionId} moves a fleet from ${fromHexId} to ${toHexId}.`,
-    },
-  ];
-  return { state, effects };
-};
+export function revealHex(state, rng, cardIndex, hexId, forcedType = null) {
+  const hex = getHex(state, hexId);
+  if (!hex) return null;
 
-export const revealHex = (state, hexId, factionId, revealed) => {
-  const effects = [
-    {
-      type: "revealHex",
-      hexId,
-      revealed,
-      controlledBy: revealed ? factionId : null,
-    },
-    {
-      type: "log",
-      message: revealed
-        ? `${hexId} revealed and claimed by ${factionId}.`
-        : `${hexId} returned to fog.`,
-    },
-  ];
+  hex.revealed = true;
 
-  return { state, effects };
-};
+  if (hex.type === "unknown") {
+    hex.type = forcedType ?? weightedPick(rng, [
+      { value: "empty", weight: 55 },
+      { value: "system", weight: 30 },
+      { value: "phenomena", weight: 15 }
+    ]);
+  }
 
-export const drawCard = (state) => {
-  const index = Math.floor(Math.random() * state.phenomenaDeck.length);
-  const card = state.phenomenaDeck[index];
-  const effects = [
-    { type: "drawCard", index },
-    { type: "log", message: `Card drawn: ${card.title}.` },
-  ];
-  return { state, effects };
-};
+  const card = drawCard(state, hex.type, cardIndex);
+  if (!card) {
+    logLine(state, `No card available for deck: ${hex.type}`);
+    return null;
+  }
 
-export const resolveChoice = (state, choice) => {
-  if (state.currentCard === null) return { state, effects: [] };
-  const nextState = { ...state, currentCard: { ...state.currentCard, revealed: true, choice } };
-  const card = state.phenomenaDeck[state.currentCard.index];
-  const effects = [
-    { type: "log", message: `Card resolved: ${card.title}.` },
-  ];
-  return { state: nextState, effects };
-};
+  state.ui.pending = { deckType: hex.type, card, hexId };
+  logLine(state, `Card drawn (${hex.type}): ${card.title}`);
+  return state.ui.pending;
+}
 
-export const gainFleet = (state, factionId, amount) => {
-  const effects = [
-    { type: "gainFleet", factionId, amount },
-    { type: "log", message: `${factionId} gains ${amount} fleet(s).` },
-  ];
-  return { state, effects };
-};
+export function resolveChoice(state, cardIndex, choiceIndex) {
+  const pending = state.ui.pending;
+  if (!pending) return { ok: false, reason: "No pending card." };
 
-export const loseFleet = (state, factionId, amount) => {
-  const effects = [
-    { type: "loseFleet", factionId, amount },
-    { type: "log", message: `${factionId} loses ${amount} fleet(s).` },
-  ];
-  return { state, effects };
-};
+  const { card, hexId, deckType } = pending;
+  const choice = card.choices[choiceIndex];
+  if (!choice) return { ok: false, reason: "Invalid choice." };
+
+  const context = { hexId };
+  const res = applyEffects(state, choice.effects ?? [], context);
+
+  // Place token if specified on choice
+  const hex = getHex(state, hexId);
+  if (hex && choice.placeToken) hex.token = choice.placeToken;
+
+  // discard card
+  state.decks[deckType].discard.push(card.id);
+
+  logLine(state, `Chose: ${choice.label} → ${choice.resolveText}`);
+
+  state.ui.pending = null;
+
+  return { ok: true, cardId: card.id, deckType, choiceLabel: choice.label, tokenId: hex?.token ?? null, stateChanged: didStateChange(res.before, res.after) };
+}
+
+export function revealAdjacentHexes(state, context, count) {
+  // Simple square-grid adjacency on IDs like A1..G7:
+  // neighbors = N,S,E,W (good enough for baseline)
+  const hex = getHex(state, context.hexId);
+  if (!hex) return;
+
+  const [col, row] = [hex.col, hex.row];
+  const candidates = [
+    { c: col, r: row - 1 },
+    { c: col, r: row + 1 },
+    { c: col - 1, r: row },
+    { c: col + 1, r: row }
+  ].filter(p => p.c >= 0 && p.c < state.map.width && p.r >= 0 && p.r < state.map.height);
+
+  let revealed = 0;
+  for (const p of candidates) {
+    if (revealed >= count) break;
+    const neighbor = state.map.hexes.find(h => h.col === p.c && h.row === p.r);
+    if (neighbor && !neighbor.revealed) {
+      neighbor.revealed = true;
+      // do not auto-assign type or draw card (baseline: "scan" only)
+      revealed++;
+    }
+  }
+  if (revealed > 0) logLine(state, `Scan revealed ${revealed} adjacent hex(es).`);
+}

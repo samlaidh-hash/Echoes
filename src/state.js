@@ -1,21 +1,36 @@
-export const createInitialState = (content) => {
-  const initialFactions = content.factions.map((faction) => faction.id);
-  const initCounters = initialFactions.reduce((acc, id) => {
-    acc[id] = { resources: 0, fleets: 0 };
-    return acc;
-  }, {});
-
+export function initialState({ seed }) {
   return {
-    round: 1,
-    currentFactionId: content.factions[0]?.id ?? null,
-    selectedHexId: content.hexMap[0]?.id ?? null,
-    dice: null,
-    currentCard: null,
-    log: [],
-    factions: content.factions,
-    actions: content.actions,
-    phenomenaDeck: content.phenomenaDeck,
-    hexMap: content.hexMap.map((hex) => ({ ...hex })),
-    counters: initCounters,
+    meta: {
+      version: "baseline-v0.1",
+      seed,
+      round: 1
+    },
+    flags: {
+      smoke: false
+    },
+    player: {
+      id: "p1",
+      factionId: "directorate",
+      credits: 0,
+      energy: 0,
+      fleets: 1
+    },
+    cosmicTension: 0,
+    ui: {
+      selectedHexId: null,
+      pending: null // { deckType, card, hexId }
+    },
+    map: {
+      width: 7,
+      height: 7,
+      hexes: [] // filled from hex_map.json
+    },
+    decks: {
+      empty: { draw: [], discard: [] },
+      system: { draw: [], discard: [] },
+      phenomena: { draw: [], discard: [] }
+    },
+    tokens: {}, // tokenId -> {label,glyph}
+    log: []
   };
-};
+}
