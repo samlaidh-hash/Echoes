@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node tests/rules.test.js"
+    "test": "node tests/rules.test.js",
+    "validate:json": "node scripts/validate-json.mjs"
   }
 }

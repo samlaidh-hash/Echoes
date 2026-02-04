@@ -1,45 +1,5 @@
 [
   {
-    "id": "PULSAR_01",
-    "title": "The Singing Star",
-    "type": "phenomena",
-    "art": "pulsar.jpg",
-    "front": [
-      "Harvest energy",
-      "Study the signal",
-      "Silence the star"
-    ],
-    "back": {
-      "Harvest energy": "Gain 3 Energy. Lose 1 fleet.",
-      "Study the signal": "Upgrade Action #15.",
-      "Silence the star": "Place Dead Star token."
-    },
-    "placeTokens": {
-      "Harvest energy": "pulsar_01_harvest_energy",
-      "Study the signal": "pulsar_01_study_the_signal",
-      "Silence the star": "pulsar_01_silence_the_star"
-    }
-  },
-  {
-    "id": "PULSAR_02",
-    "title": "Derelict Armada",
-    "type": "phenomena",
-    "art": "armada.jpg",
-    "front": [
-      "Salvage ships",
-      "Scan logs",
-      "Ignore"
-    ],
-    "back": {
-      "Salvage ships": "Gain 2 fleets, draw Pirate card.",
-      "Scan logs": "Peek at 3 cards.",
-      "Ignore": "Nothing."
-    },
-    "placeTokens": {
-      "Salvage ships": "pulsar_02_salvage_ships",
-      "Scan logs": "pulsar_02_scan_logs",
-      "Ignore": "pulsar_02_ignore"
-    }
     "id": "PHE_01",
     "title": "Dead Civilization",
     "type": "phenomena",
@@ -48,15 +8,8 @@
         "label": "Study remains",
         "resolveText": "Gain 1 energy and reveal 1 adjacent hex.",
         "effects": [
-          {
-            "op": "gainResource",
-            "resource": "energy",
-            "amount": 1
-          },
-          {
-            "op": "revealHex",
-            "count": 1
-          }
+          { "op": "gainResource", "resource": "energy", "amount": 1 },
+          { "op": "revealHex", "count": 1 }
         ],
         "placeToken": "ruins"
       },
@@ -64,15 +17,8 @@
         "label": "Harvest tech",
         "resolveText": "Gain 3 credits, cosmic tension +1.",
         "effects": [
-          {
-            "op": "gainResource",
-            "resource": "credits",
-            "amount": 3
-          },
-          {
-            "op": "modifyCosmicTension",
-            "amount": 1
-          }
+          { "op": "gainResource", "resource": "credits", "amount": 3 },
+          { "op": "modifyCosmicTension", "amount": 1 }
         ],
         "placeToken": "ruins"
       }
@@ -83,31 +29,12 @@
     "id": "PHE_02",
     "title": "Ancient Jump Gate",
     "type": "phenomena",
-    "art": "gate.jpg",
-    "front": [
-      "Reactivate",
-      "Dismantle",
-      "Seal"
-    ],
-    "back": {
-      "Reactivate": "Place Gate token.",
-      "Dismantle": "Gain 5 resources.",
-      "Seal": "Gate collapses forever."
-    },
-    "placeTokens": {
-      "Reactivate": "pulsar_03_reactivate",
-      "Dismantle": "pulsar_03_dismantle",
-      "Seal": "pulsar_03_seal"
-    }
     "choices": [
       {
         "label": "Reactivate",
         "resolveText": "Cosmic tension +1.",
         "effects": [
-          {
-            "op": "modifyCosmicTension",
-            "amount": 1
-          }
+          { "op": "modifyCosmicTension", "amount": 1 }
         ],
         "placeToken": "gate"
       },
@@ -115,266 +42,143 @@
         "label": "Dismantle",
         "resolveText": "Gain 4 credits.",
         "effects": [
-          {
-            "op": "gainResource",
-            "resource": "credits",
-            "amount": 4
-          }
+          { "op": "gainResource", "resource": "credits", "amount": 4 }
         ],
-        "placeToken": "ruins"
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Seal",
+        "resolveText": "The gate collapses.",
+        "effects": [
+          { "op": "log", "message": "The gate collapses forever." }
+        ],
+        "placeToken": "hazard"
       }
-    ],
-    "placeNoteByChoiceIndex": [
-      "Place: Gate",
-      "Place: Ruins"
     ]
   },
   {
     "id": "PHE_03",
-    "title": "Black Hole Choir",
+    "title": "Derelict Armada",
     "type": "phenomena",
-    "art": "black-hole.jpg",
-    "front": [
-      "Study event horizon",
-      "Harvest matter",
-      "Send probe"
-    ],
-    "back": {
-      "Study event horizon": "Upgrade random action.",
-      "Harvest matter": "Gain 4 resources, lose unit.",
-      "Send probe": "Remove hex from map."
-    },
-    "placeTokens": {
-      "Study event horizon": "pulsar_04_study_event_horizon",
-      "Harvest matter": "pulsar_04_harvest_matter",
-      "Send probe": "pulsar_04_send_probe"
-    }
-  },
-  {
-    "id": "PULSAR_05",
-    "title": "Megastructure Ruins",
-    "type": "phenomena",
-    "art": "ruins.jpg",
-    "front": [
-      "Restore",
-      "Plunder",
-      "Quarantine"
-    ],
-    "back": {
-      "Restore": "Place Ancient Hub.",
-      "Plunder": "Gain relic.",
-      "Quarantine": "Prevent all entry."
-    },
-    "placeTokens": {
-      "Restore": "pulsar_05_restore",
-      "Plunder": "pulsar_05_plunder",
-      "Quarantine": "pulsar_05_quarantine"
-    }
-  },
-  {
-    "id": "PULSAR_06",
-    "title": "Time Fracture",
-    "type": "phenomena",
-    "art": "fracture.jpg",
-    "front": [
-      "Stabilise",
-      "Exploit",
-      "Escape"
-    ],
-    "back": {
-      "Stabilise": "Prevent next crisis.",
-      "Exploit": "Take two turns.",
-      "Escape": "Lose current hex."
-    },
-    "placeTokens": {
-      "Stabilise": "pulsar_06_stabilise",
-      "Exploit": "pulsar_06_exploit",
-      "Escape": "pulsar_06_escape"
-    }
-  },
-  {
-    "id": "PULSAR_07",
-    "title": "Dead Civilization",
-    "type": "phenomena",
-    "art": "civilization.jpg",
-    "front": [
-      "Study remains",
-      "Harvest tech",
-      "Memorialise"
-    ],
-    "back": {
-      "Study remains": "Gain lore (future bonus).",
-      "Harvest tech": "Upgrade 2 actions.",
-      "Memorialise": "Gain diplomatic immunity."
-    },
-    "placeTokens": {
-      "Study remains": "pulsar_07_study_remains",
-      "Harvest tech": "pulsar_07_harvest_tech",
-      "Memorialise": "pulsar_07_memorialise"
-    }
-  },
-  {
-    "id": "PULSAR_08",
-    "title": "Rogue AI Core",
-    "type": "phenomena",
-    "art": "ai-core.jpg",
-    "front": [
-      "Integrate",
-      "Contain",
-      "Destroy"
-    ],
-    "back": {
-      "Integrate": "Choir bonus.",
-      "Contain": "Gate control.",
-      "Destroy": "Cosmic tension +2."
-    },
-    "placeTokens": {
-      "Integrate": "pulsar_08_integrate",
-      "Contain": "pulsar_08_contain",
-      "Destroy": "pulsar_08_destroy"
-    }
-  },
-  {
-    "id": "PULSAR_09",
-    "title": "Stellar Leviathan",
-    "type": "phenomena",
-    "art": "leviathan.jpg",
-    "front": [
-      "Hunt",
-      "Observe",
-      "Flee"
-    ],
-    "back": {
-      "Hunt": "Gain relic or lose fleet.",
-      "Observe": "Predict next crisis.",
-      "Flee": "Hex becomes blocked."
-    },
-    "placeTokens": {
-      "Hunt": "pulsar_09_hunt",
-      "Observe": "pulsar_09_observe",
-      "Flee": "pulsar_09_flee"
-    }
     "choices": [
       {
-        "label": "Study event horizon",
-        "resolveText": "Gain 2 energy, cosmic tension +1.",
+        "label": "Salvage ships",
+        "resolveText": "Gain 2 fleets.",
         "effects": [
-          {
-            "op": "gainResource",
-            "resource": "energy",
-            "amount": 2
-          },
-          {
-            "op": "modifyCosmicTension",
-            "amount": 1
-          }
+          { "op": "gainFleet", "amount": 2 }
         ],
-        "placeToken": "anomaly"
+        "placeToken": "derelict"
       },
       {
-        "label": "Harvest matter",
-        "resolveText": "Gain 5 credits, lose 1 fleet.",
+        "label": "Scan logs",
+        "resolveText": "Peek the top card of a deck.",
         "effects": [
-          {
-            "op": "gainResource",
-            "resource": "credits",
-            "amount": 5
-          },
-          {
-            "op": "loseFleet",
-            "amount": 1
-          }
+          { "op": "peekDeckTop" }
         ],
-        "placeToken": "anomaly"
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Ignore",
+        "resolveText": "Nothing happens.",
+        "effects": [
+          { "op": "log", "message": "Ignored the derelict armada." }
+        ]
       }
-    ],
-    "placeNote": "Place: Anomaly"
+    ]
   },
   {
     "id": "PHE_04",
-    "title": "The Singing Star",
+    "title": "Dimensional Rift",
     "type": "phenomena",
     "choices": [
       {
-        "label": "Harvest energy",
-        "resolveText": "Gain 3 energy, lose 1 fleet.",
+        "label": "Study the rift",
+        "resolveText": "Gain 2 energy, cosmic tension +1.",
         "effects": [
-          {
-            "op": "gainResource",
-            "resource": "energy",
-            "amount": 3
-          },
-          {
-            "op": "loseFleet",
-            "amount": 1
-          }
+          { "op": "gainResource", "resource": "energy", "amount": 2 },
+          { "op": "modifyCosmicTension", "amount": 1 }
         ],
-        "placeToken": "dead_star"
+        "placeToken": "anomaly"
       },
       {
-        "label": "Silence the star",
-        "resolveText": "Cosmic tension +2.",
+        "label": "Stabilize",
+        "resolveText": "Mark the rift and move on.",
         "effects": [
-          {
-            "op": "modifyCosmicTension",
-            "amount": 2
-          }
+          { "op": "log", "message": "Rift stabilized." }
         ],
-        "placeToken": "dead_star"
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Exploit",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          { "op": "gainResource", "resource": "credits", "amount": 2 }
+        ],
+        "placeToken": "anomaly"
       }
-    ],
-    "placeNote": "Place: Dead Star"
+    ]
   },
   {
     "id": "PHE_05",
-    "title": "Megastructure Ruins",
+    "title": "Lost Colony",
     "type": "phenomena",
-    "art": "signal.jpg",
-    "front": [
-      "Answer",
-      "Trace",
-      "Ignore"
-    ],
-    "back": {
-      "Answer": "Trigger narrative arc.",
-      "Trace": "Reveal 3 hexes.",
-      "Ignore": "Nothing (but log it)."
-    },
-    "placeTokens": {
-      "Answer": "pulsar_10_answer",
-      "Trace": "pulsar_10_trace",
-      "Ignore": "pulsar_10_ignore"
-    }
     "choices": [
       {
-        "label": "Plunder",
-        "resolveText": "Gain 2 credits and 1 energy.",
+        "label": "Aid colonists",
+        "resolveText": "Gain 1 credit and 1 energy.",
         "effects": [
-          {
-            "op": "gainResource",
-            "resource": "credits",
-            "amount": 2
-          },
-          {
-            "op": "gainResource",
-            "resource": "energy",
-            "amount": 1
-          }
+          { "op": "gainResource", "resource": "credits", "amount": 1 },
+          { "op": "gainResource", "resource": "energy", "amount": 1 }
         ],
-        "placeToken": "ruins"
+        "placeToken": "colony"
       },
       {
-        "label": "Quarantine",
-        "resolveText": "Cosmic tension -1.",
+        "label": "Exploit",
+        "resolveText": "Gain 3 credits, cosmic tension +1.",
         "effects": [
-          {
-            "op": "modifyCosmicTension",
-            "amount": -1
-          }
+          { "op": "gainResource", "resource": "credits", "amount": 3 },
+          { "op": "modifyCosmicTension", "amount": 1 }
         ],
-        "placeToken": "ruins"
+        "placeToken": "colony"
+      },
+      {
+        "label": "Ignore",
+        "resolveText": "Nothing happens.",
+        "effects": [
+          { "op": "log", "message": "Ignored the lost colony." }
+        ]
       }
-    ],
-    "placeNote": "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_06",
+    "title": "Pirate Den",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Raid",
+        "resolveText": "Lose 1 fleet, gain 2 credits.",
+        "effects": [
+          { "op": "loseFleet", "amount": 1 },
+          { "op": "gainResource", "resource": "credits", "amount": 2 }
+        ],
+        "placeToken": "pirate_den"
+      },
+      {
+        "label": "Negotiate",
+        "resolveText": "Gain 1 credit.",
+        "effects": [
+          { "op": "gainResource", "resource": "credits", "amount": 1 }
+        ],
+        "placeToken": "pirate_den"
+      },
+      {
+        "label": "Avoid",
+        "resolveText": "Nothing happens.",
+        "effects": [
+          { "op": "log", "message": "Avoided the pirate den." }
+        ]
+      }
+    ]
   }
 ]
