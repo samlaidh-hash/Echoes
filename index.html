@@ -17,24 +17,12 @@
       <div class="topbar-right">
         <div id="smokeStatus" class="badge" data-testid="smoke-status" aria-live="polite">SMOKE: OFF</div>
         <div class="seed" id="seedDisplay"></div>
+        <button id="rollRoundDiceBtn" class="btn" type="button">Roll</button>
+        <button id="nextPlayerBtn" class="btn" type="button">Next Player</button>
       </div>
     </header>
 
     <div id="hud" class="hud" data-testid="hud"></div>
-
-      <section class="panel">
-        <h2>Dice & Actions</h2>
-        <div class="dice-row">
-          <button id="roll-dice">Roll 2d6</button>
-          <div class="dice-results" id="dice-results">—</div>
-        </div>
-        <div class="actions">
-          <div class="actions-header">
-            <h3>Tier 0 Actions</h3>
-            <select id="faction-select"></select>
-          </div>
-          <ol id="action-list" class="action-list"></ol>
-        </div>
     <main class="layout">
       <section class="map-panel">
         <div class="panel-title">GALAXY MAP</div>

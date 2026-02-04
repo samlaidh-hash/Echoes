@@ -3,7 +3,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { createInitialState } from "../src/state.js";
+import { createInitialState } from "../src/state.legacy.js";
 import {
   actionRequiresResources,
   adjustTension,
@@ -14,8 +14,8 @@ import {
   moveFleet,
   rollBonusDie,
   scoreSpecialResources,
-  useBonusDie,
-} from "../src/rules.js";
+  useBonusDie
+} from "../src/rules.legacy.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
@@ -27,14 +27,15 @@ const loadJson = async (relativePath) => {
 };
 
 const loadContent = async () => {
-  const [factions, actions, phenomenaDeck, systemDeck, tensionDecks, hexMap] = await Promise.all([
+  const [factions, actions, phenomenaDeck, systemDeck, tensionDecks, hexMapRaw] = await Promise.all([
     loadJson("data/factions.json"),
     loadJson("data/actions.json"),
     loadJson("data/cards_phenomena.json"),
     loadJson("data/cards_system.json"),
     loadJson("data/tension_decks.json"),
-    loadJson("data/hex_map.json"),
+    loadJson("data/hex_map.json")
   ]);
+  const hexMap = hexMapRaw.hexes ?? hexMapRaw;
   return { factions, actions, phenomenaDeck, systemDeck, tensionDecks, hexMap };
 };
 
@@ -62,7 +63,7 @@ const run = async () => {
     assert.equal(
       actionRequiresResources(threshold, directorateActions[String(threshold)]),
       false,
-      `Action ${threshold} should not require resources`,
+      `Action ${threshold} should not require resources`
     );
   }
 
@@ -80,11 +81,11 @@ const run = async () => {
       type: "addCardToHand",
       factionId: "directorate",
       card: { id: "doom-1", title: "Doom" },
-      cardType: "doom",
-    },
+      cardType: "doom"
+    }
   ]);
   doomState = applyEffects(doomState, [
-    { type: "discardCard", factionId: "directorate", cardType: "hand", index: 0 },
+    { type: "discardCard", factionId: "directorate", cardType: "hand", index: 0 }
   ]);
   assert.equal(doomState.hands.directorate.doom.length, 1, "Doom cards cannot be discarded");
 
@@ -103,7 +104,7 @@ const run = async () => {
     Monopoles: 1,
     "Ancient Relics": 1,
     "Alien Art": 0,
-    "Exotic Matter": 0,
+    "Exotic Matter": 0
   });
   assert.equal(score, 6, "Optimal partitioning should score 6 VP for 4 unique + extra");
   const scoreAllDifferent = scoreSpecialResources({
@@ -112,7 +113,7 @@ const run = async () => {
     Monopoles: 1,
     "Ancient Relics": 1,
     "Alien Art": 1,
-    "Exotic Matter": 1,
+    "Exotic Matter": 1
   });
   assert.equal(scoreAllDifferent, 15, "All different set of 6 should score 15 VP");
 
