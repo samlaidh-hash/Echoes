@@ -58,6 +58,17 @@ function normalizeActions(raw) {
     }
     normalized[factionId] = actionMap;
   }
+  return response.json();
+};
+
+export const loadGameContent = async () => {
+  const [factions, actions, phenomenaDeck, systemDeck, tensionDecks, hexMap] = await Promise.all([
+    loadJson("data/factions.json"),
+    loadJson("data/actions.json"),
+    loadJson("data/cards_phenomena.json"),
+    loadJson("data/cards_system.json"),
+    loadJson("data/tension_decks.json"),
+    loadJson("data/hex_map.json"),
   return normalized;
 }
 
@@ -103,6 +114,11 @@ export async function loadContent() {
   }));
 
   return {
+    factions,
+    actions,
+    phenomenaDeck,
+    systemDeck,
+    tensionDecks,
     hexMap,
     tokensById: tokens,
     factions: normalizeFactionIds(factionsRaw),

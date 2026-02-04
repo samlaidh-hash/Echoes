@@ -253,6 +253,10 @@ function renderCard(state, handlers) {
     if (resolved.resolveText) {
       panel.appendChild(el("div", { class: "card-body" }, [resolved.resolveText]));
     }
+    const base = `${state.dice.die1} + ${state.dice.die2} = ${state.dice.total}`;
+    const bonus = state.bonusDie?.value ? ` (bonus die: ${state.bonusDie.value})` : "";
+    diceResults.textContent = `${base}${bonus}`;
+  };
 
     panel.appendChild(el("div", { class: "card-body" }, ["Place in hex"]));
     const placeGlyph = resolved.tokenId ? tokenGlyph(state, resolved.tokenId) : "";
