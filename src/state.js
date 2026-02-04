@@ -9,16 +9,21 @@ export function initialState({ seed }) {
       smoke: false
     },
     players: [
-      { id: "p1", factionId: "directorate", credits: 0, energy: 0, fleets: 1, positionHexId: "A1" },
-      { id: "p2", factionId: "choir", credits: 0, energy: 0, fleets: 1, positionHexId: "G1" },
-      { id: "p3", factionId: "bloom", credits: 0, energy: 0, fleets: 1, positionHexId: "A7" }
+      { id: "p1", factionId: "directorate", credits: 0, energy: 0 },
+      { id: "p2", factionId: "choir", credits: 0, energy: 0 },
+      { id: "p3", factionId: "bloom", credits: 0, energy: 0 }
     ],
     factions: [],
     actionsByFaction: {},
+    capitalsByFaction: {},
+    techByFaction: {},
     influence: {},
     visited: {},
     controllerByHex: {},
     contestedByHex: {},
+    fleetsByHex: {},
+    fleetMeta: {},
+    nextFleetId: 1,
     turn: {
       round: 1,
       firstPlayerIndex: 0,
@@ -45,6 +50,9 @@ export function initialState({ seed }) {
       mode: "idle", // idle | targeting | modal
       pendingAction: null, // { actionNumber, consumes:{a,b,bonus} }
       modalType: null, // card | combat | null
+      pulseHexId: null,
+      fleetSelection: { hexId: null, factionId: null, fleetIds: [] },
+      combat: null,
       lastResolution: null,
       pending: null // { deckType, card, hexId }
     },

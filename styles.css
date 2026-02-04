@@ -162,6 +162,14 @@ body {
 .hex:hover { outline: 2px solid rgba(122, 162, 255, 0.35); }
 .hex:disabled { cursor: default; opacity: 0.95; }
 .hex.targetable { outline: 2px solid rgba(255, 209, 102, 0.6); }
+.hex.selected-origin { outline: 2px solid rgba(103, 232, 165, 0.7); }
+.hex.pulse { animation: hexPulse 900ms ease-out 1; }
+
+@keyframes hexPulse {
+  0% { box-shadow: 0 0 0 0 rgba(122, 162, 255, 0.6); }
+  60% { box-shadow: 0 0 0 10px rgba(122, 162, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(122, 162, 255, 0); }
+}
 .map.targeting, .map.targeting * { cursor: crosshair !important; }
 .action-panel.locked { opacity: 0.6; }
 
@@ -180,6 +188,17 @@ body {
   display:flex;
   flex-direction: column;
   gap:4px;
+}
+.hex .fleet-selected {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  border: 1px solid rgba(103, 232, 165, 0.8);
+  background: rgba(12, 18, 32, 0.85);
+  color: #d9ffe9;
 }
 .fleet-token {
   font-size: 14px;
@@ -346,3 +365,22 @@ body {
 .badge.good { border-color: rgba(103,232,165,0.6); color: var(--good); }
 .badge.bad { border-color: rgba(255,107,107,0.6); color: var(--bad); }
 .badge.warn { border-color: rgba(255,209,102,0.6); color: var(--warn); }
+
+.combat-modal {
+  position: absolute;
+  inset: 80px 80px auto 80px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 12px;
+  border: 1px solid rgba(36, 50, 77, 0.9);
+  border-radius: 14px;
+  background: rgba(10, 14, 22, 0.95);
+  z-index: 50;
+}
+.combat-section { display: grid; gap: 8px; }
+.combat-title { font-weight: 700; font-size: 13px; }
+.combat-sides { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.combat-side { border: 1px solid rgba(36, 50, 77, 0.7); border-radius: 10px; padding: 8px; background: rgba(12, 18, 32, 0.8); }
+.combat-dice { display: flex; flex-wrap: wrap; gap: 6px; }
+.combat-die { padding: 4px 6px; border-radius: 6px; border: 1px solid rgba(36, 50, 77, 0.7); font-size: 12px; }
+.combat-actions { display: flex; gap: 8px; margin-top: 8px; }

@@ -9,7 +9,7 @@
     "3": {
       "name": "Recruit Fleet",
       "text": "Gain 1 fleet.",
-      "effects": [{ "op": "gainFleet", "amount": 1 }],
+      "effects": [{ "op": "recruitFleetCapital" }],
       "requiresTarget": false
     },
     "8": {
@@ -25,7 +25,7 @@
     "7": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #7 not implemented yet." }], "requiresTarget": false },
     "9": { "name": "Forward Deploy", "text": "Recruit 1 fleet in a system you control.", "effects": [{ "op": "forwardDeploy" }], "requiresTarget": true },
     "10": { "name": "Activate System", "text": "Activate a controlled system for rewards.", "effects": [{ "op": "activateSystem" }], "requiresTarget": true },
-    "11": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #11 not implemented yet." }], "requiresTarget": false },
+    "11": { "name": "Fast Deployment", "text": "Move up to 2 hexes (no enemy entry).", "effects": [{ "op": "fastDeploy", "range": 2, "canEngage": false }], "requiresTarget": true },
     "12": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #12 not implemented yet." }], "requiresTarget": false },
     "13": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #13 not implemented yet." }], "requiresTarget": false },
     "14": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #14 not implemented yet." }], "requiresTarget": false },
