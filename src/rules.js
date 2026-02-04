@@ -282,6 +282,12 @@ export const useBonusDie = (state, factionId, tokenType) => {
   if (!state.bonusDie.value || state.bonusDie.locked) {
     return { state, effects: [{ type: "log", message: "Bonus die unavailable." }] };
   }
+  if ((state.counters[factionId]?.tokens?.[tokenType] ?? 0) <= 0) {
+    return {
+      state,
+      effects: [{ type: "log", message: `${factionId} has no ${tokenType} bonus tokens.` }],
+    };
+  }
   if (state.bonusDie.usedBy[factionId]) {
     return { state, effects: [{ type: "log", message: "Bonus die already used this round." }] };
   }
