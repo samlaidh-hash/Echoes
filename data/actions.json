@@ -1,62 +1,79 @@
 {
   "directorate": {
-    "1": { "title": "Patrol Sector", "tier": 0, "effect": "Reveal one adjacent hex without moving." },
-    "2": { "title": "Establish Outpost", "tier": 0, "effect": "Place control token." },
-    "3": { "title": "Recruit Fleet", "tier": 0, "effect": "Gain 1 fleet." },
-    "4": { "title": "Escort Convoy", "tier": 0, "effect": "Move 1 fleet + protect." },
-    "5": { "title": "Secure Trade", "tier": 0, "effect": "Gain 2 resources." },
-    "6": { "title": "Enforce Law", "tier": 0, "effect": "Remove pirate/raider." },
-    "7": { "title": "Fortify System", "tier": 0, "effect": "Add defence token." },
-    "8": { "title": "Fleet Manoeuvre", "tier": 0, "effect": "Move 2 fleets." },
-    "9": { "title": "Blockade", "tier": 0, "effect": "Enemy cannot use system." },
-    "10": { "title": "Bombard World", "tier": 0, "effect": "Damage system." },
-    "11": { "title": "Rapid Deployment", "tier": 0, "effect": "Move fleet anywhere connected." },
-    "12": { "title": "Fleet Mobilisation", "tier": 0, "effect": "Move all fleets 1 hex." },
-    "13": { "title": "Martial Law", "tier": 0, "effect": "Lock hex for 1 round." },
-    "14": { "title": "Strategic Reserve", "tier": 0, "effect": "Store unused die." },
-    "15": { "title": "Grand Inspection", "tier": 0, "effect": "Peek at card deck." },
-    "16": { "title": "Sector Command", "tier": 0, "effect": "Extra action this round." },
-    "17": { "title": "Imperial Decree", "tier": 0, "effect": "Cancel opponent action." },
-    "18": { "title": "Imperial Mandate", "tier": 0, "effect": "Rewrite one rule for round." }
+    "1": {
+      "name": "Long Range Sensor Scan",
+      "text": "Scan an adjacent hex without moving.",
+      "effects": [{ "op": "revealHex", "count": 1 }],
+      "requiresTarget": true
+    },
+    "3": {
+      "name": "Recruit Fleet",
+      "text": "Gain 1 fleet.",
+      "effects": [{ "op": "recruitFleetCapital" }],
+      "requiresTarget": false
+    },
+    "8": {
+      "name": "Fleet Manoeuvre",
+      "text": "Move 1 hex (requires destination).",
+      "effects": [{ "op": "moveFleet", "range": 1 }],
+      "requiresTarget": true
+    },
+    "2": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #2 not implemented yet." }], "requiresTarget": false },
+    "4": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #4 not implemented yet." }], "requiresTarget": false },
+    "5": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #5 not implemented yet." }], "requiresTarget": false },
+    "6": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #6 not implemented yet." }], "requiresTarget": false },
+    "7": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #7 not implemented yet." }], "requiresTarget": false },
+    "9": { "name": "Forward Deploy", "text": "Recruit 1 fleet in a system you control.", "effects": [{ "op": "forwardDeploy" }], "requiresTarget": true },
+    "10": { "name": "Activate System", "text": "Activate a controlled system for rewards.", "effects": [{ "op": "activateSystem" }], "requiresTarget": true },
+    "11": { "name": "Fast Deployment", "text": "Move up to 2 hexes (no enemy entry).", "effects": [{ "op": "fastDeploy", "range": 2, "canEngage": false }], "requiresTarget": true },
+    "12": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #12 not implemented yet." }], "requiresTarget": false },
+    "13": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #13 not implemented yet." }], "requiresTarget": false },
+    "14": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #14 not implemented yet." }], "requiresTarget": false },
+    "15": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #15 not implemented yet." }], "requiresTarget": false },
+    "16": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #16 not implemented yet." }], "requiresTarget": false },
+    "17": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #17 not implemented yet." }], "requiresTarget": false },
+    "18": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #18 not implemented yet." }], "requiresTarget": false }
   },
   "choir": {
-    "1": { "title": "Data Probe", "tier": 0, "effect": "Peek at card." },
-    "2": { "title": "Predictive Model", "tier": 0, "effect": "Reroll one die." },
-    "3": { "title": "Ghost Signal", "tier": 0, "effect": "Reveal distant hex." },
-    "4": { "title": "Probability Drift", "tier": 0, "effect": "Modify ±1." },
-    "5": { "title": "Fork Timeline", "tier": 0, "effect": "Copy last action." },
-    "6": { "title": "Simulate Outcome", "tier": 0, "effect": "Peek next round." },
-    "7": { "title": "Phase Unit", "tier": 0, "effect": "Move ignoring terrain." },
-    "8": { "title": "Echo Action", "tier": 0, "effect": "Repeat any action." },
-    "9": { "title": "Steal Initiative", "tier": 0, "effect": "Take bonus die." },
-    "10": { "title": "Collapse Branch", "tier": 0, "effect": "Undo last event." },
-    "11": { "title": "Mirror Reality", "tier": 0, "effect": "Swap two hex states." },
-    "12": { "title": "Rewrite Probability", "tier": 0, "effect": "Change die result." },
-    "13": { "title": "Data Assimilation", "tier": 0, "effect": "Steal upgrade." },
-    "14": { "title": "Observer Effect", "tier": 0, "effect": "Opponent must reveal." },
-    "15": { "title": "Predict Outcome", "tier": 0, "effect": "Peek any deck." },
-    "16": { "title": "Causal Override", "tier": 0, "effect": "Interrupt action." },
-    "17": { "title": "Paradox Engine", "tier": 0, "effect": "Two actions from one die." },
-    "18": { "title": "Reality Edit", "tier": 0, "effect": "Rewrite card outcome." }
+    "1": {
+      "name": "Data Probe",
+      "text": "Peek the top card of a deck.",
+      "effects": [{ "op": "peekDeckTop" }],
+      "requiresTarget": false
+    },
+    "4": {
+      "name": "Probability Drift",
+      "text": "Modify one of your dice by ±1 (once per round).",
+      "effects": [{ "op": "modifyDie", "delta": 1 }],
+      "requiresTarget": false
+    },
+    "7": {
+      "name": "Phase Unit",
+      "text": "Move 1 hex.",
+      "effects": [{ "op": "moveFleet", "range": 1, "phase": true }],
+      "requiresTarget": true
+    },
+    "10": { "name": "Activate System", "text": "Activate a controlled system for rewards.", "effects": [{ "op": "activateSystem" }], "requiresTarget": true }
   },
   "bloom": {
-    "1": { "title": "Spore Drift", "tier": 0, "effect": "Place biomass token." },
-    "2": { "title": "Replicate", "tier": 0, "effect": "Gain 1 unit." },
-    "3": { "title": "Absorb", "tier": 0, "effect": "Convert token into resource." },
-    "4": { "title": "Infest", "tier": 0, "effect": "Claim neutral hex." },
-    "5": { "title": "Regenerate", "tier": 0, "effect": "Recover lost unit." },
-    "6": { "title": "Spread", "tier": 0, "effect": "Duplicate into adjacent hex." },
-    "7": { "title": "Adapt", "tier": 0, "effect": "Modify one action." },
-    "8": { "title": "Overgrow", "tier": 0, "effect": "Replace structure." },
-    "9": { "title": "Consume World", "tier": 0, "effect": "Destroy system." },
-    "10": { "title": "Gestalt Mind", "tier": 0, "effect": "Use bonus die." },
-    "11": { "title": "Rapid Evolution", "tier": 0, "effect": "Upgrade action." },
-    "12": { "title": "Assimilate", "tier": 0, "effect": "Steal enemy token." },
-    "13": { "title": "Hive Surge", "tier": 0, "effect": "All units move." },
-    "14": { "title": "Terraform", "tier": 0, "effect": "Change hex type." },
-    "15": { "title": "Genetic Rewrite", "tier": 0, "effect": "Replace action." },
-    "16": { "title": "Apex Form", "tier": 0, "effect": "Gain super-unit." },
-    "17": { "title": "Planetary Bloom", "tier": 0, "effect": "Convert system." },
-    "18": { "title": "Become Biosphere", "tier": 0, "effect": "Win condition trigger." }
+    "1": {
+      "name": "Spore Drift",
+      "text": "Seed biomass on your current hex.",
+      "effects": [{ "op": "placeToken", "tokenId": "biomass" }],
+      "requiresTarget": false
+    },
+    "2": {
+      "name": "Replicate",
+      "text": "Gain 1 fleet.",
+      "effects": [{ "op": "gainFleet", "amount": 1 }],
+      "requiresTarget": false
+    },
+    "6": {
+      "name": "Spread",
+      "text": "Seed biomass on an adjacent hex.",
+      "effects": [{ "op": "placeTokenAdjacent", "tokenId": "biomass" }],
+      "requiresTarget": true
+    },
+    "10": { "name": "Activate System", "text": "Activate a controlled system for rewards.", "effects": [{ "op": "activateSystem" }], "requiresTarget": true }
   }
 }

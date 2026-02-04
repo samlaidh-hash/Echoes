@@ -1,220 +1,568 @@
-import {
-  applyEffects,
-  drawCard,
-  gainFleet,
-  loseFleet,
-  revealHex,
-  resolveChoice,
-  rollDice,
-} from "./rules.js";
+import { computeAvailableActions, countFleets } from "./rules.js";
 
-export const createUI = ({ initialState, bugbotEnabled = false }) => {
-  let state = initialState;
-
-  const factionSelect = document.getElementById("faction-select");
-  const actionList = document.getElementById("action-list");
-  const diceResults = document.getElementById("dice-results");
-  const rollButton = document.getElementById("roll-dice");
-  const roundLabel = document.getElementById("round");
-  const currentFactionLabel = document.getElementById("current-faction");
-  const hexMapContainer = document.getElementById("hex-map");
-  const resetMapButton = document.getElementById("reset-map");
-  const drawCardButton = document.getElementById("draw-card");
-  const revealBackButton = document.getElementById("reveal-back");
-  const cardTitle = document.getElementById("card-title");
-  const cardId = document.getElementById("card-id");
-  const cardFront = document.getElementById("card-front");
-  const cardBack = document.getElementById("card-back");
-  const gameLog = document.getElementById("game-log");
-  const devPanel = document.querySelector(".developer-panel");
-  const devControlsEnabled = Boolean(bugbotEnabled && devPanel);
-
-  if (devPanel) {
-    devPanel.hidden = !devControlsEnabled;
+function el(tag, attrs = {}, children = []) {
+  const node = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === "class") node.className = v;
+    else if (k.startsWith("data-")) node.setAttribute(k, v);
+    else if (k === "disabled") node.disabled = !!v;
+    else node[k] = v;
   }
-
-  const devForceDraw = devControlsEnabled ? document.getElementById("dev-force-draw") : null;
-  const devRevealHex = devControlsEnabled ? document.getElementById("dev-reveal-hex") : null;
-  const devHexSelect = devControlsEnabled ? document.getElementById("dev-hex-select") : null;
-  const devAddFleet = devControlsEnabled ? document.getElementById("dev-add-fleet") : null;
-  const devRemoveFleet = devControlsEnabled ? document.getElementById("dev-remove-fleet") : null;
-  const devPrintState = devControlsEnabled ? document.getElementById("dev-print-state") : null;
-  const devFleetCount = devControlsEnabled ? document.getElementById("dev-fleet-count") : null;
-
-  const setState = (nextState) => {
-    state = nextState;
-    render();
-  };
-
-  const applyRule = (result) => {
-    const withState = result.state ?? state;
-    const next = applyEffects(withState, result.effects ?? []);
-    setState(next);
-  };
-
-  const renderFactionOptions = () => {
-    factionSelect.innerHTML = "";
-    state.factions.forEach((faction) => {
-      const option = document.createElement("option");
-      option.value = faction.id;
-      option.textContent = faction.name;
-      factionSelect.append(option);
-    });
-    factionSelect.value = state.currentFactionId;
-  };
-
-  const renderActions = () => {
-    const factionActions = state.actions[state.currentFactionId] ?? {};
-    actionList.innerHTML = "";
-    Object.entries(factionActions).forEach(([die, info]) => {
-      const item = document.createElement("li");
-      item.textContent = `${die}. ${info.title} — ${info.effect}`;
-      actionList.append(item);
-    });
-    const faction = state.factions.find((item) => item.id === state.currentFactionId);
-    currentFactionLabel.textContent = faction?.name ?? "—";
-  };
-
-  const renderHexMap = () => {
-    hexMapContainer.innerHTML = "";
-    state.hexMap.forEach((hex) => {
-      const hexEl = document.createElement("div");
-      hexEl.className = `hex ${hex.revealed ? "revealed" : "fogged"}`;
-      if (hex.controlledBy) {
-        hexEl.classList.add("controlled");
-      }
-      if (hex.id === state.selectedHexId) {
-        hexEl.classList.add("selected");
-      }
-      hexEl.dataset.id = hex.id;
-      hexEl.textContent = hex.revealed ? hex.label : "Fog";
-      hexEl.addEventListener("click", () => {
-        const revealed = !hex.revealed;
-        const nextState = { ...state, selectedHexId: hex.id };
-        const result = revealHex(nextState, hex.id, state.currentFactionId, revealed);
-        applyRule({ ...result, state: nextState });
-      });
-      hexMapContainer.append(hexEl);
-    });
-  };
-
-  const renderCard = () => {
-    if (state.currentCard === null) {
-      cardTitle.textContent = "No card drawn";
-      cardId.textContent = "—";
-      cardFront.innerHTML = "";
-      cardBack.innerHTML = "";
-      revealBackButton.disabled = true;
-      return;
+  for (const child of children) {
+    if (child == null) continue;
+    if (typeof child === "string" || typeof child === "number" || typeof child === "boolean") {
+      node.appendChild(document.createTextNode(String(child)));
+    } else {
+      node.appendChild(child);
     }
+  }
+  return node;
+}
 
-    const card = state.phenomenaDeck[state.currentCard.index];
-    cardTitle.textContent = card.title;
-    cardId.textContent = card.id;
-    cardFront.innerHTML = `
-      <strong>Front (Choose one)</strong>
-      <ul>${card.front.map((option) => `<li>${option}</li>`).join("")}</ul>
-    `;
+export function render(state, handlers) {
+  renderSeed(state);
+  renderHud(state);
+  renderMap(state, handlers);
+  renderCard(state, handlers);
+  renderActions(state, handlers);
+  renderLog(state);
+  renderCombat(state, handlers);
+}
 
-    if (!state.currentCard.revealed) {
-      cardBack.innerHTML = "<em>Flip to reveal outcome.</em>";
-      revealBackButton.disabled = false;
-      return;
-    }
+function renderSeed(state) {
+  const seed = document.getElementById("seedDisplay");
+  seed.textContent = `seed=${state.meta.seed}`;
+}
 
-    cardBack.innerHTML = `
-      <strong>Back (Outcome)</strong>
-      <ul>${Object.entries(card.back)
-        .map(([choice, outcome]) => `<li><strong>${choice}:</strong> ${outcome}</li>`)
-        .join("")}</ul>
-    `;
-    revealBackButton.disabled = true;
-  };
+function tokenGlyph(state, tokenId) {
+  if (!tokenId) return "";
+  const t = state.tokensById?.[tokenId] ?? state.tokens?.[tokenId];
+  return t?.glyph ?? "?";
+}
 
-  const renderLog = () => {
-    gameLog.innerHTML = "";
-    state.log.forEach((message) => {
-      const entry = document.createElement("div");
-      entry.className = "log-entry";
-      entry.textContent = `[Round ${state.round}] ${message}`;
-      gameLog.append(entry);
-    });
-  };
+function getAdjacentHexesForUi(state, hexId) {
+  const hex = state.map.hexes.find(h => h.id === hexId);
+  if (!hex) return [];
+  const [col, row] = [hex.col, hex.row];
+  const candidates = [
+    { c: col, r: row - 1 },
+    { c: col, r: row + 1 },
+    { c: col - 1, r: row },
+    { c: col + 1, r: row }
+  ].filter(p => p.c >= 0 && p.c < state.map.width && p.r >= 0 && p.r < state.map.height);
 
-  const renderDice = () => {
-    if (!state.dice) {
-      diceResults.textContent = "—";
-      return;
-    }
-    diceResults.textContent = `${state.dice.die1} + ${state.dice.die2} + ${state.dice.bonus} = ${state.dice.total}`;
-  };
+  return candidates
+    .map(p => state.map.hexes.find(h => h.col === p.c && h.row === p.r))
+    .filter(Boolean);
+}
 
-  const renderDeveloperPanel = () => {
-    if (!devControlsEnabled || !devHexSelect || !devFleetCount) return;
-    devHexSelect.innerHTML = "";
-    state.hexMap.forEach((hex) => {
-      const option = document.createElement("option");
-      option.value = hex.id;
-      option.textContent = `${hex.id} — ${hex.label}`;
-      devHexSelect.append(option);
-    });
-    devHexSelect.value = state.selectedHexId ?? state.hexMap[0]?.id ?? "";
-    devFleetCount.textContent = state.counters[state.currentFactionId]?.fleets ?? 0;
-  };
+function factionGlyph(factionId) {
+  switch (String(factionId).toLowerCase()) {
+    case "directorate":
+      return "⛨";
+    case "choir":
+      return "◈";
+    case "bloom":
+      return "❖";
+    default:
+      return "?";
+  }
+}
 
-  const render = () => {
-    roundLabel.textContent = state.round;
-    renderFactionOptions();
-    renderActions();
-    renderDice();
-    renderHexMap();
-    renderCard();
-    renderLog();
-    renderDeveloperPanel();
-  };
+function factionClass(factionId) {
+  return `faction-${String(factionId).toLowerCase()}`;
+}
 
-  factionSelect.addEventListener("change", (event) => {
-    const nextState = { ...state, currentFactionId: event.target.value };
-    const updated = applyEffects(nextState, [
-      { type: "log", message: `Faction focus changed to ${event.target.selectedOptions[0].textContent}.` },
+function fleetGlyph(factionId) {
+  switch (String(factionId).toLowerCase()) {
+    case "directorate":
+      return "■";
+    case "choir":
+      return "◆";
+    case "bloom":
+      return "●";
+    default:
+      return "■";
+  }
+}
+
+function factionName(state, factionId) {
+  const name = state.factions?.find(f => f.id === String(factionId).toLowerCase())?.name;
+  return name ?? String(factionId);
+}
+
+function renderTrack(label, value, max, trackClass) {
+  const clamped = Math.max(0, Math.min(max, value ?? 0));
+  const slots = [];
+  for (let i = 0; i <= max; i += 1) {
+    const filled = i > 0 && i <= clamped;
+    slots.push(el("div", { class: `track-slot ${filled ? "filled" : ""}` }, [i]));
+  }
+  return el("div", { class: `resource-track ${trackClass}` }, [
+    el("div", { class: "track-label" }, [label]),
+    el("div", { class: "track-slots" }, slots)
+  ]);
+}
+
+function renderHud(state) {
+  const hud = document.getElementById("hud");
+  if (!hud) return;
+  hud.innerHTML = "";
+
+  const factionRow = el("div", { class: "hud-row" }, []);
+  state.players.forEach(player => {
+    const totalFleets = Object.values(state.fleetsByHex ?? {}).reduce((s, v) => {
+      const entry = v[String(player.factionId).toLowerCase()];
+      return s + (entry?.undamaged?.length ?? 0) + (entry?.damaged?.length ?? 0);
+    }, 0);
+    const panel = el("div", { class: `hud-panel ${factionClass(player.factionId)}` }, [
+      el("div", { class: "hud-title" }, [`${factionGlyph(player.factionId)} ${factionName(state, player.factionId)}`]),
+      renderTrack("Credits", player.credits, 20, "track-credits"),
+      renderTrack("Energy", player.energy, 20, "track-energy"),
+      el("div", { class: "track-label" }, [`Fleets: ${totalFleets}`])
     ]);
-    setState(updated);
+    factionRow.appendChild(panel);
   });
 
-  rollButton.addEventListener("click", () => applyRule(rollDice(state)));
+  const tensionPanel = el("div", { class: "hud-panel hud-tension" }, [
+    el("div", { class: "hud-title" }, ["Cosmic Tension"]),
+    renderTrack("Tension", state.cosmicTension ?? 0, 20, "track-tension")
+  ]);
 
-  resetMapButton.addEventListener("click", () => {
-    const effects = state.hexMap.map((hex) => ({
-      type: "revealHex",
-      hexId: hex.id,
-      revealed: false,
-      controlledBy: null,
-    }));
-    effects.unshift({ type: "log", message: "Fog-of-war reset across the map." });
-    setState(applyEffects(state, effects));
-  });
+  hud.appendChild(factionRow);
+  hud.appendChild(tensionPanel);
+}
 
-  drawCardButton.addEventListener("click", () => applyRule(drawCard(state)));
-  revealBackButton.addEventListener("click", () => applyRule(resolveChoice(state, "manual")));
 
-  if (devControlsEnabled) {
-    devForceDraw?.addEventListener("click", () => applyRule(drawCard(state)));
-    devRevealHex?.addEventListener("click", () => {
-      const target = devHexSelect?.value;
-      const hex = state.hexMap.find((item) => item.id === target);
-      if (!hex) return;
-      applyRule(revealHex(state, hex.id, state.currentFactionId, true));
+function renderMap(state, handlers) {
+  const map = document.getElementById("map");
+  map.classList.toggle("targeting", state.ui.mode === "targeting");
+  map.innerHTML = "";
+
+  const activeFaction = String(state.players?.[state.turn?.activePlayerIndex ?? 0]?.factionId ?? "").toLowerCase();
+  const awaitingAction = state.ui.pendingAction?.actionDef ?? null;
+  const needsTarget = state.ui.mode === "targeting" && !!awaitingAction?.requiresTarget;
+  const isFast = (awaitingAction?.effects ?? []).some(e => e.op === "fastDeploy");
+  const isMove = (awaitingAction?.effects ?? []).some(e => e.op === "moveFleet" || e.op === "fastDeploy");
+  const isScan = (awaitingAction?.effects ?? []).some(e => e.op === "revealHex");
+  const isAdjacentToken = (awaitingAction?.effects ?? []).some(e => e.op === "placeTokenAdjacent");
+  const isForwardDeploy = (awaitingAction?.effects ?? []).some(e => e.op === "forwardDeploy");
+  const isActivate = (awaitingAction?.effects ?? []).some(e => e.op === "activateSystem");
+
+  for (const hex of state.map.hexes) {
+    const fogged = !hex.revealed;
+    const labelType = fogged ? "fog" : (hex.type ?? "unknown");
+    const glyph = hex.revealed ? tokenGlyph(state, hex.token) : "";
+    const occContainer = el("div", { class: "fleet-tokens" }, Object.entries(state.fleetsByHex?.[hex.id] ?? {})
+      .map(([factionId, entry]) => (
+        el("div", { class: `fleet-token fleet-${String(factionId).toLowerCase()}` }, [
+          `${fleetGlyph(factionId)} ${(entry?.undamaged?.length ?? 0) + (entry?.damaged?.length ?? 0)}${(entry?.damaged?.length ?? 0) > 0 ? ` (${entry?.damaged?.length}✕)` : ""}`
+        ])
+      )));
+
+    const isTargetable = needsTarget && (() => {
+      if (isMove) {
+        const sel = state.ui.fleetSelection;
+        if (!sel.hexId) {
+          const entry = state.fleetsByHex?.[hex.id]?.[activeFaction];
+          const count = (entry?.undamaged?.length ?? 0) + (entry?.damaged?.length ?? 0);
+          return count > 0;
+        }
+        const first = getAdjacentHexesForUi(state, sel.hexId);
+        if (first.some(h => h.id === hex.id)) return true;
+        if (isFast) {
+          const second = first.flatMap(h => getAdjacentHexesForUi(state, h.id));
+          return second.some(h => h.id === hex.id);
+        }
+        return false;
+      }
+      if (isAdjacentToken || isScan) {
+        const fleetHexes = Object.keys(state.fleetsByHex ?? {}).filter(h => state.fleetsByHex[h]?.[activeFaction]);
+        return fleetHexes.some(hId => getAdjacentHexesForUi(state, hId).some(h => h.id === hex.id));
+      }
+      if (isForwardDeploy || isActivate) {
+        const controlled = state.controllerByHex?.[hex.id] === activeFaction;
+        const contested = state.contestedByHex?.[hex.id];
+        const activated = state.turn?.systemActivated?.includes(hex.id);
+        return hex.type === "system" && controlled && !contested && (!isActivate || !activated);
+      }
+      return false;
+    })();
+
+    const influence = state.influence?.[hex.id] ?? {};
+    const controller = state.controllerByHex?.[hex.id];
+    const contested = state.contestedByHex?.[hex.id];
+    const influenceLines = Object.entries(influence)
+      .map(([f, v]) => `${factionGlyph(f)} ${factionName(state, f)}: ${v}`)
+      .join("\n");
+    const controlLine = contested ? "Controller: contested" : `Controller: ${controller ?? "none"}`;
+
+    const isSelectedOrigin = state.ui.fleetSelection?.hexId === hex.id;
+    const selectedCount = isSelectedOrigin ? state.ui.fleetSelection?.fleetIds?.length ?? 0 : 0;
+    const btn = el("button", {
+      class: `hex ${fogged ? "fogged" : ""} ${isTargetable ? "targetable" : ""} ${isSelectedOrigin ? "selected-origin" : ""} ${state.ui.pulseHexId === hex.id ? "pulse" : ""}`,
+      type: "button",
+      disabled: false,
+      title: [
+        fogged ? "Unexplored" : `Type: ${hex.type}`,
+        "Influence:",
+        influenceLines || "None",
+        controlLine
+      ].join("\n"),
+      "data-testid": `hex-${hex.id}`,
+      "data-hexid": hex.id
+    }, [
+      el("div", { class: "id" }, [hex.id]),
+      el("div", { class: "type" }, [labelType]),
+      occContainer,
+      selectedCount > 0 ? el("div", { class: "fleet-selected" }, [`x${selectedCount}`]) : null,
+      el("div", { class: "token" }, [glyph])
+    ]);
+
+    btn.addEventListener("click", (e) => handlers.onHexClick(hex.id, e));
+    btn.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+      handlers.onHexContextMenu(hex.id, e);
     });
-    devHexSelect?.addEventListener("change", (event) => {
-      setState({ ...state, selectedHexId: event.target.value });
-    });
-    devAddFleet?.addEventListener("click", () => applyRule(gainFleet(state, state.currentFactionId, 1)));
-    devRemoveFleet?.addEventListener("click", () => applyRule(loseFleet(state, state.currentFactionId, 1)));
-    devPrintState?.addEventListener("click", () => {
-      console.log("Current game state:", JSON.stringify(state, null, 2));
-      setState(applyEffects(state, [{ type: "log", message: "Game state printed to console." }]));
-    });
+    map.appendChild(btn);
+  }
+}
+
+
+function renderCard(state, handlers) {
+  const panel = document.getElementById("cardPanel");
+  panel.innerHTML = "";
+
+  const pending = state.ui.pending;
+  if (!pending) {
+    const resolved = state.ui.lastResolution;
+    if (!resolved) {
+      panel.appendChild(el("div", { class: "card-placeholder" }, ["Reveal fog via an action (scan) or by moving a fleet into the hex."]));
+      return;
+    }
+
+    panel.appendChild(el("div", { class: "card-header" }, [
+      el("div", { class: "card-title" }, [resolved.cardTitle]),
+      el("div", { class: "card-meta" }, [`Deck: ${resolved.deckType}`])
+    ]));
+
+    panel.appendChild(el("div", { class: "card-body" }, [
+      `Chosen: ${resolved.choiceLabel}`
+    ]));
+
+    if (resolved.resolveText) {
+      panel.appendChild(el("div", { class: "card-body" }, [resolved.resolveText]));
+    }
+
+    panel.appendChild(el("div", { class: "card-body" }, ["Place in hex"]));
+    const placeGlyph = resolved.tokenId ? tokenGlyph(state, resolved.tokenId) : "";
+    const placeText = resolved.placeNote ?? "Place: Nothing";
+    panel.appendChild(el("div", { class: "card-body" }, [
+      placeGlyph ? `${placeGlyph} ${placeText}` : placeText
+    ]));
+
+    const btn = el("button", {
+      class: "btn",
+      type: "button",
+      "data-testid": "card-continue"
+    }, ["Continue"]);
+    btn.addEventListener("click", () => handlers.onCardContinue());
+    panel.appendChild(btn);
+    return;
   }
 
-  setState(applyEffects(state, [{ type: "log", message: "Prototype ready. Explore the map and draw phenomena." }]));
-};
+  const { deckType, card } = pending;
+
+  panel.appendChild(el("div", { class: "card-header" }, [
+    el("div", { class: "card-title", "data-testid": "card-title" }, [card.title]),
+    el("div", { class: "card-meta" }, [`Deck: ${deckType}`])
+  ]));
+
+  panel.appendChild(el("div", { class: "card-body" }, [
+    "Choose an option:"
+  ]));
+
+  const choices = el("div", { class: "card-choices" }, []);
+  card.choices.forEach((ch, idx) => {
+    const choiceBtn = el("button", {
+      class: "choice",
+      type: "button",
+      "data-testid": `card-choice-${idx}`
+    }, [
+      el("div", {}, [ch.label]),
+      el("small", {}, ["→"])
+    ]);
+    choiceBtn.addEventListener("click", () => handlers.onCardChoice(idx));
+    choices.appendChild(choiceBtn);
+  });
+
+  panel.appendChild(choices);
+}
+
+function renderLog(state) {
+  const log = document.getElementById("log");
+  log.textContent = state.log.join("\n");
+  log.scrollTop = log.scrollHeight;
+}
+
+function renderActions(state, handlers) {
+  const panel = document.getElementById("actionPanel");
+  if (!panel) return;
+
+  panel.innerHTML = "";
+  panel.classList.toggle("locked", state.ui.mode === "modal");
+
+  const activeIndex = state.turn?.activePlayerIndex ?? 0;
+  const player = state.players?.[activeIndex];
+  const factionId = player?.factionId ?? "unknown";
+  const actions = state.actionsByFaction?.[String(factionId).toLowerCase()];
+  const dice = state.turn?.dice;
+  const used = state.turn?.used;
+  state.ui.availableActionOptions = computeAvailableActions(state);
+
+  panel.appendChild(el("div", { class: "panel-title" }, ["ACTIONS"]));
+
+  if (!actions) {
+    const msg = `No actions found for factionId="${factionId}". Check actions.json keys.`;
+    panel.appendChild(el("div", { class: "panel-warning" }, [msg]));
+    if (!state.ui.actionWarningLogged) {
+      state.log.push(`[Round ${state.turn?.round ?? 1}] ${msg}`);
+      state.ui.actionWarningLogged = true;
+    }
+    return;
+  }
+  state.ui.actionWarningLogged = false;
+
+  const pendingConsume = state.ui.pendingAction?.consume ?? {};
+  const dicePills = el("div", { class: "dice-pills" }, [
+    (!used?.a && dice?.a != null) ? el("div", {
+      class: `dice-pill ${pendingConsume.a ? "pending" : ""}`,
+      "data-testid": "die-a"
+    }, [`A ${dice?.a ?? "-"}`]) : null,
+    (!used?.b && dice?.b != null) ? el("div", {
+      class: `dice-pill ${pendingConsume.b ? "pending" : ""}`,
+      "data-testid": "die-b"
+    }, [`B ${dice?.b ?? "-"}`]) : null,
+    (!used?.bonus && dice?.bonus != null) ? el("div", {
+      class: `dice-pill ${pendingConsume.bonus ? "pending" : ""}`,
+      "data-testid": "die-bonus"
+    }, [`Bonus ${dice?.bonus ?? "-"}`]) : null
+  ]);
+
+  const rollBtn = el("button", { class: "btn", type: "button", disabled: state.ui.mode !== "idle" }, ["Roll"]);
+  rollBtn.addEventListener("click", () => handlers.onRollRoundDice());
+
+  const performBtn = el("button", {
+    class: "btn",
+    type: "button",
+    disabled: state.ui.mode === "modal",
+    "data-testid": "perform-action"
+  }, ["Perform Action"]);
+  performBtn.addEventListener("click", () => handlers.onPerformAction());
+
+  let hint = "Roll dice to see available actions.";
+  const anyDie = (dice?.a != null && !used?.a) ||
+    (dice?.b != null && !used?.b) ||
+    (dice?.bonus != null && !used?.bonus);
+  if (anyDie) hint = "Available actions highlighted.";
+  if (state.ui.mode === "targeting") {
+    const actionDef = state.ui.pendingAction?.actionDef;
+    const isForward = (actionDef?.effects ?? []).some(e => e.op === "forwardDeploy");
+    const isMove = (actionDef?.effects ?? []).some(e => e.op === "moveFleet");
+    const isScan = (actionDef?.effects ?? []).some(e => e.op === "revealHex");
+    if (isForward) hint = "Select a controlled system to deploy to.";
+    else if (isMove) hint = "Select an adjacent hex to move into.";
+    else if (isScan) hint = "Select an adjacent hex to scan.";
+    else hint = "Select a valid target.";
+  }
+  if (state.ui.mode === "modal") hint = "Resolve current event first.";
+
+  const diceArea = el("div", { class: "action-dice" }, [
+    rollBtn,
+    dicePills,
+    el("div", { class: "action-hint" }, [hint]),
+    performBtn
+  ]);
+
+  const makeGroup = (label, keys) => {
+    const group = el("div", { class: "action-group" }, [
+      el("div", { class: "action-group-label" }, [label])
+    ]);
+    const grid = el("div", { class: "action-grid" }, []);
+    for (const key of keys) {
+      const entry = actions[key];
+      const options = state.ui.availableActionOptions?.[String(key)] ?? [];
+      const available = options.length > 0;
+      const classes = [
+        "action-btn",
+        available ? "available" : "",
+        (state.ui.pendingAction?.actionNumber === String(key)) ? "queued" : ""
+      ].filter(Boolean).join(" ");
+      const btn = el("button", {
+        class: classes,
+        type: "button",
+        disabled: state.ui.mode === "modal",
+        title: entry?.text ?? ""
+      }, [
+        el("span", { class: "action-num" }, [`#${key}`]),
+        el("span", { class: "action-name" }, [entry?.name ?? "Action"])
+      ]);
+      btn.addEventListener("click", () => handlers.onActionSelect(key));
+      grid.appendChild(btn);
+    }
+    group.appendChild(grid);
+    return group;
+  };
+
+  const actionsArea = el("div", { class: "action-groups" }, [
+    makeGroup("1–6", ["1", "2", "3", "4", "5", "6"]),
+    makeGroup("7–12", ["7", "8", "9", "10", "11", "12"]),
+    makeGroup("13–18", ["13", "14", "15", "16", "17", "18"])
+  ]);
+
+  const bar = el("div", { class: "action-bar" }, [
+    diceArea,
+    actionsArea
+  ]);
+  panel.appendChild(bar);
+
+  const controls = el("div", { class: "action-controls" }, [
+    el("label", { class: "action-label" }, ["Free Explore (dev) "]),
+    el("input", {
+      type: "checkbox",
+      checked: !!state.ui.freeExplore
+    })
+  ]);
+  controls.querySelector("input").addEventListener("change", e => handlers.onToggleFreeExplore(e.target.checked));
+  panel.appendChild(controls);
+
+  const deckSelect = el("select", { class: "action-select" }, [
+    el("option", { value: "empty" }, ["empty"]),
+    el("option", { value: "system" }, ["system"]),
+    el("option", { value: "phenomena" }, ["phenomena"])
+  ]);
+  deckSelect.value = state.ui.selectedDeckType ?? "phenomena";
+  deckSelect.addEventListener("change", e => handlers.onSelectDeck(e.target.value));
+  panel.appendChild(el("div", { class: "action-controls" }, [
+    el("span", { class: "action-label" }, ["Peek deck: "]),
+    deckSelect
+  ]));
+
+  const modifySelect = el("select", { class: "action-select" }, [
+    el("option", { value: "a" }, ["Die A"]),
+    el("option", { value: "b" }, ["Die B"]),
+    el("option", { value: "bonus" }, ["Bonus"])
+  ]);
+  modifySelect.value = state.ui.modifyDie?.die ?? "a";
+  modifySelect.addEventListener("change", e => handlers.onModifyDie(e.target.value, state.ui.modifyDie?.delta ?? 1));
+
+  const deltaSelect = el("select", { class: "action-select" }, [
+    el("option", { value: "1" }, ["+1"]),
+    el("option", { value: "-1" }, ["-1"])
+  ]);
+  deltaSelect.value = String(state.ui.modifyDie?.delta ?? 1);
+  deltaSelect.addEventListener("change", e => handlers.onModifyDie(state.ui.modifyDie?.die ?? "a", Number(e.target.value)));
+
+  panel.appendChild(el("div", { class: "action-controls" }, [
+    el("span", { class: "action-label" }, ["Modify die: "]),
+    modifySelect,
+    deltaSelect
+  ]));
+}
+
+export function setSmokeBadge(text, kind = "warn") {
+  const badge = document.getElementById("smokeStatus");
+  badge.textContent = text;
+  badge.classList.remove("good", "bad", "warn");
+  badge.classList.add(kind);
+}
+
+function renderCombat(state, handlers) {
+  const modal = document.getElementById("combatModal");
+  if (!modal) return;
+  const combat = state.ui.combat;
+  if (!combat) {
+    modal.classList.add("hidden");
+    modal.innerHTML = "";
+    return;
+  }
+  modal.classList.remove("hidden");
+  modal.innerHTML = "";
+
+  modal.appendChild(el("div", { class: "combat-title" }, ["COMBAT"]));
+  modal.appendChild(el("div", { class: "combat-section" }, [`Hex: ${combat.hexId}`]));
+
+  if (combat.phase === "prompt") {
+    modal.appendChild(el("div", { class: "combat-section" }, ["Engage which faction(s)?"]));
+    combat.defenderCandidates.forEach(f => {
+      const row = el("button", { class: "btn", type: "button" }, [factionName(state, f)]);
+      row.addEventListener("click", () => handlers.onCombatToggleFaction(f));
+      modal.appendChild(row);
+    });
+    const engageBtn = el("button", { class: "btn", type: "button" }, ["Engage Selected"]);
+    engageBtn.addEventListener("click", () => handlers.onCombatEngage());
+    modal.appendChild(engageBtn);
+    const skipBtn = el("button", { class: "btn", type: "button" }, ["Do Not Engage"]);
+    skipBtn.addEventListener("click", () => handlers.onCombatDisengage());
+    modal.appendChild(skipBtn);
+    return;
+  }
+
+  const sideRow = el("div", { class: "combat-sides" }, []);
+  const attackerSide = el("div", { class: "combat-side" }, [
+    el("div", { class: "combat-title" }, ["Attacker"]),
+    el("div", {}, [combat.attackerFactions.map(f => {
+      const counts = countFleets(state, combat.hexId, f);
+      return `${factionGlyph(f)} ${counts.total} (${counts.damaged}✕)`;
+    }).join(" ")])
+  ]);
+  const defenderSide = el("div", { class: "combat-side" }, [
+    el("div", { class: "combat-title" }, ["Defender"]),
+    el("div", {}, [combat.engagedFactions.map(f => {
+      const counts = countFleets(state, combat.hexId, f);
+      return `${factionGlyph(f)} ${counts.total} (${counts.damaged}✕)`;
+    }).join(" ")])
+  ]);
+  sideRow.appendChild(attackerSide);
+  sideRow.appendChild(defenderSide);
+  modal.appendChild(sideRow);
+
+  const diceRow = el("div", { class: "combat-sides" }, [
+    el("div", { class: "combat-dice" }, combat.dice.attacker.map(d => (
+      el("div", { class: "combat-die" }, [`${factionGlyph(d.factionId)} ${d.value}`])
+    ))),
+    el("div", { class: "combat-dice" }, combat.dice.defender.map(d => (
+      el("div", { class: "combat-die" }, [`${factionGlyph(d.factionId)} ${d.value}`])
+    )))
+  ]);
+  modal.appendChild(diceRow);
+
+  if (combat.pairs?.length) {
+    const pairs = el("div", { class: "combat-section" }, [
+      el("div", { class: "combat-title" }, ["Pairs"])
+    ]);
+    combat.pairs.forEach(p => {
+      const loser = p.loser ? `→ hit on ${p.loser}` : "→ no hit";
+      pairs.appendChild(el("div", {}, [
+        `${factionGlyph(p.attacker.factionId)} ${p.attacker.value} vs ${factionGlyph(p.defender.factionId)} ${p.defender.value} ${loser}`
+      ]));
+    });
+    modal.appendChild(pairs);
+  }
+
+  if (combat.phase === "roll") {
+    const rollBtn = el("button", { class: "btn", type: "button" }, ["Roll Combat Round"]);
+    rollBtn.addEventListener("click", () => handlers.onCombatRoll());
+    modal.appendChild(rollBtn);
+    return;
+  }
+
+  const actions = el("div", { class: "combat-actions" }, []);
+  const contBtn = el("button", { class: "btn", type: "button" }, ["Continue"]);
+  contBtn.addEventListener("click", () => handlers.onCombatContinue());
+  const retBtn = el("button", { class: "btn", type: "button" }, ["Retreat"]);
+  retBtn.addEventListener("click", () => handlers.onCombatRetreat());
+  actions.appendChild(contBtn);
+  actions.appendChild(retBtn);
+  modal.appendChild(actions);
+}
