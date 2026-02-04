@@ -473,6 +473,27 @@ const translateSystemEffects = (state, systemEffects) => {
         effects.push(...tension.effects);
         break;
       }
+      case "revealHex": {
+        const count = effect.count ?? 1;
+        const candidates = state.hexMap.filter((hex) => !hex.revealed);
+        const targets = candidates.slice(0, count);
+        targets.forEach((hex) => {
+          effects.push({
+            type: "revealHex",
+            hexId: hex.id,
+            revealed: true,
+            controlledBy: state.currentFactionId,
+          });
+        });
+        effects.push({
+          type: "log",
+          message:
+            targets.length > 0
+              ? `Revealed ${targets.length} adjacent hex(es).`
+              : "No unrevealed hexes remain.",
+        });
+        break;
+      }
       case "log": {
         effects.push({ type: "log", message: effect.message });
         break;
