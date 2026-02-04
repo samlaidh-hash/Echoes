@@ -146,7 +146,9 @@ export const createUI = ({ initialState, bugbotEnabled = false }) => {
       diceResults.textContent = "—";
       return;
     }
-    diceResults.textContent = `${state.dice.die1} + ${state.dice.die2} + ${state.dice.bonus} = ${state.dice.total}`;
+    const base = `${state.dice.die1} + ${state.dice.die2} = ${state.dice.total}`;
+    const bonus = state.bonusDie?.value ? ` (bonus die: ${state.bonusDie.value})` : "";
+    diceResults.textContent = `${base}${bonus}`;
   };
 
   const renderDeveloperPanel = () => {

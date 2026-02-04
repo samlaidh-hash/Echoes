@@ -1,0 +1,8 @@
+{
+  "name": "echoes",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node tests/rules.test.js"
+  }
+}

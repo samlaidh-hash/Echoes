@@ -7,10 +7,12 @@ const loadJson = async (path) => {
 };
 
 export const loadGameContent = async () => {
-  const [factions, actions, phenomenaDeck, hexMap] = await Promise.all([
+  const [factions, actions, phenomenaDeck, systemDeck, tensionDecks, hexMap] = await Promise.all([
     loadJson("data/factions.json"),
     loadJson("data/actions.json"),
     loadJson("data/cards_phenomena.json"),
+    loadJson("data/cards_system.json"),
+    loadJson("data/tension_decks.json"),
     loadJson("data/hex_map.json"),
   ]);
 
@@ -18,6 +20,8 @@ export const loadGameContent = async () => {
     factions,
     actions,
     phenomenaDeck,
+    systemDeck,
+    tensionDecks,
     hexMap,
   };
 };

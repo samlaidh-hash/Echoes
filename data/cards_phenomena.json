@@ -4,11 +4,20 @@
     "title": "The Singing Star",
     "type": "phenomena",
     "art": "pulsar.jpg",
-    "front": ["Harvest energy", "Study the signal", "Silence the star"],
+    "front": [
+      "Harvest energy",
+      "Study the signal",
+      "Silence the star"
+    ],
     "back": {
       "Harvest energy": "Gain 3 Energy. Lose 1 fleet.",
       "Study the signal": "Upgrade Action #15.",
       "Silence the star": "Place Dead Star token."
+    },
+    "placeTokens": {
+      "Harvest energy": "pulsar_01_harvest_energy",
+      "Study the signal": "pulsar_01_study_the_signal",
+      "Silence the star": "pulsar_01_silence_the_star"
     }
   },
   {
@@ -16,11 +25,20 @@
     "title": "Derelict Armada",
     "type": "phenomena",
     "art": "armada.jpg",
-    "front": ["Salvage ships", "Scan logs", "Ignore"],
+    "front": [
+      "Salvage ships",
+      "Scan logs",
+      "Ignore"
+    ],
     "back": {
       "Salvage ships": "Gain 2 fleets, draw Pirate card.",
       "Scan logs": "Peek at 3 cards.",
       "Ignore": "Nothing."
+    },
+    "placeTokens": {
+      "Salvage ships": "pulsar_02_salvage_ships",
+      "Scan logs": "pulsar_02_scan_logs",
+      "Ignore": "pulsar_02_ignore"
     }
   },
   {
@@ -28,11 +46,20 @@
     "title": "Ancient Jump Gate",
     "type": "phenomena",
     "art": "gate.jpg",
-    "front": ["Reactivate", "Dismantle", "Seal"],
+    "front": [
+      "Reactivate",
+      "Dismantle",
+      "Seal"
+    ],
     "back": {
       "Reactivate": "Place Gate token.",
       "Dismantle": "Gain 5 resources.",
       "Seal": "Gate collapses forever."
+    },
+    "placeTokens": {
+      "Reactivate": "pulsar_03_reactivate",
+      "Dismantle": "pulsar_03_dismantle",
+      "Seal": "pulsar_03_seal"
     }
   },
   {
@@ -40,11 +67,20 @@
     "title": "Black Hole Choir",
     "type": "phenomena",
     "art": "black-hole.jpg",
-    "front": ["Study event horizon", "Harvest matter", "Send probe"],
+    "front": [
+      "Study event horizon",
+      "Harvest matter",
+      "Send probe"
+    ],
     "back": {
       "Study event horizon": "Upgrade random action.",
       "Harvest matter": "Gain 4 resources, lose unit.",
       "Send probe": "Remove hex from map."
+    },
+    "placeTokens": {
+      "Study event horizon": "pulsar_04_study_event_horizon",
+      "Harvest matter": "pulsar_04_harvest_matter",
+      "Send probe": "pulsar_04_send_probe"
     }
   },
   {
@@ -52,11 +88,20 @@
     "title": "Megastructure Ruins",
     "type": "phenomena",
     "art": "ruins.jpg",
-    "front": ["Restore", "Plunder", "Quarantine"],
+    "front": [
+      "Restore",
+      "Plunder",
+      "Quarantine"
+    ],
     "back": {
       "Restore": "Place Ancient Hub.",
       "Plunder": "Gain relic.",
       "Quarantine": "Prevent all entry."
+    },
+    "placeTokens": {
+      "Restore": "pulsar_05_restore",
+      "Plunder": "pulsar_05_plunder",
+      "Quarantine": "pulsar_05_quarantine"
     }
   },
   {
@@ -64,11 +109,20 @@
     "title": "Time Fracture",
     "type": "phenomena",
     "art": "fracture.jpg",
-    "front": ["Stabilise", "Exploit", "Escape"],
+    "front": [
+      "Stabilise",
+      "Exploit",
+      "Escape"
+    ],
     "back": {
       "Stabilise": "Prevent next crisis.",
       "Exploit": "Take two turns.",
       "Escape": "Lose current hex."
+    },
+    "placeTokens": {
+      "Stabilise": "pulsar_06_stabilise",
+      "Exploit": "pulsar_06_exploit",
+      "Escape": "pulsar_06_escape"
     }
   },
   {
@@ -76,11 +130,20 @@
     "title": "Dead Civilization",
     "type": "phenomena",
     "art": "civilization.jpg",
-    "front": ["Study remains", "Harvest tech", "Memorialise"],
+    "front": [
+      "Study remains",
+      "Harvest tech",
+      "Memorialise"
+    ],
     "back": {
       "Study remains": "Gain lore (future bonus).",
       "Harvest tech": "Upgrade 2 actions.",
       "Memorialise": "Gain diplomatic immunity."
+    },
+    "placeTokens": {
+      "Study remains": "pulsar_07_study_remains",
+      "Harvest tech": "pulsar_07_harvest_tech",
+      "Memorialise": "pulsar_07_memorialise"
     }
   },
   {
@@ -88,11 +151,20 @@
     "title": "Rogue AI Core",
     "type": "phenomena",
     "art": "ai-core.jpg",
-    "front": ["Integrate", "Contain", "Destroy"],
+    "front": [
+      "Integrate",
+      "Contain",
+      "Destroy"
+    ],
     "back": {
       "Integrate": "Choir bonus.",
       "Contain": "Gate control.",
       "Destroy": "Cosmic tension +2."
+    },
+    "placeTokens": {
+      "Integrate": "pulsar_08_integrate",
+      "Contain": "pulsar_08_contain",
+      "Destroy": "pulsar_08_destroy"
     }
   },
   {
@@ -100,11 +172,20 @@
     "title": "Stellar Leviathan",
     "type": "phenomena",
     "art": "leviathan.jpg",
-    "front": ["Hunt", "Observe", "Flee"],
+    "front": [
+      "Hunt",
+      "Observe",
+      "Flee"
+    ],
     "back": {
       "Hunt": "Gain relic or lose fleet.",
       "Observe": "Predict next crisis.",
       "Flee": "Hex becomes blocked."
+    },
+    "placeTokens": {
+      "Hunt": "pulsar_09_hunt",
+      "Observe": "pulsar_09_observe",
+      "Flee": "pulsar_09_flee"
     }
   },
   {
@@ -112,11 +193,20 @@
     "title": "The Last Signal",
     "type": "phenomena",
     "art": "signal.jpg",
-    "front": ["Answer", "Trace", "Ignore"],
+    "front": [
+      "Answer",
+      "Trace",
+      "Ignore"
+    ],
     "back": {
       "Answer": "Trigger narrative arc.",
       "Trace": "Reveal 3 hexes.",
       "Ignore": "Nothing (but log it)."
+    },
+    "placeTokens": {
+      "Answer": "pulsar_10_answer",
+      "Trace": "pulsar_10_trace",
+      "Ignore": "pulsar_10_ignore"
     }
   }
 ]
