@@ -1189,7 +1189,6 @@ export function applyEffects(state, effects, context) {
         state.preventCombatByHex[hexId] = eff.until ?? "endOfTurn";
         break;
       }
-
       default:
         if (context?.strict) {
           throw new Error(`Unknown effect op: ${eff.op}`);
@@ -1301,10 +1300,8 @@ export function resolveChoice(state, cardIndex, choiceKey) {
   if (!card) return { ok: false, reason: "Missing card." };
   const choice = card.front?.options?.find(opt => opt.key === choiceKey);
   if (!choice) return { ok: false, reason: "Invalid choice." };
-
   const hex = getHex(state, hexId);
   if (!hex) return { ok: false, reason: "Missing hex." };
-
   const payload = card.back?.byChoice?.[choiceKey];
   if (!payload) return { ok: false, reason: "Missing choice payload." };
 
@@ -1421,7 +1418,6 @@ export function activateCellCard(state, hexId, byFactionId) {
   logLine(state, `Cell activated at ${hexId} by ${byFactionId}.`);
   return { ok: true };
 }
-
 export function executeActionNumber(state, rng, cardIndex, actionNumber, selectedHexId = null) {
   const activePlayer = getActivePlayer(state);
   if (!activePlayer) return { ok: false, reason: "No active player." };
