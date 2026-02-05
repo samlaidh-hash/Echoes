@@ -24,6 +24,7 @@ export function render(state, handlers) {
   renderHud(state);
   renderMap(state, handlers);
   renderCard(state, handlers);
+  renderAgreements(state, handlers);
   renderActions(state, handlers);
   renderLog(state);
   renderCombat(state, handlers);
@@ -115,18 +116,32 @@ function renderHud(state) {
       const entry = v[String(player.factionId).toLowerCase()];
       return s + (entry?.undamaged?.length ?? 0) + (entry?.damaged?.length ?? 0);
     }, 0);
+    const key = String(player.factionId).toLowerCase();
+    const hand = state.handsByFaction?.[key] ?? [];
+    const handLimitCount = hand.filter(card => card.category !== "special_resource").length;
+    const doomCount = hand.filter(card => card.category === "doom").length;
+    const hiddenVpCount = hand.filter(card => card.category === "hidden_vp").length;
+    const assetCount = hand.filter(card => card.category === "asset").length;
+    const tokens = state.bonusTokensByFaction?.[key] ?? { silver: 0, gold: 0 };
+    const specials = state.specialResourcesByFaction?.[key] ?? [];
+    const isActive = String(state.players?.[state.turn?.activePlayerIndex ?? 0]?.factionId ?? "").toLowerCase() === key;
+    const hiddenDisplay = isActive ? hiddenVpCount : "∗";
     const panel = el("div", { class: `hud-panel ${factionClass(player.factionId)}` }, [
       el("div", { class: "hud-title" }, [`${factionGlyph(player.factionId)} ${factionName(state, player.factionId)}`]),
       renderTrack("Credits", player.credits, 20, "track-credits"),
       renderTrack("Energy", player.energy, 20, "track-energy"),
-      el("div", { class: "track-label" }, [`Fleets: ${totalFleets}`])
+      el("div", { class: "track-label" }, [`Fleets: ${totalFleets}`]),
+      el("div", { class: "track-label" }, [`Hand: ${handLimitCount}/${5} • Assets ${assetCount} • Doom ${doomCount} • Hidden ${hiddenDisplay}`]),
+      el("div", { class: "track-label" }, [`Bonus Tokens: ${tokens.silver} Silver / ${tokens.gold} Gold`]),
+      el("div", { class: "track-label" }, [`Special Resources: ${specials.length}`]),
+      el("div", { class: "track-label" }, [`VP: ${state.vpByFaction?.[key] ?? 0}`])
     ]);
     factionRow.appendChild(panel);
   });
 
   const tensionPanel = el("div", { class: "hud-panel hud-tension" }, [
     el("div", { class: "hud-title" }, ["Cosmic Tension"]),
-    renderTrack("Tension", state.cosmicTension ?? 0, 20, "track-tension")
+    renderTrack("Tension", state.tension?.current ?? 0, state.tension?.max ?? 20, "track-tension")
   ]);
 
   hud.appendChild(factionRow);
@@ -151,8 +166,9 @@ function renderMap(state, handlers) {
 
   for (const hex of state.map.hexes) {
     const fogged = !hex.revealed;
-    const labelType = fogged ? "fog" : (hex.type ?? "unknown");
+    const labelType = fogged ? "fog" : (hex.cardKind ?? "unknown");
     const glyph = hex.revealed ? tokenGlyph(state, hex.token) : "";
+    const cardTitle = hex.cardId ? (state.ui.cardIndex?.[hex.cardId]?.back?.title ?? state.ui.cardIndex?.[hex.cardId]?.front?.title ?? "Card") : "";
     const occContainer = el("div", { class: "fleet-tokens" }, Object.entries(state.fleetsByHex?.[hex.id] ?? {})
       .map(([factionId, entry]) => (
         el("div", { class: `fleet-token fleet-${String(factionId).toLowerCase()}` }, [
@@ -184,7 +200,7 @@ function renderMap(state, handlers) {
         const controlled = state.controllerByHex?.[hex.id] === activeFaction;
         const contested = state.contestedByHex?.[hex.id];
         const activated = state.turn?.systemActivated?.includes(hex.id);
-        return hex.type === "system" && controlled && !contested && (!isActivate || !activated);
+        return hex.cardKind === "system" && !!hex.cardId && controlled && !contested && (!isActivate || !activated);
       }
       return false;
     })();
@@ -204,7 +220,7 @@ function renderMap(state, handlers) {
       type: "button",
       disabled: false,
       title: [
-        fogged ? "Unexplored" : `Type: ${hex.type}`,
+        fogged ? "Unexplored" : `Kind: ${hex.cardKind ?? "unknown"}`,
         "Influence:",
         influenceLines || "None",
         controlLine
@@ -214,6 +230,7 @@ function renderMap(state, handlers) {
     }, [
       el("div", { class: "id" }, [hex.id]),
       el("div", { class: "type" }, [labelType]),
+      cardTitle ? el("div", { class: "cell-card" }, [cardTitle]) : null,
       occContainer,
       selectedCount > 0 ? el("div", { class: "fleet-selected" }, [`x${selectedCount}`]) : null,
       el("div", { class: "token" }, [glyph])
@@ -234,6 +251,22 @@ function renderCard(state, handlers) {
   panel.innerHTML = "";
 
   const pending = state.ui.pending;
+  if (state.ui.pendingAgreement) {
+    const agreement = state.ui.pendingAgreement;
+    panel.appendChild(el("div", { class: "card-header" }, [
+      el("div", { class: "card-title" }, ["Agreement Offer"]),
+      el("div", { class: "card-meta" }, [`From: ${agreement.fromFactionId} → To: ${agreement.toFactionId}`])
+    ]));
+    panel.appendChild(el("div", { class: "card-body" }, [
+      `Type: ${agreement.agreementTypeId ?? "unknown"}`
+    ]));
+    const acceptBtn = el("button", { class: "btn", type: "button" }, ["Accept"]);
+    acceptBtn.addEventListener("click", () => handlers.onAgreementResponse(true));
+    const rejectBtn = el("button", { class: "btn", type: "button" }, ["Reject"]);
+    rejectBtn.addEventListener("click", () => handlers.onAgreementResponse(false));
+    panel.appendChild(el("div", { class: "card-choices" }, [acceptBtn, rejectBtn]));
+    return;
+  }
   if (!pending) {
     const resolved = state.ui.lastResolution;
     if (!resolved) {
@@ -253,10 +286,6 @@ function renderCard(state, handlers) {
     if (resolved.resolveText) {
       panel.appendChild(el("div", { class: "card-body" }, [resolved.resolveText]));
     }
-    const base = `${state.dice.die1} + ${state.dice.die2} = ${state.dice.total}`;
-    const bonus = state.bonusDie?.value ? ` (bonus die: ${state.bonusDie.value})` : "";
-    diceResults.textContent = `${base}${bonus}`;
-  };
 
     panel.appendChild(el("div", { class: "card-body" }, ["Place in hex"]));
     const placeGlyph = resolved.tokenId ? tokenGlyph(state, resolved.tokenId) : "";
@@ -275,28 +304,32 @@ function renderCard(state, handlers) {
     return;
   }
 
-  const { deckType, card } = pending;
+  const card = state.ui.cardIndex?.[pending.cardId];
+  if (!card) {
+    panel.appendChild(el("div", { class: "card-placeholder" }, ["Missing card data."]));
+    return;
+  }
 
   panel.appendChild(el("div", { class: "card-header" }, [
-    el("div", { class: "card-title", "data-testid": "card-title" }, [card.title]),
-    el("div", { class: "card-meta" }, [`Deck: ${deckType}`])
+    el("div", { class: "card-title", "data-testid": "card-title" }, [card.front?.title ?? card.id]),
+    el("div", { class: "card-meta" }, [`Event Deck • ${card.kind}`])
   ]));
 
   panel.appendChild(el("div", { class: "card-body" }, [
-    "Choose an option:"
+    card.front?.flavor ?? "Choose an option:"
   ]));
 
   const choices = el("div", { class: "card-choices" }, []);
-  card.choices.forEach((ch, idx) => {
+  (card.front?.options ?? []).forEach((ch) => {
     const choiceBtn = el("button", {
       class: "choice",
       type: "button",
-      "data-testid": `card-choice-${idx}`
+      "data-testid": `card-choice-${ch.key}`
     }, [
-      el("div", {}, [ch.label]),
+      el("div", {}, [`${ch.key}: ${ch.label}`]),
       el("small", {}, ["→"])
     ]);
-    choiceBtn.addEventListener("click", () => handlers.onCardChoice(idx));
+    choiceBtn.addEventListener("click", () => handlers.onCardChoice(ch.key));
     choices.appendChild(choiceBtn);
   });
 
@@ -309,12 +342,29 @@ function renderLog(state) {
   log.scrollTop = log.scrollHeight;
 }
 
+function renderAgreements(state) {
+  const panel = document.getElementById("agreementsPanel");
+  if (!panel) return;
+  panel.innerHTML = "";
+  if (!state.agreements || state.agreements.length === 0) {
+    panel.appendChild(el("div", { class: "agreements-empty" }, ["No active agreements."]));
+    return;
+  }
+  state.agreements.forEach(agreement => {
+    if (!agreement.active) return;
+    panel.appendChild(el("div", { class: "agreement-item" }, [
+      el("div", { class: "agreement-title" }, [agreement.typeId]),
+      el("div", { class: "agreement-parties" }, [agreement.parties.join(" ↔ ")])
+    ]));
+  });
+}
+
 function renderActions(state, handlers) {
   const panel = document.getElementById("actionPanel");
   if (!panel) return;
 
   panel.innerHTML = "";
-  panel.classList.toggle("locked", state.ui.mode === "modal");
+  panel.classList.toggle("locked", state.ui.mode === "modal" || state.ui.gameOver);
 
   const activeIndex = state.turn?.activePlayerIndex ?? 0;
   const player = state.players?.[activeIndex];
@@ -325,6 +375,11 @@ function renderActions(state, handlers) {
   state.ui.availableActionOptions = computeAvailableActions(state);
 
   panel.appendChild(el("div", { class: "panel-title" }, ["ACTIONS"]));
+
+  if (state.ui.gameOver) {
+    panel.appendChild(el("div", { class: "panel-warning" }, ["Game Over: tension max reached."]));
+    return;
+  }
 
   if (!actions) {
     const msg = `No actions found for factionId="${factionId}". Check actions.json keys.`;
@@ -338,6 +393,8 @@ function renderActions(state, handlers) {
   state.ui.actionWarningLogged = false;
 
   const pendingConsume = state.ui.pendingAction?.consume ?? {};
+  const bonusValue = state.sharedBonusDie?.value;
+  const bonusStatus = state.sharedBonusDie?.lockedByFactionId ? `Locked by ${state.sharedBonusDie.lockedByFactionId}` : "Shared";
   const dicePills = el("div", { class: "dice-pills" }, [
     (!used?.a && dice?.a != null) ? el("div", {
       class: `dice-pill ${pendingConsume.a ? "pending" : ""}`,
@@ -347,10 +404,10 @@ function renderActions(state, handlers) {
       class: `dice-pill ${pendingConsume.b ? "pending" : ""}`,
       "data-testid": "die-b"
     }, [`B ${dice?.b ?? "-"}`]) : null,
-    (!used?.bonus && dice?.bonus != null) ? el("div", {
-      class: `dice-pill ${pendingConsume.bonus ? "pending" : ""}`,
+    (bonusValue != null) ? el("div", {
+      class: `dice-pill bonus ${pendingConsume.bonus ? "pending" : ""}`,
       "data-testid": "die-bonus"
-    }, [`Bonus ${dice?.bonus ?? "-"}`]) : null
+    }, [`Bonus ${bonusValue} (${bonusStatus})`]) : null
   ]);
 
   const rollBtn = el("button", { class: "btn", type: "button", disabled: state.ui.mode !== "idle" }, ["Roll"]);
@@ -367,7 +424,7 @@ function renderActions(state, handlers) {
   let hint = "Roll dice to see available actions.";
   const anyDie = (dice?.a != null && !used?.a) ||
     (dice?.b != null && !used?.b) ||
-    (dice?.bonus != null && !used?.bonus);
+    (bonusValue != null);
   if (anyDie) hint = "Available actions highlighted.";
   if (state.ui.mode === "targeting") {
     const actionDef = state.ui.pendingAction?.actionDef;
@@ -440,16 +497,8 @@ function renderActions(state, handlers) {
   controls.querySelector("input").addEventListener("change", e => handlers.onToggleFreeExplore(e.target.checked));
   panel.appendChild(controls);
 
-  const deckSelect = el("select", { class: "action-select" }, [
-    el("option", { value: "empty" }, ["empty"]),
-    el("option", { value: "system" }, ["system"]),
-    el("option", { value: "phenomena" }, ["phenomena"])
-  ]);
-  deckSelect.value = state.ui.selectedDeckType ?? "phenomena";
-  deckSelect.addEventListener("change", e => handlers.onSelectDeck(e.target.value));
   panel.appendChild(el("div", { class: "action-controls" }, [
-    el("span", { class: "action-label" }, ["Peek deck: "]),
-    deckSelect
+    el("span", { class: "action-label" }, ["Peek deck: Event"])
   ]));
 
   const modifySelect = el("select", { class: "action-select" }, [
@@ -472,6 +521,48 @@ function renderActions(state, handlers) {
     modifySelect,
     deltaSelect
   ]));
+
+  const activeKey = String(state.players?.[state.turn?.activePlayerIndex ?? 0]?.factionId ?? "").toLowerCase();
+  const activeHand = state.handsByFaction?.[activeKey] ?? [];
+  const handList = el("div", { class: "hand-list" }, []);
+  if (activeHand.length === 0) {
+    handList.appendChild(el("div", { class: "hand-empty" }, ["No hand cards."]));
+  } else {
+    activeHand.forEach(card => {
+      const label = card.faceDown ? "Face-down card" : card.cardId;
+      handList.appendChild(el("div", { class: `hand-card ${card.category}` }, [
+        `${label} (${card.category})${card.tapped ? " • tapped" : ""}`
+      ]));
+    });
+  }
+  panel.appendChild(el("div", { class: "action-controls" }, [
+    el("span", { class: "action-label" }, ["Hand (active player):"]),
+    handList
+  ]));
+
+  const activeFactionId = String(state.players?.[state.turn?.activePlayerIndex ?? 0]?.factionId ?? "").toLowerCase();
+  const selectedHex = state.ui.selectedHexId ? state.map.hexes.find(h => h.id === state.ui.selectedHexId) : null;
+  const selectedCard = selectedHex?.cardId ? state.ui.cardIndex?.[selectedHex.cardId] : null;
+  const activation = selectedHex?.cardChoiceKey ? selectedCard?.back?.byChoice?.[selectedHex.cardChoiceKey]?.cellCard?.activation : null;
+  const eligibleRank = (() => {
+    if (!selectedHex || !activation) return null;
+    const controller = state.controllerByHex?.[selectedHex.id];
+    if (controller === activeFactionId) return 1;
+    const influence = state.influence?.[selectedHex.id] ?? {};
+    const sorted = Object.entries(influence)
+      .filter(([f]) => f !== controller)
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+    if (sorted[0]?.[0] === activeFactionId) return 2;
+    return null;
+  })();
+  const canActivate = !!activation && !!eligibleRank;
+  const activateBtn = el("button", {
+    class: "btn",
+    type: "button",
+    disabled: !canActivate || state.ui.mode === "modal"
+  }, ["Activate Cell Card"]);
+  activateBtn.addEventListener("click", () => handlers.onActivateCellCard());
+  panel.appendChild(el("div", { class: "action-controls" }, [activateBtn]));
 }
 
 export function setSmokeBadge(text, kind = "warn") {

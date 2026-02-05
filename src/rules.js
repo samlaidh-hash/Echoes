@@ -1,53 +1,13 @@
-const clone = (value) => structuredClone(value);
 const HAND_LIMIT = 5;
-const SPECIAL_RESOURCES = [
+const SPECIAL_RESOURCE_TYPES = [
   "Antimatter",
   "Collapsium",
   "Monopoles",
   "Ancient Relics",
   "Alien Art",
-  "Exotic Matter",
+  "Exotic Matter"
 ];
 
-const getFaction = (state, factionId) =>
-  state.factions.find((faction) => faction.id === factionId);
-
-const getActionData = (state, factionId, threshold) => {
-  const actions = state.actions?.[factionId] ?? {};
-  return actions[String(threshold)] ?? null;
-};
-
-export const actionRequiresResources = (threshold, actionData) => {
-  if (threshold <= 6) return false;
-  return Boolean(actionData?.cost?.credits || actionData?.cost?.energy);
-};
-
-export const canAffordAction = (state, factionId, threshold) => {
-  const actionData = getActionData(state, factionId, threshold);
-  if (!actionRequiresResources(threshold, actionData)) return true;
-  const cost = actionData.cost ?? {};
-  const counters = state.counters[factionId];
-  return (
-    (counters.credits ?? 0) >= (cost.credits ?? 0) &&
-    (counters.energy ?? 0) >= (cost.energy ?? 0)
-  );
-};
-
-const applyCost = (state, factionId, threshold) => {
-  const actionData = getActionData(state, factionId, threshold);
-  if (!actionRequiresResources(threshold, actionData)) return state;
-  const cost = actionData.cost ?? {};
-  const next = clone(state);
-  next.counters[factionId].credits = Math.max(
-    0,
-    next.counters[factionId].credits - (cost.credits ?? 0),
-  );
-  next.counters[factionId].energy = Math.max(
-    0,
-    next.counters[factionId].energy - (cost.energy ?? 0),
-  );
-  return next;
-};
 // Pure-ish rules: all mutations happen on the passed-in state object for baseline simplicity.
 
 export function logLine(state, msg) {
@@ -78,20 +38,62 @@ export function computeAvailableActions(state) {
 
   const aAvailable = dice.a != null && !used?.a;
   const bAvailable = dice.b != null && !used?.b;
-  const bonusAvailable = dice.bonus != null && !used?.bonus;
+  const activePlayer = getActivePlayer(state);
+  const bonusAvailable = !!activePlayer && canUseSharedBonusDie(state, activePlayer.factionId);
 
   if (aAvailable) addOption(dice.a, { label: "A", consume: { a: true } });
   if (bAvailable) addOption(dice.b, { label: "B", consume: { b: true } });
   if (aAvailable && bAvailable) addOption(dice.a + dice.b, { label: "A+B", consume: { a: true, b: true } });
 
   if (bonusAvailable) {
-    addOption(dice.bonus, { label: "Bonus", consume: { bonus: true } });
-    if (aAvailable) addOption(dice.a + dice.bonus, { label: "A+Bonus", consume: { a: true, bonus: true } });
-    if (bAvailable) addOption(dice.b + dice.bonus, { label: "B+Bonus", consume: { b: true, bonus: true } });
-    if (aAvailable && bAvailable) addOption(dice.a + dice.b + dice.bonus, { label: "A+B+Bonus", consume: { a: true, b: true, bonus: true } });
+    const bonusValue = state.sharedBonusDie?.value;
+    if (bonusValue != null) {
+      addOption(bonusValue, { label: "Bonus", consume: { bonus: true } });
+      if (aAvailable) addOption(dice.a + bonusValue, { label: "A+Bonus", consume: { a: true, bonus: true } });
+      if (bAvailable) addOption(dice.b + bonusValue, { label: "B+Bonus", consume: { b: true, bonus: true } });
+      if (aAvailable && bAvailable) addOption(dice.a + dice.b + bonusValue, { label: "A+B+Bonus", consume: { a: true, b: true, bonus: true } });
+    }
   }
 
   return optionsByNumber;
+}
+
+export function canUseSharedBonusDie(state, factionId) {
+  const shared = state.sharedBonusDie;
+  if (!shared || shared.value == null) return false;
+  const key = String(factionId).toLowerCase();
+  if (shared.lockedByFactionId && shared.lockedByFactionId !== key) return false;
+  if (shared.usedByFactionIds?.[key]) return false;
+  const tokens = state.bonusTokensByFaction?.[key] ?? { silver: 0, gold: 0 };
+  return (tokens.silver ?? 0) > 0 || (tokens.gold ?? 0) > 0;
+}
+
+export function useSharedBonusDie(state, factionId) {
+  const key = String(factionId).toLowerCase();
+  if (!canUseSharedBonusDie(state, key)) return { ok: false, reason: "Bonus die unavailable." };
+  const tokens = state.bonusTokensByFaction[key];
+  if (tokens.silver > 0) {
+    tokens.silver -= 1;
+    state.sharedBonusDie.usedByFactionIds[key] = true;
+    logLine(state, `${key} spent 1 Silver to access the shared bonus die.`);
+    return { ok: true, locked: false };
+  }
+  if (tokens.gold > 0) {
+    tokens.gold -= 1;
+    state.sharedBonusDie.usedByFactionIds[key] = true;
+    state.sharedBonusDie.lockedByFactionId = key;
+    logLine(state, `${key} spent 1 Gold to lock the shared bonus die.`);
+    return { ok: true, locked: true };
+  }
+  return { ok: false, reason: "No bonus tokens available." };
+}
+
+export function actionRequiresResources(actionNumber, action) {
+  if (!action?.cost) return false;
+  if (actionNumber <= 6) return false;
+  const credits = action.cost?.credits ?? 0;
+  const energy = action.cost?.energy ?? 0;
+  return credits > 0 || energy > 0;
 }
 
 export function createFleet(state, factionId) {
@@ -178,6 +180,13 @@ export function repairFleetInHex(state, hexId, factionId) {
 }
 
 export function initCombat(state, hexId, attackerFactionId, defenderCandidates) {
+  if (!state.combatInitiatedThisRoundByHex) state.combatInitiatedThisRoundByHex = {};
+  if (!state.combatInitiatedThisRoundByHex[hexId]) {
+    state.combatInitiatedThisRoundByHex[hexId] = true;
+    const chaosBonus = String(attackerFactionId).toLowerCase() === "bloom" ? 2 : 1;
+    applyTensionDelta(state, chaosBonus);
+    logLine(state, `Tension +${chaosBonus} (combat initiated at ${hexId}).`);
+  }
   state.ui.combat = {
     hexId,
     attackerFactions: [attackerFactionId],
@@ -215,17 +224,13 @@ function getControllerSide(state, hexId, attackerFactions, defenderFactions) {
 
 function allocateHit(state, hexId, sideFactions) {
   const influence = state.influence?.[hexId] ?? {};
-    const candidates = sideFactions.map(f => ({
-      factionId: f,
-      influence: influence[f] ?? 0,
-      counts: countFleets(state, hexId, f)
-    })).filter(c => c.counts.total > 0);
+  const candidates = sideFactions.map(f => ({
+    factionId: f,
+    influence: influence[f] ?? 0,
+    counts: countFleets(state, hexId, f)
+  })).filter(c => c.counts.total > 0);
   candidates.sort((a, b) => a.influence - b.influence || a.factionId.localeCompare(b.factionId));
   return candidates[0] ?? null;
-}
-
-function applyHit(state, hexId, factionId) {
-  applyHitToSide(state, hexId, factionId);
 }
 
 export function rollCombatRound(state, rng) {
@@ -257,7 +262,7 @@ export function rollCombatRound(state, rng) {
   for (const hit of hits) {
     const target = allocateHit(state, hexId, hit.side === "attacker" ? attackerFactions : defenderFactions);
     if (target) {
-      applyHit(state, hexId, target.factionId);
+      applyHitToSide(state, hexId, target.factionId);
       logLine(state, `COMBAT: ${hit.side} hit on ${target.factionId}.`);
     }
   }
@@ -274,7 +279,6 @@ export function endCombat(state) {
 export function retreatSide(state, hexId, retreatFactions, enemyFactions) {
   const neighbors = getAdjacentHexes(state, hexId);
   for (const factionId of retreatFactions) {
-    const player = state.players.find(p => String(p.factionId).toLowerCase() === String(factionId).toLowerCase());
     const entry = state.fleetsByHex?.[hexId]?.[String(factionId).toLowerCase()];
     if (!entry) continue;
     const valid = neighbors.filter(h => {
@@ -311,6 +315,142 @@ function ensureVisitedMap(state, factionId) {
   const key = String(factionId ?? "").toLowerCase();
   if (!state.visited[key]) state.visited[key] = {};
   return state.visited[key];
+}
+
+function ensureHand(state, factionId) {
+  const key = String(factionId ?? "").toLowerCase();
+  if (!state.handsByFaction) state.handsByFaction = {};
+  if (!state.handsByFaction[key]) state.handsByFaction[key] = [];
+  return state.handsByFaction[key];
+}
+
+function ensureSpecialResources(state, factionId) {
+  const key = String(factionId ?? "").toLowerCase();
+  if (!state.specialResourcesByFaction) state.specialResourcesByFaction = {};
+  if (!state.specialResourcesByFaction[key]) state.specialResourcesByFaction[key] = [];
+  return state.specialResourcesByFaction[key];
+}
+
+function getHandLimit(state, factionId) {
+  void state;
+  void factionId;
+  return HAND_LIMIT;
+}
+
+function countHandLimitCards(hand) {
+  return hand.filter(card => card.category !== "special_resource").length;
+}
+
+function discardNonDoomCard(hand) {
+  const idx = hand.findIndex(card => card.category !== "doom");
+  if (idx < 0) return null;
+  return hand.splice(idx, 1)[0];
+}
+
+function addHandCard(state, factionId, card) {
+  const hand = ensureHand(state, factionId);
+  const limit = getHandLimit(state, factionId);
+  const limitCount = countHandLimitCards(hand);
+  if (limitCount >= limit && card.category !== "special_resource") {
+    const discarded = discardNonDoomCard(hand);
+    if (!discarded) {
+      logLine(state, "Hand is full and only doom cards remain.");
+      return { ok: false, reason: "Hand full." };
+    }
+    logLine(state, `Discarded ${discarded.cardId} to make room.`);
+  }
+  hand.push(card);
+  return { ok: true };
+}
+
+export function scoreSpecialResources(counts) {
+  const table = [0, 0, 1, 3, 6, 10, 15];
+  const types = SPECIAL_RESOURCE_TYPES;
+  const base = types.map(t => counts?.[t] ?? 0);
+  const memo = new Map();
+
+  const keyFor = (arr) => arr.join(",");
+
+  const best = (arr) => {
+    const key = keyFor(arr);
+    if (memo.has(key)) return memo.get(key);
+    let max = 0;
+
+    // Try all-same sets
+    for (let i = 0; i < arr.length; i += 1) {
+      for (let size = 2; size <= 6; size += 1) {
+        if (arr[i] >= size) {
+          const next = [...arr];
+          next[i] -= size;
+          max = Math.max(max, table[size] + best(next));
+        }
+      }
+    }
+
+    // Try all-different sets
+    const available = arr.map((v, idx) => (v > 0 ? idx : null)).filter(idx => idx != null);
+    const choose = (start, size, picked) => {
+      if (picked.length === size) {
+        const next = [...arr];
+        picked.forEach(idx => { next[idx] -= 1; });
+        max = Math.max(max, table[size] + best(next));
+        return;
+      }
+      for (let i = start; i < available.length; i += 1) {
+        choose(i + 1, size, [...picked, available[i]]);
+      }
+    };
+    for (let size = 2; size <= 6; size += 1) {
+      if (available.length >= size) {
+        choose(0, size, []);
+      }
+    }
+
+    memo.set(key, max);
+    return max;
+  };
+
+  return best(base);
+}
+
+export function canMakeAgreement(state, factionId, actionNumber) {
+  void state;
+  const key = String(factionId).toLowerCase();
+  if (key === "directorate") return actionNumber <= 6;
+  if (key === "bloom") return actionNumber <= 6;
+  if (key === "choir") return actionNumber >= 13;
+  return actionNumber <= 6;
+}
+
+export function canBreakAgreement(state, factionId, actionNumber) {
+  void state;
+  const key = String(factionId).toLowerCase();
+  if (key === "directorate") return actionNumber >= 13;
+  if (key === "bloom") return actionNumber <= 6;
+  if (key === "choir") return actionNumber <= 6;
+  return actionNumber <= 6;
+}
+
+export function getFactionRankInHex(state, hexId, factionId) {
+  const influence = state.influence?.[hexId] ?? {};
+  const controller = state.controllerByHex?.[hexId];
+  if (!controller) return null;
+  const key = String(factionId).toLowerCase();
+  if (controller === key) return 1;
+  const sorted = Object.entries(influence)
+    .filter(([f]) => f !== controller)
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+  if (sorted[0]?.[0] === key) return 2;
+  return null;
+}
+
+function applyTensionDelta(state, delta) {
+  state.tension.current = Math.max(0, Math.min(state.tension.max, state.tension.current + delta));
+  state.cosmicTension = state.tension.current;
+  if (state.tension.current >= state.tension.max) {
+    state.ui.gameOver = true;
+    logLine(state, "GAME OVER: Tension maximum reached.");
+  }
 }
 
 function computeControllersFromInfluence(state, influence) {
@@ -366,6 +506,9 @@ export function recomputeInfluence(state) {
         if (initial.controllerByHex[n.id] === factionId) bonus += 1;
       }
       final[hex.id][factionId] += bonus;
+      if (!Number.isFinite(final[hex.id][factionId])) {
+        logLine(state, `WARN: influence NaN at ${hex.id} for ${factionId}.`);
+      }
     }
   }
 
@@ -376,7 +519,6 @@ export function recomputeInfluence(state) {
 }
 
 export function weightedPick(rng, entries) {
-  // entries: [{value, weight}]
   const total = entries.reduce((s, e) => s + e.weight, 0);
   let r = rng.nextFloat() * total;
   for (const e of entries) {
@@ -388,7 +530,6 @@ export function weightedPick(rng, entries) {
 
 export function initDeck(state, rng, deckType, cards) {
   const ids = cards.map(c => c.id);
-  // Fisher-Yates shuffle
   for (let i = ids.length - 1; i > 0; i--) {
     const j = rng.nextInt(i + 1);
     [ids[i], ids[j]] = [ids[j], ids[i]];
@@ -397,11 +538,15 @@ export function initDeck(state, rng, deckType, cards) {
   state.decks[deckType].discard = [];
 }
 
-export function drawCard(state, deckType, cardById) {
+export function drawCard(state, deckType, cardById, rng = null) {
   const deck = state.decks[deckType];
   if (deck.draw.length === 0 && deck.discard.length > 0) {
-    // reshuffle discard into draw
-    deck.draw = deck.discard.splice(0);
+    const recycled = deck.discard.splice(0);
+    for (let i = recycled.length - 1; i > 0; i--) {
+      const j = rng ? rng.nextInt(i + 1) : Math.floor(Math.random() * (i + 1));
+      [recycled[i], recycled[j]] = [recycled[j], recycled[i]];
+    }
+    deck.draw = recycled;
   }
   const id = deck.draw.shift();
   if (!id) return null;
@@ -410,7 +555,10 @@ export function drawCard(state, deckType, cardById) {
 
 export function applyEffects(state, effects, context) {
   const before = snapshotState(state);
-  const player = getActivePlayer(state);
+  const actorFactionId = context?.actorFactionId;
+  const player = actorFactionId
+    ? state.players.find(p => String(p.factionId).toLowerCase() === String(actorFactionId).toLowerCase())
+    : getActivePlayer(state);
   let ok = true;
 
   const normalizeTokenId = (tokenId) => {
@@ -433,7 +581,6 @@ export function applyEffects(state, effects, context) {
     return Object.prototype.hasOwnProperty.call(mapping, key) ? mapping[key] : key;
   };
 
-
   const getCapitalHex = (factionId) => {
     const key = String(factionId ?? "").toLowerCase();
     return state.capitalsByFaction?.[key] ?? null;
@@ -443,6 +590,36 @@ export function applyEffects(state, effects, context) {
     switch (eff.op) {
       case "log":
         logLine(state, eff.message ?? "Something happens.");
+        break;
+
+      case "gainCredits":
+        if (player) player.credits = (player.credits ?? 0) + (eff.n ?? 0);
+        break;
+
+      case "spendCredits":
+        if (player) player.credits = Math.max(0, (player.credits ?? 0) - (eff.n ?? 0));
+        break;
+
+      case "gainEnergy":
+        if (player) player.energy = (player.energy ?? 0) + (eff.n ?? 0);
+        break;
+
+      case "spendEnergy":
+        if (player) player.energy = Math.max(0, (player.energy ?? 0) - (eff.n ?? 0));
+        break;
+
+      case "addVP":
+        if (player) {
+          const key = String(player.factionId).toLowerCase();
+          state.vpByFaction[key] = (state.vpByFaction[key] ?? 0) + (eff.n ?? 0);
+        }
+        break;
+
+      case "loseVP":
+        if (player) {
+          const key = String(player.factionId).toLowerCase();
+          state.vpByFaction[key] = Math.max(0, (state.vpByFaction[key] ?? 0) - (eff.n ?? 0));
+        }
         break;
 
       case "gainResource":
@@ -486,7 +663,7 @@ export function applyEffects(state, effects, context) {
         break;
 
       case "modifyCosmicTension":
-        state.cosmicTension += (eff.amount ?? 0);
+        applyTensionDelta(state, eff.amount ?? 0);
         break;
 
       case "placeToken": {
@@ -494,36 +671,60 @@ export function applyEffects(state, effects, context) {
         if (hex) hex.token = normalizeTokenId(eff.tokenId);
         break;
       }
-      case "gainCredits": {
-        next.counters[effect.factionId].credits += effect.amount;
-        break;
-      }
-      case "loseCredits": {
-        next.counters[effect.factionId].credits = Math.max(
-          0,
-          next.counters[effect.factionId].credits - effect.amount,
-        );
-        break;
-      }
-      case "gainEnergy": {
-        next.counters[effect.factionId].energy += effect.amount;
-        break;
-      }
-      case "loseEnergy": {
-        next.counters[effect.factionId].energy = Math.max(
-          0,
-          next.counters[effect.factionId].energy - effect.amount,
-        );
-        break;
-      }
-      case "loseResource": {
-        next.counters[effect.factionId].resources = Math.max(
-          0,
-          next.counters[effect.factionId].resources - effect.amount,
-        );
 
       case "revealHex": {
         revealAdjacentHexes(state, context, eff.count ?? 1);
+        break;
+      }
+
+      case "gainInfluenceHere": {
+        const hexId = context.hexId;
+        if (hexId && player) {
+          const key = String(player.factionId).toLowerCase();
+          if (!state.influence[hexId]) state.influence[hexId] = {};
+          state.influence[hexId][key] = (state.influence[hexId][key] ?? 0) + (eff.n ?? 0);
+          recomputeInfluence(state);
+        }
+        break;
+      }
+
+      case "loseInfluenceHere": {
+        const hexId = context.hexId;
+        if (hexId && player) {
+          const key = String(player.factionId).toLowerCase();
+          if (!state.influence[hexId]) state.influence[hexId] = {};
+          state.influence[hexId][key] = Math.max(0, (state.influence[hexId][key] ?? 0) - (eff.n ?? 0));
+          recomputeInfluence(state);
+        }
+        break;
+      }
+
+      case "reduceOthersInfluenceHere": {
+        const hexId = context.hexId;
+        if (hexId && player) {
+          const key = String(player.factionId).toLowerCase();
+          const entries = state.influence[hexId] ?? {};
+          for (const other of Object.keys(entries)) {
+            if (other === key) continue;
+            entries[other] = Math.max(0, (entries[other] ?? 0) - (eff.n ?? 0));
+          }
+          state.influence[hexId] = entries;
+          recomputeInfluence(state);
+        }
+        break;
+      }
+
+      case "spreadInfluenceAdjacent": {
+        const hexId = context.hexId;
+        if (hexId && player) {
+          const key = String(player.factionId).toLowerCase();
+          const neighbors = getAdjacentHexes(state, hexId);
+          for (const n of neighbors) {
+            if (!state.influence[n.id]) state.influence[n.id] = {};
+            state.influence[n.id][key] = (state.influence[n.id][key] ?? 0) + (eff.n ?? 0);
+          }
+          recomputeInfluence(state);
+        }
         break;
       }
 
@@ -572,17 +773,29 @@ export function applyEffects(state, effects, context) {
         }
         if (destHex && !destHex.revealed) {
           if (context.rng && context.cardIndex) {
-            revealHex(state, context.rng, context.cardIndex, destinationId, null);
+            revealHex(state, context.rng, context.cardIndex, destinationId, { mode: "entry" });
           } else {
             logLine(state, "Cannot reveal: missing RNG/context.");
             ok = false;
           }
+        }
+        if (destHex?.revealed && destHex?.cardId && destHex.cardFaceUp && destHex.cardChoiceKey && destHex.cardOnEnterEffects) {
+          applyEffects(state, destHex.cardOnEnterEffects, { hexId: destinationId, rng: context.rng, cardIndex: context.cardIndex });
+        }
+        if (destHex?.revealed && destHex?.cardId && destHex.cardAwaitingChoice) {
+          state.ui.pending = { cardId: destHex.cardId, hexId: destinationId };
+          state.ui.modalType = "card";
+          state.ui.mode = "modal";
         }
         const visited = ensureVisitedMap(state, player.factionId);
         visited[destinationId] = true;
         recomputeInfluence(state);
         state.ui.fleetSelection = { hexId: null, factionId: null, fleetIds: [] };
         if (eff.canEngage !== false) {
+          if (state.preventCombatByHex?.[destinationId]) {
+            logLine(state, "Combat prevented in this hex.");
+            break;
+          }
           const enemies = state.players
             .filter(p => String(p.factionId).toLowerCase() !== factionId)
             .filter(p => countFleets(state, destinationId, p.factionId).total > 0)
@@ -645,7 +858,7 @@ export function applyEffects(state, effects, context) {
         const destHex = getHex(state, destinationId);
         if (destHex && !destHex.revealed) {
           if (context.rng && context.cardIndex) {
-            revealHex(state, context.rng, context.cardIndex, destinationId, null);
+            revealHex(state, context.rng, context.cardIndex, destinationId, { mode: "entry" });
           } else {
             logLine(state, "Cannot reveal: missing RNG/context.");
             ok = false;
@@ -659,7 +872,7 @@ export function applyEffects(state, effects, context) {
       }
 
       case "peekDeckTop": {
-        const deckType = context.selectedDeckType ?? "phenomena";
+        const deckType = "event";
         const deck = state.decks[deckType];
         if (!deck) {
           logLine(state, `Unknown deck type: ${deckType}.`);
@@ -672,7 +885,7 @@ export function applyEffects(state, effects, context) {
           break;
         }
         const card = context.cardIndex?.[topId];
-        const title = card?.title ?? topId;
+        const title = card?.front?.title ?? topId;
         logLine(state, `Data Probe: top of ${deckType} is "${title}".`);
         break;
       }
@@ -691,137 +904,31 @@ export function applyEffects(state, effects, context) {
           ok = false;
           break;
         }
-        const dice = state.turn?.dice;
-        const used = state.turn?.used;
-        if (!dice || dice[dieId] == null || used?.[dieId]) {
-          logLine(state, "No die available to modify.");
-          ok = false;
-          break;
+        let next = null;
+        if (dieId === "bonus") {
+          if (state.sharedBonusDie.value == null) {
+            logLine(state, "No bonus die to modify.");
+            ok = false;
+            break;
+          }
+          next = Math.min(6, Math.max(1, state.sharedBonusDie.value + delta));
+          state.sharedBonusDie.value = next;
+        } else {
+          const dice = state.turn?.dice;
+          const used = state.turn?.used;
+          if (!dice || dice[dieId] == null || used?.[dieId]) {
+            logLine(state, "No die available to modify.");
+            ok = false;
+            break;
+          }
+          next = Math.min(6, Math.max(1, dice[dieId] + delta));
+          dice[dieId] = next;
         }
-        const next = Math.min(6, Math.max(1, dice[dieId] + delta));
-        dice[dieId] = next;
         state.turn.oncePerRound.probabilityDriftUsed[activeIndex] = true;
         logLine(state, `Probability Drift: die ${dieId.toUpperCase()} is now ${next}.`);
         break;
       }
-      case "drawCard": {
-        next.currentCard = {
-          index: effect.index,
-          deckType: effect.deckType ?? "phenomena",
-          hexId: effect.hexId ?? null,
-          revealed: false,
-          choice: null,
-        };
-        break;
-      }
-      case "setHexExplored": {
-        next.hexMap = next.hexMap.map((hex) => {
-          if (hex.id !== effect.hexId) return hex;
-          return { ...hex, explored: effect.explored };
-        });
-        break;
-      }
-      case "upgradeActionStub": {
-        break;
-      }
-      case "awardBonusToken": {
-        const tokens = next.counters[effect.factionId].tokens;
-        tokens[effect.tokenType] += effect.amount;
-        break;
-      }
-      case "spendBonusToken": {
-        const tokens = next.counters[effect.factionId].tokens;
-        tokens[effect.tokenType] = Math.max(0, tokens[effect.tokenType] - effect.amount);
-        break;
-      }
-      case "setBonusDie": {
-        next.bonusDie = {
-          value: effect.value,
-          locked: effect.locked ?? false,
-          usedBy: effect.usedBy ?? {},
-        };
-        break;
-      }
-      case "markBonusDieUsed": {
-        next.bonusDie.usedBy[effect.factionId] = true;
-        break;
-      }
-      case "lockBonusDie": {
-        next.bonusDie.locked = true;
-        break;
-      }
-      case "addCardToHand": {
-        const handState = next.hands[effect.factionId];
-        const target = effect.cardType === "doom" ? "doom" : effect.cardType === "vp" ? "vp" : "hand";
-        handState[target].push(effect.card);
-        if (effect.cardType !== "special") {
-          const total = handState.hand.length + handState.doom.length + handState.vp.length;
-          if (total > HAND_LIMIT) {
-            const discardIndex = effect.discardIndex ?? handState.hand.length - 1;
-            if (handState.hand[discardIndex]) {
-              handState.hand.splice(discardIndex, 1);
-            }
-          }
-        }
-        break;
-      }
-      case "discardCard": {
-        const handState = next.hands[effect.factionId];
-        if (effect.cardType === "hand") {
-          handState.hand.splice(effect.index, 1);
-        }
-        break;
-      }
-      case "addSpecialResource": {
-        next.hands[effect.factionId].specialResources.push(effect.resource);
-        break;
-      }
-      case "gainVP": {
-        next.counters[effect.factionId].vp += effect.amount;
-        next.vpTrack[effect.factionId] += effect.amount;
-        break;
-      }
-      case "loseVP": {
-        next.counters[effect.factionId].vp = Math.max(
-          0,
-          next.counters[effect.factionId].vp - effect.amount,
-        );
-        next.vpTrack[effect.factionId] = Math.max(
-          0,
-          next.vpTrack[effect.factionId] - effect.amount,
-        );
-        break;
-      }
-      case "setTension": {
-        next.tension.value = effect.value;
-        break;
-      }
-      case "advanceTensionCard": {
-        next.tension.nextIndex = effect.nextIndex;
-        if (effect.card) {
-          next.tension.history.push(effect.card);
-        }
-        break;
-      }
-      case "addAgreement": {
-        next.agreements.push(effect.agreement);
-        break;
-      }
-      case "removeAgreement": {
-        next.agreements = next.agreements.filter((agreement) => agreement.id !== effect.id);
-        break;
-      }
-      case "resetRoundState": {
-        next.roundState = {
-          influenceCaps: {},
-          combatInitiated: {},
-        };
-        next.bonusDie.usedBy = {};
-        next.bonusDie.locked = false;
-        break;
-      }
-      case "log": {
-        next.log.unshift(effect.message);
+
       case "repairFleet": {
         if (!player) {
           logLine(state, "No active player for repair.");
@@ -875,7 +982,7 @@ export function applyEffects(state, effects, context) {
         }
         const hex = getHex(state, destinationId);
         const factionId = String(player.factionId).toLowerCase();
-        if (!hex || hex.type !== "system") {
+        if (!hex || hex.cardKind !== "system" || !hex.cardId) {
           logLine(state, "Forward Deploy requires a system hex.");
           ok = false;
           break;
@@ -929,63 +1036,164 @@ export function applyEffects(state, effects, context) {
           break;
         }
         const destinationId = context.selectedHexId ?? state.ui.selectedHexId;
-        if (!destinationId) {
-          logLine(state, "Select a system hex.");
+        const result = activateCellCard(state, destinationId, player.factionId);
+        if (!result.ok) {
           ok = false;
-          break;
         }
-        if (state.turn?.systemActivated?.includes(destinationId)) {
-          logLine(state, "System already activated this round.");
-          ok = false;
-          break;
-        }
-        const hex = getHex(state, destinationId);
-        if (!hex || hex.type !== "system") {
-          logLine(state, "Activate System requires a system hex.");
-          ok = false;
-          break;
-        }
-        if (state.contestedByHex?.[destinationId]) {
-          logLine(state, "System is contested.");
-          ok = false;
-          break;
-        }
-        const influence = state.influence?.[destinationId] ?? {};
-        const controller = state.controllerByHex?.[destinationId];
-        if (!controller) {
-          logLine(state, "No controller for this system.");
-          ok = false;
-          break;
-        }
-        const entries = Object.entries(influence)
-          .filter(([f]) => f !== controller)
-          .sort((a, b) => b[1] - a[1]);
-        const secondary = entries[0]?.[0] ?? null;
-        const controllerPlayer = state.players.find(p => String(p.factionId).toLowerCase() === controller);
-        if (controllerPlayer) controllerPlayer.credits += 3;
-        if (secondary) {
-          const secondaryPlayer = state.players.find(p => String(p.factionId).toLowerCase() === secondary);
-          if (secondaryPlayer) secondaryPlayer.credits += 1;
-        }
-        state.turn.systemActivated.push(destinationId);
-        logLine(state, `System activated at ${destinationId}.`);
         break;
       }
 
-export const rollDice = (state, bonus = 1) => {
-  const roll = () => Math.ceil(Math.random() * 6);
-  const die1 = roll();
-  const die2 = roll();
-  const total = die1 + die2;
-  const dice = { die1, die2, total };
+      case "activateCellCard": {
+        if (!player) break;
+        const destinationId = context.selectedHexId ?? state.ui.selectedHexId;
+        const result = activateCellCard(state, destinationId, player.factionId);
+        if (!result.ok) ok = false;
+        break;
+      }
 
-  const effects = [
-    {
-      type: "log",
-      message: `Rolled dice: ${die1} + ${die2} = ${total}.`,
-    },
-  ];
+      case "takeToHand": {
+        if (!player) break;
+        const key = String(player.factionId).toLowerCase();
+        const cardId = eff.cardId ?? context.cardId ?? "unknown";
+        const result = addHandCard(state, key, {
+          cardId,
+          category: eff.category ?? "asset",
+          faceDown: !!eff.faceDown,
+          tapped: !!eff.tappable,
+          meta: eff.meta ?? {}
+        });
+        if (!result.ok) ok = false;
+        break;
+      }
+
+      case "discardCard": {
+        if (!player) break;
+        const key = String(player.factionId).toLowerCase();
+        const hand = ensureHand(state, key);
+        const idx = hand.findIndex(c => (eff.cardId ? c.cardId === eff.cardId : true));
+        if (idx < 0) break;
+        const card = hand[idx];
+        if (card.category === "doom" && !eff.allowDoom) {
+          logLine(state, "Doom cards cannot be discarded.");
+          break;
+        }
+        hand.splice(idx, 1);
+        break;
+      }
+
+      case "cashOutCard": {
+        if (!player) break;
+        const key = String(player.factionId).toLowerCase();
+        const hand = ensureHand(state, key);
+        const idx = hand.findIndex(c => c.cardId === eff.cardId);
+        if (idx < 0) break;
+        const card = hand[idx];
+        if (card.tapped) {
+          logLine(state, "Card already tapped.");
+          break;
+        }
+        const credits = card.meta?.cashOut?.credits ?? 0;
+        const energy = card.meta?.cashOut?.energy ?? 0;
+        player.credits += credits;
+        player.energy += energy;
+        hand.splice(idx, 1);
+        break;
+      }
+
+      case "addSpecialResource": {
+        if (!player) break;
+        const key = String(player.factionId).toLowerCase();
+        const stash = ensureSpecialResources(state, key);
+        if (SPECIAL_RESOURCE_TYPES.includes(eff.type)) {
+          stash.push({ type: eff.type, id: eff.id ?? `${eff.type}-${stash.length + 1}` });
+        }
+        break;
+      }
+
+      case "discardDoom": {
+        const target = eff.targetFactionId ?? player?.factionId;
+        if (!target) break;
+        const key = String(target).toLowerCase();
+        const hand = ensureHand(state, key);
+        const idx = hand.findIndex(c => c.category === "doom" && (!eff.cardId || c.cardId === eff.cardId));
+        if (idx >= 0) hand.splice(idx, 1);
+        break;
+      }
+
+      case "offerAgreement": {
+        if (!player) break;
+        state.ui.pendingAgreement = {
+          fromFactionId: String(player.factionId).toLowerCase(),
+          toFactionId: String(eff.toFactionId ?? "").toLowerCase(),
+          agreementTypeId: eff.agreementTypeId ?? null
+        };
+        state.ui.modalType = "agreement";
+        state.ui.mode = "modal";
+        break;
+      }
+
+      case "breakAgreement": {
+        const idx = state.agreements.findIndex(a => a.id === eff.agreementId);
+        if (idx >= 0) {
+          const agreement = state.agreements[idx];
+          agreement.active = false;
+          logLine(state, `Agreement ${agreement.id} broken.`);
+        }
+        break;
+      }
+
+      case "grantBonusToken": {
+        const key = String(player?.factionId ?? "").toLowerCase();
+        if (!key) break;
+        if (!state.bonusTokensByFaction[key]) state.bonusTokensByFaction[key] = { silver: 0, gold: 0 };
+        state.bonusTokensByFaction[key][eff.kind] = (state.bonusTokensByFaction[key][eff.kind] ?? 0) + (eff.amount ?? 1);
+        break;
+      }
+
+      case "modifyTension": {
+        applyTensionDelta(state, eff.n ?? 0);
+        break;
+      }
+
+      case "reduceTension": {
+        const costCredits = eff.cost?.credits ?? 0;
+        const costEnergy = eff.cost?.energy ?? 0;
+        if (player) {
+          if ((player.credits ?? 0) < costCredits || (player.energy ?? 0) < costEnergy) {
+            logLine(state, "Not enough resources to reduce tension.");
+            ok = false;
+            break;
+          }
+          player.credits -= costCredits;
+          player.energy -= costEnergy;
+        }
+        applyTensionDelta(state, -(eff.n ?? 0));
+        break;
+      }
+
+      case "initiateCombat": {
+        const hexId = eff.hexId ?? context.hexId;
+        if (!hexId || !player) break;
+        const enemies = eff.targets ?? state.players
+          .filter(p => String(p.factionId).toLowerCase() !== String(player.factionId).toLowerCase())
+          .filter(p => countFleets(state, hexId, p.factionId).total > 0)
+          .map(p => String(p.factionId).toLowerCase());
+        if (enemies.length > 0) initCombat(state, hexId, String(player.factionId).toLowerCase(), enemies);
+        break;
+      }
+
+      case "preventCombat": {
+        const hexId = eff.hexId ?? context.hexId;
+        if (!hexId) break;
+        if (!state.preventCombatByHex) state.preventCombatByHex = {};
+        state.preventCombatByHex[hexId] = eff.until ?? "endOfTurn";
+        break;
+      }
+
       default:
+        if (context?.strict) {
+          throw new Error(`Unknown effect op: ${eff.op}`);
+        }
         logLine(state, `Unknown effect op: ${eff.op}`);
         break;
     }
@@ -1007,452 +1215,13 @@ export function snapshotState(state) {
     fleets: totalFleets,
     cosmicTension: state.cosmicTension
   };
-};
-
-export const rollBonusDie = (state) => {
-  const roll = () => Math.ceil(Math.random() * 6);
-  const value = roll();
-  const effects = [
-    { type: "setBonusDie", value, locked: false, usedBy: {} },
-    { type: "log", message: `Shared bonus die rolled: ${value}.` },
-  ];
-  return { state, effects };
-};
-
-export const useBonusDie = (state, factionId, tokenType) => {
-  if (!state.bonusDie.value || state.bonusDie.locked) {
-    return { state, effects: [{ type: "log", message: "Bonus die unavailable." }] };
-  }
-  if ((state.counters[factionId]?.tokens?.[tokenType] ?? 0) <= 0) {
-    return {
-      state,
-      effects: [{ type: "log", message: `${factionId} has no ${tokenType} bonus tokens.` }],
-    };
-  }
-  if (state.bonusDie.usedBy[factionId]) {
-    return { state, effects: [{ type: "log", message: "Bonus die already used this round." }] };
-  }
-  const effects = [
-    { type: "spendBonusToken", factionId, tokenType, amount: 1 },
-    { type: "markBonusDieUsed", factionId },
-    {
-      type: "log",
-      message: `${factionId} spends a ${tokenType} token to access the bonus die (${state.bonusDie.value}).`,
-    },
-  ];
-  if (tokenType === "gold") {
-    effects.push({ type: "lockBonusDie" });
-    effects.push({ type: "log", message: "Bonus die locked for the remainder of the round." });
-  }
-  return { state, effects };
-};
-
-export const awardBonusToken = (state, factionId, tokenType) => {
-  const effects = [
-    { type: "awardBonusToken", factionId, tokenType, amount: 1 },
-    { type: "log", message: `${factionId} earns a ${tokenType} bonus token.` },
-  ];
-  return { state, effects };
-};
-
-export const spendDiceSplit = (state, die1Action, die2Action) => {
-  const effects = [
-    {
-      type: "log",
-      message: `Split dice spent on ${die1Action} and ${die2Action}.`,
-    },
-  ];
-  return { state, effects };
-};
-
-export const spendDiceCombine = (state, action) => {
-  const effects = [
-    {
-      type: "log",
-      message: `Combined dice spent on ${action}.`,
-    },
-  ];
-  return { state, effects };
-};
-
-export const moveFleet = (state, factionId, fromHexId, toHexId) => {
-  const next = clone(state);
-  const fromHex = next.hexMap.find((hex) => hex.id === fromHexId);
-  const toHex = next.hexMap.find((hex) => hex.id === toHexId);
-  if (!fromHex || !toHex) return { state, effects: [] };
-
-  fromHex.fleets[factionId] = Math.max(0, (fromHex.fleets[factionId] ?? 0) - 1);
-  toHex.fleets[factionId] = (toHex.fleets[factionId] ?? 0) + 1;
-
-  const cap = next.roundState.influenceCaps[toHexId] ?? {};
-  if (!cap[factionId]) {
-    cap[factionId] = true;
-    next.roundState.influenceCaps[toHexId] = cap;
-    toHex.influence[factionId] = (toHex.influence[factionId] ?? 0) + 1;
-  }
-
-  const faction = getFaction(next, factionId);
-  if (faction?.imperial) {
-    if (toHex.fleets[factionId] > 0) {
-      toHex.influence[factionId] = Math.max(toHex.influence[factionId] ?? 0, 2);
-    }
-    if (fromHex.fleets[factionId] === 0) {
-      fromHex.influence[factionId] = Math.max(0, (fromHex.influence[factionId] ?? 0) - 2);
-    }
-  }
-
-  const effects = [
-    {
-      type: "log",
-      message: `${factionId} moves a fleet from ${fromHexId} to ${toHexId}.`,
-    },
-  ];
-
-  if (!toHex.revealed) {
-    toHex.revealed = true;
-    toHex.explored = false;
-    const exploration = drawExplorationCard(next, toHex.type ?? "phenomena", toHexId);
-    effects.push(...exploration.effects);
-  }
-
-  return { state: next, effects };
-};
-
-export const revealHex = (state, hexId, factionId, revealed) => {
-  const effects = [
-    {
-      type: "revealHex",
-      hexId,
-      revealed,
-      controlledBy: revealed ? factionId : null,
-    },
-    {
-      type: "log",
-      message: revealed
-        ? `${hexId} revealed and claimed by ${factionId}.`
-        : `${hexId} returned to fog.`,
-    },
-  ];
-
-  return { state, effects };
-};
-
-export const drawCard = (state) => {
-  const index = Math.floor(Math.random() * state.phenomenaDeck.length);
-  const card = state.phenomenaDeck[index];
-  const effects = [
-    { type: "drawCard", index, deckType: "phenomena", hexId: null },
-    { type: "log", message: `Card drawn: ${card.title}.` },
-  ];
-  return { state, effects };
-};
-
-const drawExplorationCard = (state, deckType, hexId) => {
-  const deck = deckType === "system" ? state.systemDeck : state.phenomenaDeck;
-  const index = Math.floor(Math.random() * deck.length);
-  const card = deck[index];
-  const effects = [
-    { type: "drawCard", index, deckType, hexId },
-    { type: "log", message: `Exploration discovered: ${card.title}.` },
-  ];
-  return { state, effects };
-};
-
-export const exploreHex = (state, factionId, hexId) => {
-  const next = clone(state);
-  const hex = next.hexMap.find((entry) => entry.id === hexId);
-  if (!hex || hex.revealed) return { state, effects: [] };
-  hex.revealed = true;
-  hex.explored = false;
-  const effects = [{ type: "log", message: `${factionId} explores ${hexId}.` }];
-  const drawResult = drawExplorationCard(next, hex.type ?? "phenomena", hexId);
-  effects.push(...drawResult.effects);
-  return { state: drawResult.state, effects };
-};
-
-export const exploreRevealedHex = (state, factionId, hexId) => {
-  const hex = state.hexMap.find((entry) => entry.id === hexId);
-  if (!hex || !hex.revealed || hex.explored) {
-    return { state, effects: [{ type: "log", message: "No unexplored revealed hex to scan." }] };
-  }
-  const effects = [{ type: "log", message: `${factionId} scans ${hexId} for exploration.` }];
-  const drawResult = drawExplorationCard(state, hex.type ?? "phenomena", hexId);
-  effects.push(...drawResult.effects);
-  return { state: drawResult.state, effects };
-};
-
-const translateSystemEffects = (state, systemEffects) => {
-  const effects = [];
-  systemEffects.forEach((effect) => {
-    switch (effect.op) {
-      case "gainResource": {
-        if (effect.resource === "credits") {
-          effects.push({ type: "gainCredits", factionId: state.currentFactionId, amount: effect.amount });
-        } else if (effect.resource === "energy") {
-          effects.push({ type: "gainEnergy", factionId: state.currentFactionId, amount: effect.amount });
-        } else {
-          effects.push({ type: "gainResource", factionId: state.currentFactionId, amount: effect.amount });
-        }
-        break;
-      }
-      case "loseResource": {
-        if (effect.resource === "credits") {
-          effects.push({ type: "loseCredits", factionId: state.currentFactionId, amount: effect.amount });
-        } else if (effect.resource === "energy") {
-          effects.push({ type: "loseEnergy", factionId: state.currentFactionId, amount: effect.amount });
-        } else {
-          effects.push({ type: "loseResource", factionId: state.currentFactionId, amount: effect.amount });
-        }
-        break;
-      }
-      case "gainFleet": {
-        effects.push({ type: "gainFleet", factionId: state.currentFactionId, amount: effect.amount });
-        break;
-      }
-      case "modifyCosmicTension": {
-        const tension = adjustTension(state, effect.amount);
-        effects.push(...tension.effects);
-        break;
-      }
-      case "revealHex": {
-        const count = effect.count ?? 1;
-        const candidates = state.hexMap.filter((hex) => !hex.revealed);
-        const targets = candidates.slice(0, count);
-        targets.forEach((hex) => {
-          effects.push({
-            type: "revealHex",
-            hexId: hex.id,
-            revealed: true,
-            controlledBy: state.currentFactionId,
-          });
-        });
-        effects.push({
-          type: "log",
-          message:
-            targets.length > 0
-              ? `Revealed ${targets.length} adjacent hex(es).`
-              : "No unrevealed hexes remain.",
-        });
-        break;
-      }
-      case "log": {
-        effects.push({ type: "log", message: effect.message });
-        break;
-      }
-      default: {
-        effects.push({
-          type: "log",
-          message: `Effect "${effect.op}" requires manual resolution.`,
-        });
-        break;
-      }
-    }
-  });
-  return effects;
-};
-
-export const resolveChoice = (state, choice) => {
-  if (state.currentCard === null) return { state, effects: [] };
-  const nextState = { ...state, currentCard: { ...state.currentCard, revealed: true, choice } };
-  const { deckType, hexId } = state.currentCard;
-  if (deckType === "system") {
-    const card = state.systemDeck[state.currentCard.index];
-    const selection =
-      typeof choice === "number"
-        ? card.choices?.[choice]
-        : card.choices?.find((item) => item.label === choice);
-    const effects = [{ type: "log", message: `Card resolved: ${card.title}.` }];
-    if (selection?.effects) {
-      effects.push(...translateSystemEffects(state, selection.effects));
-    }
-    if (selection?.placeToken && hexId) {
-      effects.push({ type: "placeToken", hexId, token: selection.placeToken });
-    }
-    if (hexId) {
-      effects.push({ type: "setHexExplored", hexId, explored: true });
-    }
-    return { state: nextState, effects };
-  }
-
-  const card = state.phenomenaDeck[state.currentCard.index];
-  const effects = [{ type: "log", message: `Card resolved: ${card.title}.` }];
-  const token = card.placeTokens?.[choice];
-  if (token && hexId) {
-    effects.push({ type: "placeToken", hexId, token });
-  }
-  if (hexId) {
-    effects.push({ type: "setHexExplored", hexId, explored: true });
-  }
-  return { state: nextState, effects };
-};
-
-export const gainFleet = (state, factionId, amount) => {
-  const effects = [
-    { type: "gainFleet", factionId, amount },
-    { type: "log", message: `${factionId} gains ${amount} fleet(s).` },
-  ];
-  return { state, effects };
-};
-
-export const loseFleet = (state, factionId, amount) => {
-  const effects = [
-    { type: "loseFleet", factionId, amount },
-    { type: "log", message: `${factionId} loses ${amount} fleet(s).` },
-  ];
-  return { state, effects };
-};
-
-export const startRound = (state) => {
-  const effects = [{ type: "resetRoundState" }];
-  const bonus = rollBonusDie(state);
-  effects.push(...bonus.effects);
-  return { state, effects };
-};
-
-export const initiateCombat = (state, factionId, hexId) => {
-  if (state.roundState.combatInitiated[hexId]) {
-    return { state, effects: [{ type: "log", message: "Combat already initiated here this round." }] };
-  }
-  const next = clone(state);
-  next.roundState.combatInitiated[hexId] = true;
-  const faction = getFaction(state, factionId);
-  const tensionGain = faction?.archetype === "chaos" ? 2 : 1;
-  const tensionResult = adjustTension(next, tensionGain);
-  tensionResult.effects.unshift({
-    type: "log",
-    message: `${factionId} initiates combat in ${hexId}. Tension +${tensionGain}.`,
-  });
-  return { state: tensionResult.state, effects: tensionResult.effects };
-};
-
-export const adjustTension = (state, amount) => {
-  const nextValue = Math.max(0, Math.min(state.tension.max, state.tension.value + amount));
-  const effects = [{ type: "setTension", value: nextValue }];
-  const deck = state.tensionDecks.find((item) => item.id === state.tension.deckId);
-  if (deck) {
-    const thresholds = deck.thresholds ?? [];
-    let index = state.tension.nextIndex;
-    while (index < thresholds.length && nextValue >= thresholds[index]) {
-      const card = deck.cards[index];
-      effects.push({ type: "advanceTensionCard", nextIndex: index + 1, card });
-      effects.push({
-        type: "log",
-        message: `Tension event triggered: ${card.title} — ${card.effect}`,
-      });
-      index += 1;
-    }
-  }
-  return { state, effects };
-};
-
-export const makeAgreement = (state, factionA, factionB, agreementType) => {
-  const agreement = {
-    id: `${factionA}-${factionB}-${agreementType}-${Date.now()}`,
-    factions: [factionA, factionB],
-    type: agreementType,
-  };
-  const effects = [
-    { type: "addAgreement", agreement },
-    { type: "log", message: `${factionA} and ${factionB} enter a ${agreementType} agreement.` },
-  ];
-  return { state, effects };
-};
-
-export const breakAgreement = (state, agreementId) => {
-  const effects = [
-    { type: "removeAgreement", id: agreementId },
-    { type: "log", message: `Agreement ${agreementId} has been broken.` },
-  ];
-  return { state, effects };
-};
-
-export const addSpecialResource = (state, factionId, resource) => {
-  if (!SPECIAL_RESOURCES.includes(resource)) {
-    return { state, effects: [{ type: "log", message: "Unknown special resource." }] };
-  }
-  const effects = [
-    { type: "addSpecialResource", factionId, resource },
-    { type: "log", message: `${factionId} gains special resource: ${resource}.` },
-  ];
-  return { state, effects };
-};
-
-export const scoreSpecialResources = (resources) => {
-  const cache = new Map();
-  const scoreTable = { 2: 1, 3: 3, 4: 6, 5: 10, 6: 15 };
-
-  const keyFromCounts = (counts) => counts.join(",");
-  const maxScore = (counts) => {
-    const key = keyFromCounts(counts);
-    if (cache.has(key)) return cache.get(key);
-    let best = 0;
-    const total = counts.reduce((sum, count) => sum + count, 0);
-    if (total < 2) {
-      cache.set(key, 0);
-      return 0;
-    }
-    const unique = counts.filter((count) => count > 0).length;
-    for (let size = 2; size <= 6; size += 1) {
-      if (total < size) continue;
-      if (unique >= size) {
-        const nextCounts = [...counts];
-        let remaining = size;
-        for (let i = 0; i < nextCounts.length && remaining > 0; i += 1) {
-          if (nextCounts[i] > 0) {
-            nextCounts[i] -= 1;
-            remaining -= 1;
-          }
-        }
-        best = Math.max(best, (scoreTable[size] ?? 0) + maxScore(nextCounts));
-      }
-      for (let i = 0; i < counts.length; i += 1) {
-        if (counts[i] >= size) {
-          const nextCounts = [...counts];
-          nextCounts[i] -= size;
-          best = Math.max(best, (scoreTable[size] ?? 0) + maxScore(nextCounts));
-        }
-      }
-    }
-    cache.set(key, best);
-    return best;
-  };
-
-  const counts = SPECIAL_RESOURCES.map((type) => resources[type] ?? 0);
-  if (counts.reduce((sum, count) => sum + count, 0) === 0) return 0;
-  return maxScore(counts);
-};
-
-export const getAgreementThresholds = (faction) => {
-  switch (faction?.archetype) {
-    case "diplomatic":
-      return { make: [1, 6], break: [13, 18] };
-    case "chaos":
-      return { make: [1, 6], break: [1, 6] };
-    case "pirates":
-      return { make: [13, 18], break: [1, 6] };
-    default:
-      return { make: [7, 12], break: [7, 12] };
-  }
-};
-
-export const canMakeAgreement = (state, factionId, threshold) => {
-  const faction = getFaction(state, factionId);
-  const limits = getAgreementThresholds(faction);
-  return threshold >= limits.make[0] && threshold <= limits.make[1];
-};
-
-export const canBreakAgreement = (state, factionId, threshold) => {
-  const faction = getFaction(state, factionId);
-  const limits = getAgreementThresholds(faction);
-  return threshold >= limits.break[0] && threshold <= limits.break[1];
-};
 }
 
 export function didStateChange(a, b) {
   return a.credits !== b.credits ||
-         a.energy !== b.energy ||
-         a.fleets !== b.fleets ||
-         a.cosmicTension !== b.cosmicTension;
+    a.energy !== b.energy ||
+    a.fleets !== b.fleets ||
+    a.cosmicTension !== b.cosmicTension;
 }
 
 export function getHex(state, hexId) {
@@ -1475,7 +1244,7 @@ export function getAdjacentHexes(state, hexId) {
     .filter(Boolean);
 }
 
-export function revealHex(state, rng, cardIndex, hexId, forcedType = null) {
+export function revealHex(state, rng, cardIndex, hexId, { mode = "entry" } = {}) {
   const hex = getHex(state, hexId);
   if (!hex) return null;
 
@@ -1490,118 +1259,167 @@ export function revealHex(state, rng, cardIndex, hexId, forcedType = null) {
     visited[hexId] = true;
   }
 
-  if (forcedType) {
-    hex.type = forcedType;
-  } else if (hex.type === "unknown") {
-    hex.type = weightedPick(rng, [
-      { value: "empty", weight: 55 },
-      { value: "system", weight: 30 },
-      { value: "phenomena", weight: 15 }
-    ]);
-  }
-
-  const deckType = forcedType ?? hex.type;
-  const card = drawCard(state, deckType, cardIndex);
+  const card = drawCard(state, "event", cardIndex, rng);
   if (!card) {
-    logLine(state, `No card available for deck: ${deckType}`);
+    logLine(state, "No event cards available.");
     return null;
   }
 
-  state.ui.pending = { deckType, card, hexId };
-  logLine(state, `Card drawn (${deckType}): ${card.title}`);
+  hex.cardId = card.id;
+  hex.cardKind = card.kind;
+  hex.cardFaceUp = true;
+  hex.cardChoiceKey = null;
+  hex.cardAwaitingChoice = true;
+  hex.cardOnEnterEffects = null;
+
+  if (mode === "entry") {
+    state.ui.pending = { cardId: card.id, hexId };
+    state.ui.modalType = "card";
+    state.ui.mode = "modal";
+  } else {
+    const defaultKey = card.front?.defaultChoiceKey ?? card.front?.options?.[0]?.key ?? null;
+    const defaultPayload = defaultKey ? card.back?.byChoice?.[defaultKey] : null;
+    if (defaultPayload?.resolveOnReveal) {
+      hex.cardChoiceKey = defaultKey;
+      hex.cardAwaitingChoice = false;
+      hex.cardOnEnterEffects = defaultPayload?.cellCard?.onEnterEffects ?? [];
+      applyEffects(state, defaultPayload.resolution ?? [], { hexId, rng, cardIndex });
+      applyCardFate(state, hexId, card, defaultKey);
+    }
+  }
+  logLine(state, `Event revealed: ${card.front?.title ?? card.id}`);
   recomputeInfluence(state);
   return state.ui.pending;
 }
 
-export function resolveChoice(state, cardIndex, choiceIndex) {
+export function resolveChoice(state, cardIndex, choiceKey) {
   const pending = state.ui.pending;
   if (!pending) return { ok: false, reason: "No pending card." };
 
-  const { card, hexId, deckType } = pending;
-  const choice = card.choices[choiceIndex];
+  const { cardId, hexId } = pending;
+  const card = cardIndex?.[cardId];
+  if (!card) return { ok: false, reason: "Missing card." };
+  const choice = card.front?.options?.find(opt => opt.key === choiceKey);
   if (!choice) return { ok: false, reason: "Invalid choice." };
 
-  const context = { hexId };
-  const res = applyEffects(state, choice.effects ?? [], context);
-
-  // Place token if specified on choice
   const hex = getHex(state, hexId);
-  if (hex && choice.placeToken) hex.token = choice.placeToken;
+  if (!hex) return { ok: false, reason: "Missing hex." };
 
-  // discard card
-  state.decks[deckType].discard.push(card.id);
+  const payload = card.back?.byChoice?.[choiceKey];
+  if (!payload) return { ok: false, reason: "Missing choice payload." };
 
-  logLine(state, `Chose: ${choice.label} → ${choice.resolveText}`);
+  hex.cardId = card.id;
+  hex.cardChoiceKey = choiceKey;
+  hex.cardFaceUp = true;
+  hex.cardAwaitingChoice = false;
+  hex.cardOnEnterEffects = payload?.cellCard?.onEnterEffects ?? [];
 
-  let placeNote = null;
-  if (Array.isArray(card.placeNoteByChoiceIndex)) {
-    placeNote = card.placeNoteByChoiceIndex[choiceIndex] ?? null;
-  }
-  if (!placeNote && card.placeNote) placeNote = card.placeNote;
-  if (!placeNote) {
-    if (hex?.token) {
-      const label = state.tokensById?.[hex.token]?.label ?? state.tokens?.[hex.token]?.label ?? hex.token;
-      placeNote = `Place: ${label}`;
-    } else {
-      placeNote = "Leave: Nothing";
-    }
-  }
+  const context = { hexId, rng: null, cardIndex, cardId: card.id };
+  const res = applyEffects(state, payload.resolution ?? [], context);
+  applyCardFate(state, hexId, card, choiceKey);
+
+  logLine(state, `Chose: ${choice.label} → ${card.back?.title ?? "Resolution"}`);
 
   state.ui.lastResolution = {
-    deckType,
+    deckType: "event",
     cardId: card.id,
-    cardTitle: card.title,
+    cardTitle: card.back?.title ?? card.front?.title ?? card.id,
     choiceLabel: choice.label,
-    resolveText: choice.resolveText ?? "",
+    resolveText: card.back?.rulesText ?? "",
     tokenId: hex?.token ?? null,
-    placeNote
+    placeNote: payload.cardFate?.type ?? "discard"
   };
   state.ui.pending = null;
+  state.ui.modalType = null;
+  state.ui.mode = "idle";
 
-  return { ok: true, cardId: card.id, deckType, choiceLabel: choice.label, tokenId: hex?.token ?? null, stateChanged: didStateChange(res.before, res.after) };
+  return { ok: true, cardId: card.id, deckType: "event", choiceLabel: choice.label, tokenId: hex?.token ?? null, stateChanged: didStateChange(res.before, res.after) };
 }
 
+function applyCardFate(state, hexId, card, choiceKey) {
+  const payload = card.back?.byChoice?.[choiceKey];
+  if (!payload) return;
+  const fate = payload.cardFate ?? { type: "discard" };
+  const hex = getHex(state, hexId);
+  if (!hex) return;
 
-export function executeQueuedAction(state, rng, cardIndex) {
-  const activePlayer = getActivePlayer(state);
-  if (!activePlayer) return { ok: false, reason: "No active player." };
-  if (!state.turn.actionsQueue.length) return { ok: false, reason: "No queued actions." };
+  if (fate.type === "leaveInCell") {
+    hex.cardId = card.id;
+    hex.cardKind = card.kind;
+    hex.cardFaceUp = true;
+    hex.cardChoiceKey = choiceKey;
+    hex.cardAwaitingChoice = false;
+    hex.cardOnEnterEffects = payload.cellCard?.onEnterEffects ?? [];
+  } else if (fate.type === "toHand") {
+    const active = getActivePlayer(state);
+    if (active) {
+      addHandCard(state, active.factionId, {
+        cardId: card.id,
+        category: fate.category ?? "asset",
+        faceDown: !!fate.faceDown,
+        tapped: !!fate.tappable,
+        meta: {
+          activation: payload.handCard?.activation ?? null,
+          cashOut: payload.handCard?.cashOut ?? null
+        }
+      });
+    }
+    hex.cardId = null;
+    hex.cardChoiceKey = null;
+    hex.cardAwaitingChoice = false;
+    hex.cardOnEnterEffects = null;
+  } else if (fate.type === "toSpecialResourceStash") {
+    const active = getActivePlayer(state);
+    if (active && fate.resourceType) {
+      const stash = ensureSpecialResources(state, active.factionId);
+      stash.push({ type: fate.resourceType, id: `${fate.resourceType}-${stash.length + 1}` });
+    }
+    hex.cardId = null;
+    hex.cardChoiceKey = null;
+    hex.cardAwaitingChoice = false;
+    hex.cardOnEnterEffects = null;
+  } else {
+    hex.cardId = null;
+    hex.cardChoiceKey = null;
+    hex.cardAwaitingChoice = false;
+    hex.cardOnEnterEffects = null;
+  }
+  if (fate.type === "discard") {
+    state.decks.event.discard.push(card.id);
+  }
+}
 
-  const actionNumber = state.turn.actionsQueue[0];
-  const factionId = String(activePlayer.factionId ?? "").toLowerCase();
-  const actions = state.actionsByFaction?.[factionId];
-  if (!actions) {
-    logLine(state, `No actions found for factionId="${factionId}". Check actions.json keys.`);
-    return { ok: false, reason: "Missing actions." };
+export function activateCellCard(state, hexId, byFactionId) {
+  if (!hexId) return { ok: false, reason: "Missing hex." };
+  const hex = getHex(state, hexId);
+  if (!hex?.cardId || !hex.cardChoiceKey) return { ok: false, reason: "No cell card." };
+  const card = state.ui.cardIndex?.[hex.cardId];
+  if (!card) return { ok: false, reason: "Missing card data." };
+  const payload = card.back?.byChoice?.[hex.cardChoiceKey];
+  const activation = payload?.cellCard?.activation;
+  if (!activation) return { ok: false, reason: "No activation." };
+  const rank = getFactionRankInHex(state, hexId, byFactionId);
+  if (!rank) return { ok: false, reason: "Not eligible." };
+  if (state.turn?.systemActivated?.includes(hexId)) {
+    return { ok: false, reason: "Already activated." };
   }
 
-  const action = actions[String(actionNumber)];
-  if (!action) {
-    logLine(state, `Action #${actionNumber} not found for ${factionId}.`);
-    return { ok: false, reason: "Missing action." };
+  const threshold = activation.threshold ?? 0;
+  const cost = activation.cost ?? { credits: 0, energy: 0 };
+  const player = state.players.find(p => String(p.factionId).toLowerCase() === String(byFactionId).toLowerCase());
+  if (player && threshold >= 7) {
+    if ((player.credits ?? 0) < (cost.credits ?? 0) || (player.energy ?? 0) < (cost.energy ?? 0)) {
+      return { ok: false, reason: "Not enough resources." };
+    }
+    player.credits -= cost.credits ?? 0;
+    player.energy -= cost.energy ?? 0;
   }
 
-  const fleetHexes = Object.keys(state.fleetsByHex ?? {}).filter(h => state.fleetsByHex[h]?.[factionId]);
-  const fallbackHex = state.ui.fleetSelection?.hexId ??
-    state.ui.selectedHexId ??
-    fleetHexes[0] ??
-    null;
-  const context = {
-    hexId: fallbackHex,
-    selectedHexId: state.ui.selectedHexId,
-    selectedDeckType: state.ui.selectedDeckType ?? "phenomena",
-    modifyDie: state.ui.modifyDie,
-    fleetSelection: state.ui.fleetSelection,
-    rng,
-    cardIndex
-  };
-
-  const result = applyEffects(state, action.effects ?? [], context);
-  if (!result.ok) return { ok: false, reason: "Action failed." };
-
-  state.turn.actionsQueue.shift();
-  logLine(state, `ACTION: ${factionId} #${actionNumber} ${action.name ?? "Action"}`);
-  return { ok: true, actionNumber };
+  const effects = rank === 1 ? (activation.controllerEffects ?? []) : (activation.secondaryEffects ?? []);
+  applyEffects(state, effects, { hexId, cardId: card.id, actorFactionId: byFactionId });
+  state.turn.systemActivated.push(hexId);
+  logLine(state, `Cell activated at ${hexId} by ${byFactionId}.`);
+  return { ok: true };
 }
 
 export function executeActionNumber(state, rng, cardIndex, actionNumber, selectedHexId = null) {
@@ -1621,6 +1439,17 @@ export function executeActionNumber(state, rng, cardIndex, actionNumber, selecte
     return { ok: false, reason: "Missing action." };
   }
 
+  if (actionRequiresResources(Number(actionNumber), action)) {
+    const credits = action.cost?.credits ?? 0;
+    const energy = action.cost?.energy ?? 0;
+    if ((activePlayer.credits ?? 0) < credits || (activePlayer.energy ?? 0) < energy) {
+      logLine(state, "Not enough resources for this action.");
+      return { ok: false, reason: "Missing resources." };
+    }
+    activePlayer.credits -= credits;
+    activePlayer.energy -= energy;
+  }
+
   if (action.requiresTarget && !selectedHexId) {
     logLine(state, "Select a target hex.");
     return { ok: false, reason: "Needs target.", needsTarget: true };
@@ -1633,7 +1462,7 @@ export function executeActionNumber(state, rng, cardIndex, actionNumber, selecte
   const context = {
     hexId: fallbackHex,
     selectedHexId: selectedHexId ?? undefined,
-    selectedDeckType: state.ui.selectedDeckType ?? "phenomena",
+    selectedDeckType: state.ui.selectedDeckType ?? "event",
     modifyDie: state.ui.modifyDie,
     fleetSelection: state.ui.fleetSelection,
     rng,
@@ -1648,8 +1477,6 @@ export function executeActionNumber(state, rng, cardIndex, actionNumber, selecte
 }
 
 export function revealAdjacentHexes(state, context, count) {
-  // Simple square-grid adjacency on IDs like A1..G7:
-  // neighbors = N,S,E,W (good enough for baseline)
   const candidates = getAdjacentHexes(state, context.hexId);
 
   let revealed = 0;
@@ -1657,13 +1484,12 @@ export function revealAdjacentHexes(state, context, count) {
   for (const neighbor of candidates) {
     if (revealed >= count) break;
     if (neighbor && !neighbor.revealed) {
-      neighbor.revealed = true;
+      revealHex(state, context.rng, context.cardIndex, neighbor.id, { mode: "scan" });
       if (active) {
         const visited = ensureVisitedMap(state, active.factionId);
         visited[neighbor.id] = true;
       }
-      // do not auto-assign type or draw card (baseline: "scan" only)
-      revealed++;
+      revealed += 1;
     }
   }
   if (revealed > 0) {

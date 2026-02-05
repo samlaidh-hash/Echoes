@@ -10,6 +10,7 @@ import {
   snapshotState,
   executeActionNumber,
   getActivePlayer,
+  applyEffects,
   recomputeInfluence,
   computeAvailableActions,
   initCombat,
@@ -19,7 +20,9 @@ import {
   countFleets,
   getHexFleets,
   createFleet,
-  addFleetToHex
+  addFleetToHex,
+  useSharedBonusDie,
+  activateCellCard
 } from "./rules.js";
 import { render, setSmokeBadge } from "./ui.js";
 
@@ -34,11 +37,9 @@ function setReady() {
   document.getElementById("appReady").classList.remove("hidden");
 }
 
-function buildCardIndex(cardsByDeck) {
+function buildCardIndex(cards) {
   const idx = {};
-  for (const deckType of Object.keys(cardsByDeck)) {
-    for (const c of cardsByDeck[deckType]) idx[c.id] = c;
-  }
+  for (const c of cards) idx[c.id] = c;
   return idx;
 }
 
@@ -69,7 +70,6 @@ async function boot() {
     const hex = state.map.hexes.find(h => h.id === hexId);
     if (!hex) return;
     hex.revealed = true;
-    hex.type = "system";
     hex.token = tokenId;
   };
 
@@ -130,11 +130,14 @@ async function boot() {
   });
 
   // decks
-  initDeck(state, rng, "empty", content.cards.empty);
-  initDeck(state, rng, "system", content.cards.system);
-  initDeck(state, rng, "phenomena", content.cards.phenomena);
+  initDeck(state, rng, "event", content.eventDeck ?? []);
 
-  const cardIndex = buildCardIndex(content.cards);
+  const cardIndex = buildCardIndex(content.eventDeck ?? []);
+  state.ui.cardIndex = cardIndex;
+  state.agreementsCatalog = content.agreements ?? [];
+  if (content.tensionDeckSets?.default?.max) {
+    state.tension.max = content.tensionDeckSets.default.max;
+  }
 
   const getAdjacentHexesLocal = (hexId) => {
     const hex = state.map.hexes.find(h => h.id === hexId);
@@ -162,18 +165,34 @@ async function boot() {
     }
   };
 
+  const applyAgreementBenefits = () => {
+    state.agreements.forEach(agreement => {
+      if (!agreement.active) return;
+      const effects = agreement.benefits ?? [];
+      agreement.parties.forEach(factionId => {
+        const player = state.players.find(p => String(p.factionId).toLowerCase() === String(factionId).toLowerCase());
+        if (!player) return;
+        const context = { hexId: state.ui.selectedHexId, strict: false };
+        applyEffects(state, effects, context);
+      });
+    });
+  };
+
   const rollRoundDice = () => {
     state.turn.dice.a = rng.rollDie(6);
     state.turn.dice.b = rng.rollDie(6);
-    state.turn.dice.bonus = state.turn.activePlayerIndex === state.turn.firstPlayerIndex ? rng.rollDie(6) : null;
+    if (state.sharedBonusDie.value == null && state.turn.activePlayerIndex === state.turn.firstPlayerIndex) {
+      state.sharedBonusDie.value = rng.rollDie(6);
+      state.sharedBonusDie.lockedByFactionId = null;
+      state.sharedBonusDie.usedByFactionIds = {};
+    }
     state.turn.used.a = false;
     state.turn.used.b = false;
-    state.turn.used.bonus = false;
     state.turn.oncePerRound.probabilityDriftUsed = state.players.map(() => false);
     state.ui.pendingAction = null;
     setMode("idle");
     state.ui.modalType = null;
-    logLine(state, `TURN: rolled A=${state.turn.dice.a} B=${state.turn.dice.b} Bonus=${state.turn.dice.bonus ?? "-"}`);
+    logLine(state, `TURN: rolled A=${state.turn.dice.a} B=${state.turn.dice.b} Bonus=${state.sharedBonusDie.value ?? "-"}`);
   };
 
   const consumePendingAction = () => {
@@ -181,9 +200,17 @@ async function boot() {
     if (!pending) return;
     if (pending.consume?.a) state.turn.used.a = true;
     if (pending.consume?.b) state.turn.used.b = true;
-    if (pending.consume?.bonus) state.turn.used.bonus = true;
+    if (pending.consume?.bonus) {
+      const active = getActivePlayer(state);
+      if (active) {
+        const bonusResult = useSharedBonusDie(state, active.factionId);
+        if (!bonusResult.ok) {
+          logLine(state, "Bonus die unavailable.");
+        }
+      }
+    }
     state.ui.pendingAction = null;
-    logLine(state, `DICE: used A=${state.turn.used.a} B=${state.turn.used.b} Bonus=${state.turn.used.bonus}`);
+    logLine(state, `DICE: used A=${state.turn.used.a} B=${state.turn.used.b} Bonus=${state.sharedBonusDie.value ?? "-"}`);
   };
 
   let pulseTimer = null;
@@ -208,12 +235,15 @@ async function boot() {
       state.turn.activePlayerIndex = state.turn.firstPlayerIndex;
       state.turn.dice.a = null;
       state.turn.dice.b = null;
-      state.turn.dice.bonus = null;
       state.turn.used.a = false;
       state.turn.used.b = false;
-      state.turn.used.bonus = false;
       state.turn.oncePerRound.probabilityDriftUsed = state.players.map(() => false);
       state.turn.systemActivated = [];
+      state.sharedBonusDie.value = null;
+      state.sharedBonusDie.lockedByFactionId = null;
+      state.sharedBonusDie.usedByFactionIds = {};
+      state.combatInitiatedThisRoundByHex = {};
+      applyAgreementBenefits();
       Object.values(state.techByFaction ?? {}).forEach(list => {
         list.forEach(t => { t.tapped = false; });
       });
@@ -260,7 +290,7 @@ async function boot() {
           const second = first.flatMap(h => getAdjacentHexesLocal(h.id));
           return second.some(h => h.id === hexId);
         };
-        const isControlledSystem = hex && hex.type === "system" &&
+        const isControlledSystem = hex && hex.cardKind === "system" &&
           state.controllerByHex?.[hexId] === activeFaction &&
           !state.contestedByHex?.[hexId];
         const requiresTarget = !!actionDef?.requiresTarget;
@@ -269,7 +299,7 @@ async function boot() {
         const isMove = (actionDef?.effects ?? []).some(e => e.op === "moveFleet" || e.op === "fastDeploy");
         const isAdjToken = (actionDef?.effects ?? []).some(e => e.op === "placeTokenAdjacent");
         const isForward = (actionDef?.effects ?? []).some(e => e.op === "forwardDeploy");
-        const isActivate = (actionDef?.effects ?? []).some(e => e.op === "activateSystem");
+        const isActivate = (actionDef?.effects ?? []).some(e => e.op === "activateSystem" || e.op === "activateCellCard");
         if (requiresTarget && isMove) {
           const factionId = String(active?.factionId ?? "").toLowerCase();
           const entry = getHexFleets(state, hexId, factionId);
@@ -323,7 +353,7 @@ async function boot() {
       }
 
       // Reveal + draw
-      revealHex(state, rng, cardIndex, hexId, null);
+      revealHex(state, rng, cardIndex, hexId, { mode: "entry" });
       render(state, handlers);
     },
     onHexContextMenu(hexId, evt) {
@@ -341,9 +371,9 @@ async function boot() {
       }
       render(state, handlers);
     },
-    onCardChoice(choiceIndex) {
+    onCardChoice(choiceKey) {
       const before = snapshotState(state);
-      const result = resolveChoice(state, cardIndex, choiceIndex);
+      const result = resolveChoice(state, cardIndex, choiceKey);
       const after = snapshotState(state);
       const changed = didStateChange(before, after);
 
@@ -510,6 +540,38 @@ async function boot() {
     onModifyDie(dieId, delta) {
       state.ui.modifyDie = { die: dieId, delta };
       render(state, handlers);
+    },
+    onActivateCellCard() {
+      const active = getActivePlayer(state);
+      if (!active) return;
+      const targetHex = state.ui.selectedHexId;
+      const res = activateCellCard(state, targetHex, active.factionId);
+      if (!res.ok) logLine(state, res.reason ?? "Activation failed.");
+      render(state, handlers);
+    },
+    onAgreementResponse(accepted) {
+      const pending = state.ui.pendingAgreement;
+      if (!pending) return;
+      if (accepted) {
+        const agreementType = state.agreementsCatalog?.find(a => a.id === pending.agreementTypeId);
+        const agreement = {
+          id: `AGR-${Date.now()}`,
+          typeId: pending.agreementTypeId,
+          parties: [pending.fromFactionId, pending.toFactionId],
+          benefits: agreementType?.benefits ?? [],
+          restrictions: agreementType?.restrictions ?? [],
+          startRound: state.turn.round,
+          active: true
+        };
+        state.agreements.push(agreement);
+        logLine(state, `Agreement formed: ${agreement.typeId}`);
+      } else {
+        logLine(state, "Agreement rejected.");
+      }
+      state.ui.pendingAgreement = null;
+      state.ui.modalType = null;
+      state.ui.mode = "idle";
+      render(state, handlers);
     }
   };
 
@@ -536,91 +598,47 @@ async function runSmoke(state, rng, cardIndex, handlers) {
   setSmokeBadge(`SMOKE: RUNNING (seed=${state.meta.seed})`, "warn");
   logLine(state, `SMOKE: starting (seed=${state.meta.seed})`);
 
-  // Force three known hexes and forced deck types
-  const forced = [
-    { hexId: "A1", deck: "empty" },
-    { hexId: "A2", deck: "system" },
-    { hexId: "A3", deck: "phenomena" }
-  ];
-
-  const measurableOps = new Set(["gainResource", "loseResource", "gainFleet", "loseFleet", "modifyCosmicTension"]);
+  const forced = ["A1", "A2", "A3"];
 
   try {
-    for (const step of forced) {
+    for (const hexId of forced) {
       state.ui.pending = null;
 
       // Ensure hex exists
-      const hex = state.map.hexes.find(h => h.id === step.hexId);
-      if (!hex) throw new Error(`Missing hex ${step.hexId}`);
+      const hex = state.map.hexes.find(h => h.id === hexId);
+      if (!hex) throw new Error(`Missing hex ${hexId}`);
 
-      // Force it to be unrevealed + unknown, then reveal with forced type
+      // Force it to be unrevealed
       hex.revealed = false;
-      hex.type = "unknown";
       hex.token = null;
 
-      // Reveal with forced type
-      revealHex(state, rng, cardIndex, step.hexId, step.deck);
+      // Reveal with entry mode
+      revealHex(state, rng, cardIndex, hexId, { mode: "entry" });
       render(state, handlers);
 
       const pending = state.ui.pending;
-      if (!pending) throw new Error(`Card panel did not open for ${step.deck} at ${step.hexId}`);
-      if (pending.deckType !== step.deck) {
-        const got = pending.deckType ?? "none";
-        const cardId = pending.card?.id ?? "unknown";
-        throw new Error(`Deck mismatch: expected ${step.deck} got ${got} (card=${cardId})`);
-      }
-      let card = pending.card;
-
-      // Find a card whose choice 0 has measurable effects. If current doesn't, cycle draws until found (bounded).
-      let tries = 0;
-      while (tries < 12) {
-        const c0 = card.choices?.[0];
-        const hasMeasurable = (c0?.effects ?? []).some(e => measurableOps.has(e.op));
-        if (hasMeasurable) break;
-
-        // Discard and draw next card from the same forced deck
-        state.decks[step.deck].discard.push(card.id);
-        state.ui.pending = null;
-        revealHex(state, rng, cardIndex, step.hexId, step.deck);
-        render(state, handlers);
-
-        tries++;
-        if (!state.ui.pending) throw new Error(`Could not draw a card for ${step.deck} after cycling.`);
-        if (state.ui.pending.deckType !== step.deck) {
-          const got = state.ui.pending.deckType ?? "none";
-          const cardId = state.ui.pending.card?.id ?? "unknown";
-          throw new Error(`Deck mismatch: expected ${step.deck} got ${got} (card=${cardId})`);
-        }
-        card = state.ui.pending.card;
-      }
+      if (!pending) throw new Error(`Card panel did not open for ${hexId}`);
 
       // Snapshot before resolve
       const before = snapshotState(state);
 
-      // Choice 0 must exist
-      const choice0 = state.ui.pending?.card?.choices?.[0];
-      if (!choice0) throw new Error(`Choice 0 missing for deck=${step.deck} card=${state.ui.pending?.card?.id}`);
+      const card = cardIndex[pending.cardId];
+      const choice0 = card?.front?.options?.[0];
+      if (!choice0) throw new Error(`Choice 0 missing for card=${pending.cardId}`);
 
       // Resolve choice 0
-      const res = resolveChoice(state, cardIndex, 0);
+      const res = resolveChoice(state, cardIndex, choice0.key);
       render(state, handlers);
 
       if (!res.ok) throw new Error(`Resolve failed: ${res.reason}`);
-      if (res.deckType !== step.deck) {
-        throw new Error(`Deck mismatch: expected ${step.deck} got ${res.deckType} (card=${res.cardId})`);
-      }
 
       // Validate state change
       const after = snapshotState(state);
       const changed = didStateChange(before, after);
-      if (!changed) throw new Error(`No state change detected for deck=${step.deck} card=${res.cardId}`);
-
-      // Validate token placed
-      const hexAfter = state.map.hexes.find(h => h.id === step.hexId);
-      if (!hexAfter || !hexAfter.token) throw new Error(`Token not placed for ${step.hexId} deck=${step.deck}`);
+      if (!changed) throw new Error(`No state change detected for card=${res.cardId}`);
 
       // Log required line
-      logLine(state, `SMOKE: deck=${res.deckType} card=${res.cardId} choice=${res.choiceLabel} token=${hexAfter.token}`);
+      logLine(state, `SMOKE: deck=${res.deckType} card=${res.cardId} choice=${res.choiceLabel}`);
       render(state, handlers);
     }
 

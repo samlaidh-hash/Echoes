@@ -1,0 +1,27 @@
+[
+  {
+    "id": "trade-pact",
+    "name": "Trade Pact",
+    "benefits": [
+      { "op": "gainCredits", "n": 1 }
+    ],
+    "restrictions": ["noAttack"]
+  },
+  {
+    "id": "non-aggression",
+    "name": "Non-Aggression",
+    "benefits": [
+      { "op": "gainEnergy", "n": 1 }
+    ],
+    "restrictions": ["noAttack"]
+  },
+  {
+    "id": "mutual-defense",
+    "name": "Mutual Defense",
+    "benefits": [
+      { "op": "gainCredits", "n": 1 },
+      { "op": "gainEnergy", "n": 1 }
+    ],
+    "restrictions": ["mutualDefense"]
+  }
+]

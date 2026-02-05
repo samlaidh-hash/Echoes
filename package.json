@@ -3,6 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node tests/rules.test.js"
+    "gen:deck": "node scripts/generate-event-deck.mjs",
+    "test": "node tests/rules.test.js",
+    "validate:json": "node scripts/validate-json.mjs"
   }
 }
