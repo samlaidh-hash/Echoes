@@ -22,13 +22,13 @@ function createPrompt(card) {
     system: "Star system with planet, station, or colony",
     phenomena: "Cosmic anomaly, ancient ruins, or alien phenomenon"
   }[card.type] || "Space scene";
-  return `Depict "${card.title}" — ${typeMood}. ${style}. Full card artwork, portrait orientation, composition with clear space at bottom for text overlay (MTG-style card).`;
+  return `Depict "${card.title}" — ${typeMood}. ${style}. Plain artwork only, portrait orientation, no text or frames.`;
 }
 
 const lines = [
   "# Echoes Card Image Prompts",
   "",
-  "**Card layout:** Both sides have text. Only the reverse side (revealed when flipped) has an image. Generate artwork for the reverse side; text will be overlaid in a white box (MTG-style). Save each image with the **exact card title** as the filename (e.g. `Cold Wake.png`).",
+  "**Card layout:** Both sides have text. Only the reverse side (revealed when flipped) has an image. Generate **plain art only** — no text, no frames, no reserved space. Portrait orientation. Save each image with the **exact card title** as the filename (e.g. `Cold Wake.png`).",
   "",
   "---",
   ""
@@ -46,7 +46,7 @@ for (const card of allCards) {
 fs.writeFileSync(path.join(dataDir, "card-image-prompts.md"), lines.join("\n"));
 
 // Also output a simple copy-paste format: one prompt per card, ready for batch use
-const header = "INSTRUCTIONS: Cards have text on both sides; only the reverse (flipped/revealed) side has an image. Generate artwork for the reverse side; text will be overlaid in a white box (MTG-style). Copy each PROMPT into your image AI. Save each image using the FILENAME (e.g. Cold Wake.png).\n\n";
+const header = "INSTRUCTIONS: Generate plain art only — no text, no frames, no reserved space. Portrait orientation. Copy each PROMPT into your image AI. Save each image using the FILENAME (e.g. Cold Wake.png).\n\n";
 const simpleLines = allCards.map((c) => {
   const p = createPrompt(c);
   return `PROMPT: ${p}\nFILENAME: ${c.title}\n`;
