@@ -1,11 +1,11 @@
 [
   {
     "id": "SYS_01",
-    "title": "Red Dwarf: Cinder Belt",
+    "title": "Research Outpost",
     "type": "system",
     "choices": [
       {
-        "label": "Mine the belt",
+        "label": "Mine",
         "resolveText": "Gain 3 credits.",
         "effects": [
           {
@@ -17,7 +17,7 @@
         "placeToken": "mining_outpost"
       },
       {
-        "label": "Chart lanes",
+        "label": "Chart",
         "resolveText": "Reveal 1 adjacent hex.",
         "effects": [
           {
@@ -25,53 +25,125 @@
             "count": 1
           }
         ],
-        "placeToken": "station"
+        "placeToken": "outpost"
       }
     ],
     "placeNoteByChoiceIndex": [
       "Place: Mining Outpost",
-      "Place: Station"
+      "Place: Outpost"
     ]
   },
   {
     "id": "SYS_02",
-    "title": "Ocean World",
+    "title": "Trade Outpost",
     "type": "system",
     "choices": [
       {
-        "label": "Establish station",
-        "resolveText": "Gain 1 energy now.",
+        "label": "Trade hub",
+        "resolveText": "Gain 2 credits.",
         "effects": [
           {
             "op": "gainResource",
-            "resource": "energy",
-            "amount": 1
+            "resource": "credits",
+            "amount": 2
           }
         ],
-        "placeToken": "station"
+        "placeToken": "trade_route"
       },
       {
-        "label": "Extract isotopes",
-        "resolveText": "Gain 2 energy, cosmic tension +1.",
+        "label": "Refinery",
+        "resolveText": "Gain 2 energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
             "amount": 2
-          },
-          {
-            "op": "modifyCosmicTension",
-            "amount": 1
           }
         ],
-        "placeToken": "station"
+        "placeToken": "mining_outpost"
       }
     ],
-    "placeNote": "Place: Station"
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Place: Mining Outpost"
+    ]
   },
   {
     "id": "SYS_03",
-    "title": "Relic Moon",
+    "title": "Dyson Swarm",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Directorate garrison",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Forward base",
+        "resolveText": "Gain 1 fleet.",
+        "effects": [
+          {
+            "op": "gainFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_04",
+    "title": "Magnetic Storm",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Trade nexus",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Research",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "research_array"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Place: Research Array"
+    ]
+  },
+  {
+    "id": "SYS_05",
+    "title": "Lagrange Hub",
     "type": "system",
     "choices": [
       {
@@ -84,7 +156,7 @@
             "amount": 2
           }
         ],
-        "placeToken": "relic_site"
+        "placeToken": "research_array"
       },
       {
         "label": "Quarantine",
@@ -95,18 +167,37 @@
             "amount": -1
           }
         ],
-        "placeToken": "relic_site"
+        "placeToken": "research_array"
       }
     ],
-    "placeNote": "Place: Relic Site"
+    "placeNoteByChoiceIndex": [
+      "Place: Research Array",
+      "Place: Research Array"
+    ]
   },
   {
-    "id": "SYS_04",
-    "title": "Frontier Colony",
+    "id": "SYS_06",
+    "title": "Military Base",
     "type": "system",
     "choices": [
       {
-        "label": "Offer protection",
+        "label": "Directorate garrison",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Forward base",
         "resolveText": "Gain 1 fleet.",
         "effects": [
           {
@@ -114,14 +205,140 @@
             "amount": 1
           }
         ],
-        "placeToken": "station"
-      },
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_07",
+    "title": "Red Dwarf: Cinder Belt",
+    "type": "system",
+    "choices": [
       {
-        "label": "Conscription",
-        "resolveText": "Gain 2 fleets, cosmic tension +1.",
+        "label": "Mine",
+        "resolveText": "Gain 3 credits.",
         "effects": [
           {
-            "op": "gainFleet",
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          }
+        ],
+        "placeToken": "mining_outpost"
+      },
+      {
+        "label": "Chart",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Mining Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_08",
+    "title": "Storm World",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Debris processing",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Clear",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "SYS_09",
+    "title": "Frozen Colony",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Activate gate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Salvage",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "SYS_10",
+    "title": "Dwarf Outpost",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Station",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Extract",
+        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
             "amount": 2
           },
           {
@@ -129,18 +346,59 @@
             "amount": 1
           }
         ],
-        "placeToken": "station"
+        "placeToken": "outpost"
       }
     ],
-    "placeNote": "Place: Station"
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
   },
   {
-    "id": "SYS_05",
-    "title": "Shrine World",
+    "id": "SYS_11",
+    "title": "Desert Station",
     "type": "system",
     "choices": [
       {
-        "label": "Seek blessing",
+        "label": "Directorate garrison",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Forward base",
+        "resolveText": "Gain 1 fleet.",
+        "effects": [
+          {
+            "op": "gainFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_12",
+    "title": "Frontier Outpost",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Blessing",
         "resolveText": "Cosmic tension -1.",
         "effects": [
           {
@@ -148,11 +406,11 @@
             "amount": -1
           }
         ],
-        "placeToken": "station"
+        "placeToken": "outpost"
       },
       {
-        "label": "Loot the reliquary",
-        "resolveText": "Gain 3 credits, cosmic tension +2.",
+        "label": "Loot",
+        "resolveText": "Gain 3 credits. Cosmic tension +2.",
         "effects": [
           {
             "op": "gainResource",
@@ -168,8 +426,3200 @@
       }
     ],
     "placeNoteByChoiceIndex": [
-      "Place: Station",
+      "Place: Outpost",
       "Place: Ruins"
+    ]
+  },
+  {
+    "id": "SYS_13",
+    "title": "Colonial Base",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Trade nexus",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Research",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "research_array"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Place: Research Array"
+    ]
+  },
+  {
+    "id": "SYS_14",
+    "title": "Trade Nexus",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Protection",
+        "resolveText": "Gain 1 fleet.",
+        "effects": [
+          {
+            "op": "gainFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Conscript",
+        "resolveText": "Gain 2 fleet. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainFleet",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_15",
+    "title": "Refinery World",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Blessing",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Loot",
+        "resolveText": "Gain 3 credits. Cosmic tension +2.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 2
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "SYS_16",
+    "title": "Storm Refuge",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Spread biomass",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "biomass"
+      },
+      {
+        "label": "Purge",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Biomass",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "SYS_17",
+    "title": "Prison Planet",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Trade nexus",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Research",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "research_array"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Place: Research Array"
+    ]
+  },
+  {
+    "id": "SYS_18",
+    "title": "Trading Hub",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Station",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Extract",
+        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_19",
+    "title": "Volcanic Base",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Activate gate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Salvage",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "SYS_20",
+    "title": "Shrine World",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Excavate",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "research_array"
+      },
+      {
+        "label": "Quarantine",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "research_array"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Research Array",
+      "Place: Research Array"
+    ]
+  },
+  {
+    "id": "SYS_21",
+    "title": "Base Quartus",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Trade nexus",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Research",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "research_array"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Place: Research Array"
+    ]
+  },
+  {
+    "id": "SYS_22",
+    "title": "Ice Moon",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Establish route",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Extract",
+        "resolveText": "Gain 2 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          }
+        ],
+        "placeToken": "mining_outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Place: Mining Outpost"
+    ]
+  },
+  {
+    "id": "SYS_23",
+    "title": "Pilgrim Rest",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Place beacon",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Mine",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "mining_outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Place: Mining Outpost"
+    ]
+  },
+  {
+    "id": "SYS_24",
+    "title": "Ash Colony",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Protection",
+        "resolveText": "Gain 1 fleet.",
+        "effects": [
+          {
+            "op": "gainFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Conscript",
+        "resolveText": "Gain 2 fleet. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainFleet",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_25",
+    "title": "Science Base",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Station",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Extract",
+        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_26",
+    "title": "Ash World",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Outpost",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Forward base",
+        "resolveText": "Gain 1 fleet.",
+        "effects": [
+          {
+            "op": "gainFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_27",
+    "title": "Research Complex",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Directorate garrison",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Forward base",
+        "resolveText": "Gain 1 fleet.",
+        "effects": [
+          {
+            "op": "gainFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_28",
+    "title": "Pulsar Base",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Place beacon",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Mine",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "mining_outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Place: Mining Outpost"
+    ]
+  },
+  {
+    "id": "SYS_29",
+    "title": "Station Gamma",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Station",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Extract",
+        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_30",
+    "title": "Orbital Haven",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Directorate garrison",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Forward base",
+        "resolveText": "Gain 1 fleet.",
+        "effects": [
+          {
+            "op": "gainFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_31",
+    "title": "Death World Outpost",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Relay station",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Mine",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "mining_outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Place: Mining Outpost"
+    ]
+  },
+  {
+    "id": "SYS_32",
+    "title": "Supply Chain",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Activate gate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Salvage",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "SYS_33",
+    "title": "Military Depot",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Mine belt",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "mining_outpost"
+      },
+      {
+        "label": "Research",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "research_array"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Mining Outpost",
+      "Place: Research Array"
+    ]
+  },
+  {
+    "id": "SYS_34",
+    "title": "Gas Harvester",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Spread biomass",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "biomass"
+      },
+      {
+        "label": "Purge",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Biomass",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "SYS_35",
+    "title": "Pulsar Station",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Study",
+        "resolveText": "Gain 1 energy. Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          },
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "research_array"
+      },
+      {
+        "label": "Harvest",
+        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Research Array",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "SYS_36",
+    "title": "Hive Colony",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Study",
+        "resolveText": "Gain 1 energy. Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          },
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "research_array"
+      },
+      {
+        "label": "Harvest",
+        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Research Array",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "SYS_37",
+    "title": "Solar Collector",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Colonize",
+        "resolveText": "Gain 1 fleet.",
+        "effects": [
+          {
+            "op": "gainFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Exploit",
+        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_38",
+    "title": "Rogue Planet",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Study",
+        "resolveText": "Gain 1 energy. Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          },
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "research_array"
+      },
+      {
+        "label": "Harvest",
+        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Research Array",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "SYS_39",
+    "title": "Terraformed Outpost",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Blessing",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Loot",
+        "resolveText": "Gain 3 credits. Cosmic tension +2.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 2
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "SYS_40",
+    "title": "Binary Outpost",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Protection",
+        "resolveText": "Gain 1 fleet.",
+        "effects": [
+          {
+            "op": "gainFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Conscript",
+        "resolveText": "Gain 2 fleet. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainFleet",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_41",
+    "title": "Colony Prime",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Place beacon",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Mine",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "mining_outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Place: Mining Outpost"
+    ]
+  },
+  {
+    "id": "SYS_42",
+    "title": "Prison Station",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Blessing",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Loot",
+        "resolveText": "Gain 3 credits. Cosmic tension +2.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 2
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "SYS_43",
+    "title": "Lava World",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Station",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Extract",
+        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_44",
+    "title": "Desert Base",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Garrison",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Trade post",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "trade_route"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Trade Route"
+    ]
+  },
+  {
+    "id": "SYS_45",
+    "title": "Nebula Edge",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Mine",
+        "resolveText": "Gain 3 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          }
+        ],
+        "placeToken": "mining_outpost"
+      },
+      {
+        "label": "Chart",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Mining Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_46",
+    "title": "Dwarf System",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Activate gate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Salvage",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "SYS_47",
+    "title": "Forge Base",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Protection",
+        "resolveText": "Gain 1 fleet.",
+        "effects": [
+          {
+            "op": "gainFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Conscript",
+        "resolveText": "Gain 2 fleet. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainFleet",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_48",
+    "title": "Relic Moon",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Station",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Extract",
+        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_49",
+    "title": "Military Garrison",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Activate gate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Salvage",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "SYS_50",
+    "title": "Jungle World",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Garrison",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Trade post",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "trade_route"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Trade Route"
+    ]
+  },
+  {
+    "id": "SYS_51",
+    "title": "Binary Stars",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Biomass outpost",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "biomass"
+      },
+      {
+        "label": "Purge",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Biomass",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "SYS_52",
+    "title": "Cinder Colony",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Outpost",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Forward base",
+        "resolveText": "Gain 1 fleet.",
+        "effects": [
+          {
+            "op": "gainFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_53",
+    "title": "Frozen Wastes",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Garrison",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Trade post",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "trade_route"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Trade Route"
+    ]
+  },
+  {
+    "id": "SYS_54",
+    "title": "Dust World",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Directorate garrison",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Forward base",
+        "resolveText": "Gain 1 fleet.",
+        "effects": [
+          {
+            "op": "gainFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_55",
+    "title": "Frost Planet",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Protection",
+        "resolveText": "Gain 1 fleet.",
+        "effects": [
+          {
+            "op": "gainFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Conscript",
+        "resolveText": "Gain 2 fleet. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainFleet",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_56",
+    "title": "Mining Colony",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Activate gate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Salvage",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "SYS_57",
+    "title": "Garden Station",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Activate gate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Salvage",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "SYS_58",
+    "title": "Supply Station",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Mine",
+        "resolveText": "Gain 3 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          }
+        ],
+        "placeToken": "mining_outpost"
+      },
+      {
+        "label": "Chart",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Mining Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_59",
+    "title": "Nebula Station",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Colonize",
+        "resolveText": "Gain 1 fleet.",
+        "effects": [
+          {
+            "op": "gainFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Exploit",
+        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_60",
+    "title": "Garden World",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Activate gate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Salvage",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "SYS_61",
+    "title": "Death World",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Spread biomass",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "biomass"
+      },
+      {
+        "label": "Purge",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Biomass",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "SYS_62",
+    "title": "Belt Mining",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Biomass outpost",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "biomass"
+      },
+      {
+        "label": "Purge",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Biomass",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "SYS_63",
+    "title": "Mining Belt",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Study",
+        "resolveText": "Gain 1 energy. Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          },
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "research_array"
+      },
+      {
+        "label": "Harvest",
+        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Research Array",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "SYS_64",
+    "title": "Research Haven",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Debris processing",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Clear",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "SYS_65",
+    "title": "Gateway System",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Mine belt",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "mining_outpost"
+      },
+      {
+        "label": "Research",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "research_array"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Mining Outpost",
+      "Place: Research Array"
+    ]
+  },
+  {
+    "id": "SYS_66",
+    "title": "Hive World",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Excavate",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "research_array"
+      },
+      {
+        "label": "Quarantine",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "research_array"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Research Array",
+      "Place: Research Array"
+    ]
+  },
+  {
+    "id": "SYS_67",
+    "title": "Frontier Colony",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Mine belt",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "mining_outpost"
+      },
+      {
+        "label": "Research",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "research_array"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Mining Outpost",
+      "Place: Research Array"
+    ]
+  },
+  {
+    "id": "SYS_68",
+    "title": "Orbital Farm",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Directorate garrison",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Forward base",
+        "resolveText": "Gain 1 fleet.",
+        "effects": [
+          {
+            "op": "gainFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_69",
+    "title": "Gateway Hub",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Biomass outpost",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "biomass"
+      },
+      {
+        "label": "Purge",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Biomass",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "SYS_70",
+    "title": "Ocean Haven",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Blessing",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Loot",
+        "resolveText": "Gain 3 credits. Cosmic tension +2.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 2
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "SYS_71",
+    "title": "Crystal Caves",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Trade hub",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Refinery",
+        "resolveText": "Gain 2 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          }
+        ],
+        "placeToken": "mining_outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Place: Mining Outpost"
+    ]
+  },
+  {
+    "id": "SYS_72",
+    "title": "Relay Station",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Spread biomass",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "biomass"
+      },
+      {
+        "label": "Purge",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Biomass",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "SYS_73",
+    "title": "Tidal Lock",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Garrison",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Trade post",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "trade_route"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Trade Route"
+    ]
+  },
+  {
+    "id": "SYS_74",
+    "title": "Frontier Haven",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Mine",
+        "resolveText": "Gain 3 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          }
+        ],
+        "placeToken": "mining_outpost"
+      },
+      {
+        "label": "Chart",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Mining Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_75",
+    "title": "Orbital Station",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Biomass outpost",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "biomass"
+      },
+      {
+        "label": "Purge",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Biomass",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "SYS_76",
+    "title": "Frost Station",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Mine belt",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "mining_outpost"
+      },
+      {
+        "label": "Research",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "research_array"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Mining Outpost",
+      "Place: Research Array"
+    ]
+  },
+  {
+    "id": "SYS_77",
+    "title": "Desert Planet",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Trade nexus",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Research",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "research_array"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Place: Research Array"
+    ]
+  },
+  {
+    "id": "SYS_78",
+    "title": "Refinery Complex",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Colonize",
+        "resolveText": "Gain 1 fleet.",
+        "effects": [
+          {
+            "op": "gainFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Exploit",
+        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_79",
+    "title": "Frost Base",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Colonize",
+        "resolveText": "Gain 1 fleet.",
+        "effects": [
+          {
+            "op": "gainFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Exploit",
+        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_80",
+    "title": "Dust Outpost",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Relay station",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Mine",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "mining_outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Place: Mining Outpost"
+    ]
+  },
+  {
+    "id": "SYS_81",
+    "title": "Giant Moon",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Outpost",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Forward base",
+        "resolveText": "Gain 1 fleet.",
+        "effects": [
+          {
+            "op": "gainFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_82",
+    "title": "Storm Planet",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Biomass outpost",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "biomass"
+      },
+      {
+        "label": "Purge",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Biomass",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "SYS_83",
+    "title": "Supply Depot",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Mine belt",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "mining_outpost"
+      },
+      {
+        "label": "Research",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "research_array"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Mining Outpost",
+      "Place: Research Array"
+    ]
+  },
+  {
+    "id": "SYS_84",
+    "title": "Mining Base",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Spread biomass",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "biomass"
+      },
+      {
+        "label": "Purge",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Biomass",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "SYS_85",
+    "title": "Outpost Secundus",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Trade hub",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Refinery",
+        "resolveText": "Gain 2 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          }
+        ],
+        "placeToken": "mining_outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Place: Mining Outpost"
+    ]
+  },
+  {
+    "id": "SYS_86",
+    "title": "Volcanic Outpost",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Debris processing",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Clear",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "SYS_87",
+    "title": "Ash Station",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Excavate",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "research_array"
+      },
+      {
+        "label": "Quarantine",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "research_array"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Research Array",
+      "Place: Research Array"
+    ]
+  },
+  {
+    "id": "SYS_88",
+    "title": "Relay Nexus",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Directorate garrison",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Forward base",
+        "resolveText": "Gain 1 fleet.",
+        "effects": [
+          {
+            "op": "gainFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_89",
+    "title": "Science Station",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Excavate",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "research_array"
+      },
+      {
+        "label": "Quarantine",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "research_array"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Research Array",
+      "Place: Research Array"
+    ]
+  },
+  {
+    "id": "SYS_90",
+    "title": "Military Station",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Trade nexus",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Research",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "research_array"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Place: Research Array"
+    ]
+  },
+  {
+    "id": "SYS_91",
+    "title": "Jungle Outpost",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Station",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Extract",
+        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_92",
+    "title": "Ocean Station",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Excavate",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "research_array"
+      },
+      {
+        "label": "Quarantine",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "research_array"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Research Array",
+      "Place: Research Array"
+    ]
+  },
+  {
+    "id": "SYS_93",
+    "title": "Colonial Hub",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Outpost",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Forward base",
+        "resolveText": "Gain 1 fleet.",
+        "effects": [
+          {
+            "op": "gainFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_94",
+    "title": "Port Epsilon",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Station",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Extract",
+        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Outpost"
+    ]
+  },
+  {
+    "id": "SYS_95",
+    "title": "Agri-Station",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Blessing",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Loot",
+        "resolveText": "Gain 3 credits. Cosmic tension +2.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 2
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "SYS_96",
+    "title": "Shipyard System",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Mine belt",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "mining_outpost"
+      },
+      {
+        "label": "Research",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "research_array"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Mining Outpost",
+      "Place: Research Array"
+    ]
+  },
+  {
+    "id": "SYS_97",
+    "title": "Asteroid Haven",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Establish route",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Extract",
+        "resolveText": "Gain 2 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          }
+        ],
+        "placeToken": "mining_outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Place: Mining Outpost"
+    ]
+  },
+  {
+    "id": "SYS_98",
+    "title": "Dwarf Colony",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Debris processing",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Clear",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "SYS_99",
+    "title": "Relay Base",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Establish route",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Extract",
+        "resolveText": "Gain 2 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          }
+        ],
+        "placeToken": "mining_outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Place: Mining Outpost"
+    ]
+  },
+  {
+    "id": "SYS_100",
+    "title": "Station Tertius",
+    "type": "system",
+    "choices": [
+      {
+        "label": "Relay station",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Mine",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "mining_outpost"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Place: Mining Outpost"
     ]
   }
 ]

@@ -18,6 +18,10 @@ export function initialState({ seed }) {
     capitalsByFaction: {},
     techByFaction: {},
     influence: {},
+    influenceBonusByHex: {}, // { [hexId]: { [factionId]: number } } — persistent influence bonuses
+    outpostByHex: {}, // { [hexId]: factionId } — Directorate outposts
+    beaconsByHex: {}, // { [hexId]: factionId } — Gatekeepers beacons
+    tradeRouteEdges: [], // { hexA, hexB, factionId } — Syndicate trade routes on edges
     visited: {},
     controllerByHex: {},
     contestedByHex: {},
@@ -57,8 +61,8 @@ export function initialState({ seed }) {
       pending: null // { deckType, card, hexId }
     },
     map: {
-      width: 7,
-      height: 7,
+      width: 9,
+      height: 9,
       hexes: [] // filled from hex_map.json
     },
     decks: {

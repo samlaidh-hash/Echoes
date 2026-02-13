@@ -1,79 +1,86 @@
 {
   "directorate": {
-    "1": {
-      "name": "Long Range Sensor Scan",
-      "text": "Scan an adjacent hex without moving.",
-      "effects": [{ "op": "revealHex", "count": 1 }],
-      "requiresTarget": true
-    },
-    "3": {
-      "name": "Recruit Fleet",
-      "text": "Gain 1 fleet.",
-      "effects": [{ "op": "recruitFleetCapital" }],
-      "requiresTarget": false
-    },
-    "8": {
-      "name": "Fleet Manoeuvre",
-      "text": "Move 1 hex (requires destination).",
-      "effects": [{ "op": "moveFleet", "range": 1 }],
-      "requiresTarget": true
-    },
-    "2": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #2 not implemented yet." }], "requiresTarget": false },
-    "4": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #4 not implemented yet." }], "requiresTarget": false },
-    "5": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #5 not implemented yet." }], "requiresTarget": false },
-    "6": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #6 not implemented yet." }], "requiresTarget": false },
-    "7": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #7 not implemented yet." }], "requiresTarget": false },
+    "1": { "name": "Recon", "text": "Scan 1 adjacent hex and gain +1 influence there.", "effects": [{ "op": "revealHex", "count": 1 }, { "op": "addInfluence", "amount": 1 }], "requiresTarget": true },
+    "2": { "name": "Survey", "text": "Gain 1 credit.", "effects": [{ "op": "gainResource", "resource": "credits", "amount": 1 }], "requiresTarget": false },
+    "3": { "name": "Recruit Fleet", "text": "Gain 1 fleet at capital.", "effects": [{ "op": "recruitFleetCapital" }], "requiresTarget": false },
+    "4": { "name": "Extract", "text": "Gain 1 energy.", "effects": [{ "op": "gainResource", "resource": "energy", "amount": 1 }], "requiresTarget": false },
+    "5": { "name": "Repair", "text": "Repair 1 damaged fleet.", "effects": [{ "op": "repairFleet" }], "requiresTarget": true },
+    "6": { "name": "Establish Outpost", "text": "Place an outpost (+2 influence) in a hex with your fleet.", "effects": [{ "op": "placeOutpost" }], "requiresTarget": true },
+    "7": { "name": "Long Range Probe", "text": "Scan 1 hex within 2 steps (extended range) and gain +1 influence there.", "effects": [{ "op": "revealHex", "count": 1, "range": 2 }, { "op": "addInfluence", "amount": 1 }], "requiresTarget": true },
+    "8": { "name": "Trade Route", "text": "Gain 1 credit per controlled system plus 1 per outpost you control.", "effects": [{ "op": "gainCreditsFromControlled", "includeOutposts": true }], "requiresTarget": false },
+    "9": { "name": "Forward Deploy", "text": "Recruit 1 fleet in a system you control.", "effects": [{ "op": "forwardDeploy" }], "requiresTarget": true },
+    "10": { "name": "Activate System", "text": "Activate a controlled system (3 credits to controller).", "effects": [{ "op": "activateSystem" }], "requiresTarget": true },
+    "11": { "name": "Fast Deployment", "text": "Move up to 2 hexes (no enemy entry).", "effects": [{ "op": "fastDeploy", "range": 2, "canEngage": false }], "requiresTarget": true },
+    "12": { "name": "Field Repair", "text": "Repair all damaged fleets in a hex.", "effects": [{ "op": "repairFleet", "amount": 99 }], "requiresTarget": true }
+  },
+  "choir": {
+    "1": { "name": "Data Probe", "text": "Peek the top card of a deck.", "effects": [{ "op": "peekDeckTop" }], "requiresTarget": false },
+    "2": { "name": "Echo Tap", "text": "Peek top of system deck; gain 1 credit if it's a system card.", "effects": [{ "op": "peekDeckTop", "deckType": "system", "gainCreditIfSystem": true }], "requiresTarget": false },
+    "3": { "name": "Resonate", "text": "Gain 1 fleet at capital.", "effects": [{ "op": "recruitFleetCapital" }], "requiresTarget": false },
+    "4": { "name": "Probability Drift", "text": "Modify one die by ±1 (once per round).", "effects": [{ "op": "modifyDie", "delta": 1 }], "requiresTarget": false },
+    "5": { "name": "Oracle Scan", "text": "Reveal 1 adjacent hex and peek the top card of that deck (if it has a deck type).", "effects": [{ "op": "revealHex", "count": 1, "peekDeck": true }], "requiresTarget": true },
+    "6": { "name": "Harmonic Shift", "text": "Gain 1 energy.", "effects": [{ "op": "gainResource", "resource": "energy", "amount": 1 }], "requiresTarget": false },
+    "7": { "name": "Phase Probe", "text": "Scan 1 hex within 2 steps (extended range); peek top of phenomena deck.", "effects": [{ "op": "revealHex", "count": 1, "range": 2 }, { "op": "peekDeckTop", "deckType": "phenomena" }], "requiresTarget": true },
+    "8": { "name": "Signal Harvest", "text": "Gain 1 credit per controlled system (min 1).", "effects": [{ "op": "gainCreditsFromControlled" }], "requiresTarget": false },
+    "9": { "name": "Forward Deploy", "text": "Recruit 1 fleet in a system you control.", "effects": [{ "op": "forwardDeploy" }], "requiresTarget": true },
+    "10": { "name": "Activate System", "text": "Activate a controlled system for rewards.", "effects": [{ "op": "activateSystem" }], "requiresTarget": true },
+    "11": { "name": "Phase Jump", "text": "Move up to 2 hexes (no enemy entry).", "effects": [{ "op": "fastDeploy", "range": 2, "canEngage": false }], "requiresTarget": true },
+    "12": { "name": "Phase Repair", "text": "Repair all damaged fleets in a hex.", "effects": [{ "op": "repairFleet", "amount": 99 }], "requiresTarget": true }
+  },
+  "bloom": {
+    "1": { "name": "Spore Drift", "text": "Seed biomass on your current hex.", "effects": [{ "op": "placeToken", "tokenId": "biomass" }], "requiresTarget": false },
+    "2": { "name": "Replicate", "text": "Gain 1 fleet.", "effects": [{ "op": "gainFleet", "amount": 1 }], "requiresTarget": false },
+    "3": { "name": "Bloom", "text": "Gain 1 fleet at capital.", "effects": [{ "op": "recruitFleetCapital" }], "requiresTarget": false },
+    "4": { "name": "Absorb", "text": "Gain 1 credit per biomass hex you control or are adjacent to (min 1).", "effects": [{ "op": "gainCreditsFromBiomass" }], "requiresTarget": false },
+    "5": { "name": "Spore Probe", "text": "Reveal 1 adjacent hex; if empty or system, place biomass there.", "effects": [{ "op": "revealHex", "count": 1 }, { "op": "placeBiomassIfEmptyOrSystem" }], "requiresTarget": true },
+    "6": { "name": "Spread", "text": "Seed biomass on an adjacent hex.", "effects": [{ "op": "placeTokenAdjacent", "tokenId": "biomass" }], "requiresTarget": true },
+    "7": { "name": "Deep Probe", "text": "Scan 1 hex within 2 steps (extended range).", "effects": [{ "op": "revealHex", "count": 1, "range": 2 }], "requiresTarget": true },
+    "8": { "name": "Mycelium", "text": "Gain 1 credit per controlled system plus 1 per biomass hex you control.", "effects": [{ "op": "gainCreditsFromControlled", "includeBiomass": true }], "requiresTarget": false },
+    "9": { "name": "Forward Deploy", "text": "Recruit 1 fleet in a system you control.", "effects": [{ "op": "forwardDeploy" }], "requiresTarget": true },
+    "10": { "name": "Activate System", "text": "Activate a controlled system for rewards.", "effects": [{ "op": "activateSystem" }], "requiresTarget": true },
+    "11": { "name": "Rapid Spread", "text": "Move up to 2 hexes (no enemy entry).", "effects": [{ "op": "fastDeploy", "range": 2, "canEngage": false }], "requiresTarget": true },
+    "12": { "name": "Regenerate", "text": "Repair all damaged fleets in a hex.", "effects": [{ "op": "repairFleet", "amount": 99 }], "requiresTarget": true }
+  },
+  "salvagers": {
+    "1": { "name": "Scrap", "text": "Place debris in a hex with your fleet.", "effects": [{ "op": "placeDebris" }], "requiresTarget": false },
+    "2": { "name": "Salvage", "text": "Gain 1 credit per debris hex you control or are adjacent to (min 1).", "effects": [{ "op": "salvageFromHex" }], "requiresTarget": false },
+    "3": { "name": "Strip", "text": "Gain 1 fleet at capital.", "effects": [{ "op": "recruitFleetCapital" }], "requiresTarget": false },
+    "4": { "name": "Junk Heap", "text": "Gain 1 energy.", "effects": [{ "op": "gainResource", "resource": "energy", "amount": 1 }], "requiresTarget": false },
+    "5": { "name": "Probe", "text": "Reveal 1 adjacent hex.", "effects": [{ "op": "revealHex", "count": 1 }], "requiresTarget": true },
+    "6": { "name": "Place Debris", "text": "Place debris on an adjacent hex.", "effects": [{ "op": "placeTokenAdjacent", "tokenId": "debris_field" }], "requiresTarget": true },
+    "7": { "name": "Deep Salvage", "text": "Scan 1 hex within 2 steps.", "effects": [{ "op": "revealHex", "count": 1, "range": 2 }], "requiresTarget": true },
+    "8": { "name": "Scrap Yard", "text": "Gain 1 credit per debris hex you control (min 1).", "effects": [{ "op": "gainCreditsFromDebris" }], "requiresTarget": false },
+    "9": { "name": "Forward Deploy", "text": "Recruit 1 fleet in a system you control.", "effects": [{ "op": "forwardDeploy" }], "requiresTarget": true },
+    "10": { "name": "Activate System", "text": "Activate a controlled system for rewards.", "effects": [{ "op": "activateSystem" }], "requiresTarget": true },
+    "11": { "name": "Scrap Run", "text": "Move up to 2 hexes (no enemy entry). No cost to enter debris.", "effects": [{ "op": "fastDeploy", "range": 2, "canEngage": false, "salvagerMove": true }], "requiresTarget": true },
+    "12": { "name": "Field Repair", "text": "Repair all damaged fleets in a hex.", "effects": [{ "op": "repairFleet", "amount": 99 }], "requiresTarget": true }
+  },
+  "gatekeepers": {
+    "1": { "name": "Activate Beacon", "text": "Place a beacon in a hex with your fleet.", "effects": [{ "op": "placeBeacon" }], "requiresTarget": false },
+    "2": { "name": "Relay", "text": "Gain 1 credit.", "effects": [{ "op": "gainResource", "resource": "credits", "amount": 1 }], "requiresTarget": false },
+    "3": { "name": "Resonate", "text": "Gain 1 fleet at capital.", "effects": [{ "op": "recruitFleetCapital" }], "requiresTarget": false },
+    "4": { "name": "Beacon Scan", "text": "Reveal 1 adjacent hex.", "effects": [{ "op": "revealHex", "count": 1 }], "requiresTarget": true },
+    "5": { "name": "Cautious Advance", "text": "Move 1 hex (slower than other factions).", "effects": [{ "op": "fastDeploy", "range": 1, "canEngage": false }], "requiresTarget": true },
+    "6": { "name": "Harmonic Shift", "text": "Gain 1 energy.", "effects": [{ "op": "gainResource", "resource": "energy", "amount": 1 }], "requiresTarget": false },
+    "7": { "name": "Beacon Probe", "text": "Scan 1 hex within 2 steps.", "effects": [{ "op": "revealHex", "count": 1, "range": 2 }], "requiresTarget": true },
+    "8": { "name": "Signal Harvest", "text": "Gain 1 credit per controlled system (min 1).", "effects": [{ "op": "gainCreditsFromControlled" }], "requiresTarget": false },
+    "9": { "name": "Forward Deploy", "text": "Recruit 1 fleet in a system you control.", "effects": [{ "op": "forwardDeploy" }], "requiresTarget": true },
+    "10": { "name": "Activate System", "text": "Activate a controlled system for rewards.", "effects": [{ "op": "activateSystem" }], "requiresTarget": true },
+    "11": { "name": "Relay Jump", "text": "Move beacon-to-beacon only (instant).", "effects": [{ "op": "relayMove" }], "requiresTarget": true },
+    "12": { "name": "Phase Repair", "text": "Repair all damaged fleets in a hex.", "effects": [{ "op": "repairFleet", "amount": 99 }], "requiresTarget": true }
+  },
+  "syndicate": {
+    "1": { "name": "Establish Route", "text": "Place a trade route on an edge between two hexes you control.", "effects": [{ "op": "placeTradeRoute" }], "requiresTarget": true },
+    "2": { "name": "Caravan", "text": "Gain 1 credit per trade route edge you control (min 1).", "effects": [{ "op": "gainFromTradeRoute" }], "requiresTarget": false },
+    "3": { "name": "Resonate", "text": "Gain 1 fleet at capital.", "effects": [{ "op": "recruitFleetCapital" }], "requiresTarget": false },
+    "4": { "name": "Survey", "text": "Reveal 1 adjacent hex.", "effects": [{ "op": "revealHex", "count": 1 }], "requiresTarget": true },
+    "5": { "name": "Phase Scan", "text": "Reveal 1 adjacent hex.", "effects": [{ "op": "revealHex", "count": 1 }], "requiresTarget": true },
+    "6": { "name": "Extract", "text": "Gain 1 energy.", "effects": [{ "op": "gainResource", "resource": "energy", "amount": 1 }], "requiresTarget": false },
+    "7": { "name": "Long Range Probe", "text": "Scan 1 hex within 2 steps.", "effects": [{ "op": "revealHex", "count": 1, "range": 2 }], "requiresTarget": true },
+    "8": { "name": "Trade Network", "text": "Gain 1 credit per controlled system plus 1 per trade route edge (min 1).", "effects": [{ "op": "gainCreditsFromControlled", "includeTradeRoutes": true }], "requiresTarget": false },
     "9": { "name": "Forward Deploy", "text": "Recruit 1 fleet in a system you control.", "effects": [{ "op": "forwardDeploy" }], "requiresTarget": true },
     "10": { "name": "Activate System", "text": "Activate a controlled system for rewards.", "effects": [{ "op": "activateSystem" }], "requiresTarget": true },
     "11": { "name": "Fast Deployment", "text": "Move up to 2 hexes (no enemy entry).", "effects": [{ "op": "fastDeploy", "range": 2, "canEngage": false }], "requiresTarget": true },
-    "12": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #12 not implemented yet." }], "requiresTarget": false },
-    "13": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #13 not implemented yet." }], "requiresTarget": false },
-    "14": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #14 not implemented yet." }], "requiresTarget": false },
-    "15": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #15 not implemented yet." }], "requiresTarget": false },
-    "16": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #16 not implemented yet." }], "requiresTarget": false },
-    "17": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #17 not implemented yet." }], "requiresTarget": false },
-    "18": { "name": "Stub", "text": "Not implemented yet.", "effects": [{ "op": "log", "message": "Directorate action #18 not implemented yet." }], "requiresTarget": false }
-  },
-  "choir": {
-    "1": {
-      "name": "Data Probe",
-      "text": "Peek the top card of a deck.",
-      "effects": [{ "op": "peekDeckTop" }],
-      "requiresTarget": false
-    },
-    "4": {
-      "name": "Probability Drift",
-      "text": "Modify one of your dice by ±1 (once per round).",
-      "effects": [{ "op": "modifyDie", "delta": 1 }],
-      "requiresTarget": false
-    },
-    "7": {
-      "name": "Phase Unit",
-      "text": "Move 1 hex.",
-      "effects": [{ "op": "moveFleet", "range": 1, "phase": true }],
-      "requiresTarget": true
-    },
-    "10": { "name": "Activate System", "text": "Activate a controlled system for rewards.", "effects": [{ "op": "activateSystem" }], "requiresTarget": true }
-  },
-  "bloom": {
-    "1": {
-      "name": "Spore Drift",
-      "text": "Seed biomass on your current hex.",
-      "effects": [{ "op": "placeToken", "tokenId": "biomass" }],
-      "requiresTarget": false
-    },
-    "2": {
-      "name": "Replicate",
-      "text": "Gain 1 fleet.",
-      "effects": [{ "op": "gainFleet", "amount": 1 }],
-      "requiresTarget": false
-    },
-    "6": {
-      "name": "Spread",
-      "text": "Seed biomass on an adjacent hex.",
-      "effects": [{ "op": "placeTokenAdjacent", "tokenId": "biomass" }],
-      "requiresTarget": true
-    },
-    "10": { "name": "Activate System", "text": "Activate a controlled system for rewards.", "effects": [{ "op": "activateSystem" }], "requiresTarget": true }
+    "12": { "name": "Field Repair", "text": "Repair all damaged fleets in a hex.", "effects": [{ "op": "repairFleet", "amount": 99 }], "requiresTarget": true }
   }
 }

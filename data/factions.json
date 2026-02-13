@@ -1,5 +1,8 @@
 [
   { "id": "directorate", "name": "The Directorate" },
   { "id": "choir", "name": "The Choir of Glass" },
-  { "id": "bloom", "name": "The Bloom" }
+  { "id": "bloom", "name": "The Bloom" },
+  { "id": "salvagers", "name": "The Salvagers" },
+  { "id": "gatekeepers", "name": "The Gatekeepers" },
+  { "id": "syndicate", "name": "The Syndicate" }
 ]

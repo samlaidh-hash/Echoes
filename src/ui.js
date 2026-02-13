@@ -1,4 +1,4 @@
-import { computeAvailableActions, countFleets } from "./rules.js";
+import { computeAvailableActions, countFleets, getHexesWithinRange } from "./rules.js";
 
 function el(tag, attrs = {}, children = []) {
   const node = document.createElement(tag);
@@ -58,14 +58,13 @@ function getAdjacentHexesForUi(state, hexId) {
 
 function factionGlyph(factionId) {
   switch (String(factionId).toLowerCase()) {
-    case "directorate":
-      return "⛨";
-    case "choir":
-      return "◈";
-    case "bloom":
-      return "❖";
-    default:
-      return "?";
+    case "directorate": return "⛨";
+    case "choir": return "◈";
+    case "bloom": return "❖";
+    case "salvagers": return "⚙";
+    case "gatekeepers": return "✶";
+    case "syndicate": return "⇄";
+    default: return "?";
   }
 }
 
@@ -75,14 +74,13 @@ function factionClass(factionId) {
 
 function fleetGlyph(factionId) {
   switch (String(factionId).toLowerCase()) {
-    case "directorate":
-      return "■";
-    case "choir":
-      return "◆";
-    case "bloom":
-      return "●";
-    default:
-      return "■";
+    case "directorate": return "■";
+    case "choir": return "◆";
+    case "bloom": return "●";
+    case "salvagers": return "⚙";
+    case "gatekeepers": return "✶";
+    case "syndicate": return "◇";
+    default: return "■";
   }
 }
 
@@ -104,6 +102,11 @@ function renderTrack(label, value, max, trackClass) {
   ]);
 }
 
+function renderHudCompact(label, value, max) {
+  const v = Math.max(0, Math.min(max, value ?? 0));
+  return el("div", { class: "hud-compact" }, [`${label}: ${v}/${max}`]);
+}
+
 function renderHud(state) {
   const hud = document.getElementById("hud");
   if (!hud) return;
@@ -117,8 +120,8 @@ function renderHud(state) {
     }, 0);
     const panel = el("div", { class: `hud-panel ${factionClass(player.factionId)}` }, [
       el("div", { class: "hud-title" }, [`${factionGlyph(player.factionId)} ${factionName(state, player.factionId)}`]),
-      renderTrack("Credits", player.credits, 20, "track-credits"),
-      renderTrack("Energy", player.energy, 20, "track-energy"),
+      renderHudCompact("C", player.credits, 20),
+      renderHudCompact("E", player.energy, 20),
       el("div", { class: "track-label" }, [`Fleets: ${totalFleets}`])
     ]);
     factionRow.appendChild(panel);
@@ -126,7 +129,7 @@ function renderHud(state) {
 
   const tensionPanel = el("div", { class: "hud-panel hud-tension" }, [
     el("div", { class: "hud-title" }, ["Cosmic Tension"]),
-    renderTrack("Tension", state.cosmicTension ?? 0, 20, "track-tension")
+    renderHudCompact("T", state.cosmicTension ?? 0, 20)
   ]);
 
   hud.appendChild(factionRow);
@@ -137,17 +140,29 @@ function renderHud(state) {
 function renderMap(state, handlers) {
   const map = document.getElementById("map");
   map.classList.toggle("targeting", state.ui.mode === "targeting");
+  map.style.setProperty("--map-cols", String(state.map.width ?? 9));
   map.innerHTML = "";
 
   const activeFaction = String(state.players?.[state.turn?.activePlayerIndex ?? 0]?.factionId ?? "").toLowerCase();
   const awaitingAction = state.ui.pendingAction?.actionDef ?? null;
   const needsTarget = state.ui.mode === "targeting" && !!awaitingAction?.requiresTarget;
-  const isFast = (awaitingAction?.effects ?? []).some(e => e.op === "fastDeploy");
-  const isMove = (awaitingAction?.effects ?? []).some(e => e.op === "moveFleet" || e.op === "fastDeploy");
+  const fastEffect = (awaitingAction?.effects ?? []).find(e => e.op === "fastDeploy");
+  const isFast = !!fastEffect;
+  const moveRange = fastEffect?.range ?? 2;
+  const isRelay = (awaitingAction?.effects ?? []).some(e => e.op === "relayMove");
+  const isMove = (awaitingAction?.effects ?? []).some(e => e.op === "moveFleet" || e.op === "fastDeploy" || e.op === "relayMove");
   const isScan = (awaitingAction?.effects ?? []).some(e => e.op === "revealHex");
+  const revealEffect = (awaitingAction?.effects ?? []).find(e => e.op === "revealHex");
+  const revealCount = revealEffect?.count ?? 1;
+  const revealRange = revealEffect?.range ?? 1;
+  const isScanRange2 = isScan && revealRange > 1;
   const isAdjacentToken = (awaitingAction?.effects ?? []).some(e => e.op === "placeTokenAdjacent");
   const isForwardDeploy = (awaitingAction?.effects ?? []).some(e => e.op === "forwardDeploy");
   const isActivate = (awaitingAction?.effects ?? []).some(e => e.op === "activateSystem");
+  const isRepair = (awaitingAction?.effects ?? []).some(e => e.op === "repairFleet");
+  const isPlaceOutpost = (awaitingAction?.effects ?? []).some(e => e.op === "placeOutpost");
+  const isPlaceTradeRoute = (awaitingAction?.effects ?? []).some(e => e.op === "placeTradeRoute");
+  const isReconOrigin = isScan && revealCount > 1 && revealRange === 1;
 
   for (const hex of state.map.hexes) {
     const fogged = !hex.revealed;
@@ -168,17 +183,48 @@ function renderMap(state, handlers) {
           const count = (entry?.undamaged?.length ?? 0) + (entry?.damaged?.length ?? 0);
           return count > 0;
         }
-        const first = getAdjacentHexesForUi(state, sel.hexId);
-        if (first.some(h => h.id === hex.id)) return true;
-        if (isFast) {
-          const second = first.flatMap(h => getAdjacentHexesForUi(state, h.id));
-          return second.some(h => h.id === hex.id);
+        if (isRelay) {
+          return state.beaconsByHex?.[hex.id] === activeFaction && hex.id !== sel.hexId;
         }
-        return false;
+        let frontier = [state.map.hexes.find(h => h.id === sel.hexId)].filter(Boolean);
+        const reachable = new Set([sel.hexId]);
+        for (let r = 0; r < moveRange; r++) {
+          const next = [];
+          for (const h of frontier) {
+            for (const n of getAdjacentHexesForUi(state, h.id)) {
+              if (!reachable.has(n.id)) { reachable.add(n.id); next.push(n); }
+            }
+          }
+          frontier = next;
+        }
+        return reachable.has(hex.id);
       }
-      if (isAdjacentToken || isScan) {
+      if (isScanRange2) {
+        const fleetHexes = Object.keys(state.fleetsByHex ?? {}).filter(h => state.fleetsByHex[h]?.[activeFaction]);
+        return fleetHexes.some(hId => getHexesWithinRange(state, hId, revealRange).some(h => h.id === hex.id));
+      }
+      if (isAdjacentToken || (isScan && !isReconOrigin)) {
         const fleetHexes = Object.keys(state.fleetsByHex ?? {}).filter(h => state.fleetsByHex[h]?.[activeFaction]);
         return fleetHexes.some(hId => getAdjacentHexesForUi(state, hId).some(h => h.id === hex.id));
+      }
+      if (isReconOrigin) {
+        const entry = state.fleetsByHex?.[hex.id]?.[activeFaction];
+        return entry && ((entry?.undamaged?.length ?? 0) + (entry?.damaged?.length ?? 0)) > 0;
+      }
+      if (isRepair) {
+        const entry = state.fleetsByHex?.[hex.id]?.[activeFaction];
+        return entry && (entry?.damaged?.length ?? 0) > 0;
+      }
+      if (isPlaceOutpost) {
+        const entry = state.fleetsByHex?.[hex.id]?.[activeFaction];
+        return entry && ((entry?.undamaged?.length ?? 0) + (entry?.damaged?.length ?? 0)) > 0;
+      }
+      if (isPlaceTradeRoute) {
+        const fleetHex = Object.keys(state.fleetsByHex ?? {}).find(h => state.fleetsByHex[h]?.[activeFaction]);
+        if (!fleetHex) return false;
+        const adj = getAdjacentHexesForUi(state, fleetHex).some(h => h.id === hex.id);
+        const controlled = state.controllerByHex?.[hex.id] === activeFaction && !state.contestedByHex?.[hex.id];
+        return adj && controlled;
       }
       if (isForwardDeploy || isActivate) {
         const controlled = state.controllerByHex?.[hex.id] === activeFaction;
@@ -349,14 +395,29 @@ function renderActions(state, handlers) {
     }, [`Bonus ${dice?.bonus ?? "-"}`]) : null
   ]);
 
-  const rollBtn = el("button", { class: "btn", type: "button", disabled: state.ui.mode !== "idle" }, ["Roll"]);
+  const rollBtn = el("button", { class: "btn", type: "button", disabled: state.ui.mode !== "idle", "data-testid": "roll-btn" }, ["Roll"]);
   rollBtn.addEventListener("click", () => handlers.onRollRoundDice());
+
+  const allDiceUsed = (dice?.a != null && used?.a) && (dice?.b != null && used?.b) &&
+    (!dice?.bonus || used?.bonus);
+  const noDiceYet = dice?.a == null && dice?.b == null;
+  const hasAvailableActions = Object.entries(state.ui.availableActionOptions ?? {}).some(
+    ([, opts]) => Array.isArray(opts) && opts.length > 0
+  );
+  const canEndTurn = noDiceYet || allDiceUsed || !hasAvailableActions;
+  const nextPlayerBtn = el("button", {
+    class: "btn",
+    type: "button",
+    disabled: state.ui.mode !== "idle" || !canEndTurn,
+    "data-testid": "next-player"
+  }, ["Next Player"]);
+  nextPlayerBtn.addEventListener("click", () => handlers.onNextPlayer?.());
 
   const performBtn = el("button", {
     class: "btn",
     type: "button",
-    disabled: state.ui.mode === "modal",
-    "data-testid": "perform-action"
+    "data-testid": "perform-action-btn",
+    disabled: state.ui.mode === "modal"
   }, ["Perform Action"]);
   performBtn.addEventListener("click", () => handlers.onPerformAction());
 
@@ -370,15 +431,26 @@ function renderActions(state, handlers) {
     const isForward = (actionDef?.effects ?? []).some(e => e.op === "forwardDeploy");
     const isMove = (actionDef?.effects ?? []).some(e => e.op === "moveFleet");
     const isScan = (actionDef?.effects ?? []).some(e => e.op === "revealHex");
+    const revealEffect = (actionDef?.effects ?? []).find(e => e.op === "revealHex");
+    const revealCount = revealEffect?.count ?? 1;
+    const revealRange = revealEffect?.range ?? 1;
+    const isRepair = (actionDef?.effects ?? []).some(e => e.op === "repairFleet");
     if (isForward) hint = "Select a controlled system to deploy to.";
     else if (isMove) hint = "Select an adjacent hex to move into.";
-    else if (isScan) hint = "Select an adjacent hex to scan.";
+    else if (isScan) {
+      if (revealRange > 1) hint = `Select a hex within ${revealRange} steps of a fleet to scan.`;
+      else if (revealCount > 1) hint = "Select a fleet hex (origin) to reveal 2 adjacent.";
+      else hint = "Select an adjacent hex to scan.";
+    }
+    else if (isRepair) hint = "Select a hex with damaged fleet(s).";
+    else if ((actionDef?.effects ?? []).some(e => e.op === "placeOutpost")) hint = "Select a hex with your fleet.";
     else hint = "Select a valid target.";
   }
   if (state.ui.mode === "modal") hint = "Resolve current event first.";
 
   const diceArea = el("div", { class: "action-dice" }, [
     rollBtn,
+    nextPlayerBtn,
     dicePills,
     el("div", { class: "action-hint" }, [hint]),
     performBtn
@@ -402,7 +474,8 @@ function renderActions(state, handlers) {
         class: classes,
         type: "button",
         disabled: state.ui.mode === "modal",
-        title: entry?.text ?? ""
+        title: entry?.text ?? "",
+        "data-testid": `action-${key}`
       }, [
         el("span", { class: "action-num" }, [`#${key}`]),
         el("span", { class: "action-name" }, [entry?.name ?? "Action"])
@@ -416,8 +489,7 @@ function renderActions(state, handlers) {
 
   const actionsArea = el("div", { class: "action-groups" }, [
     makeGroup("1–6", ["1", "2", "3", "4", "5", "6"]),
-    makeGroup("7–12", ["7", "8", "9", "10", "11", "12"]),
-    makeGroup("13–18", ["13", "14", "15", "16", "17", "18"])
+    makeGroup("7–12", ["7", "8", "9", "10", "11", "12"])
   ]);
 
   const bar = el("div", { class: "action-bar" }, [

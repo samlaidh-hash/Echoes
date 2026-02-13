@@ -1,12 +1,183 @@
 [
   {
     "id": "PHE_01",
-    "title": "Dead Civilization",
+    "title": "Collapsed Megastructure",
     "type": "phenomena",
     "choices": [
       {
-        "label": "Study remains",
-        "resolveText": "Gain 1 energy and reveal 1 adjacent hex.",
+        "label": "Excavate",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "ruins"
+      },
+      {
+        "label": "Seal",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Ruins",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_02",
+    "title": "Phase Gate",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Place beacon",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Study",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_03",
+    "title": "Fragmented Gate",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Excavate",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "ruins"
+      },
+      {
+        "label": "Seal",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Ruins",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_04",
+    "title": "Cosmic Ruins",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Excavate",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "ruins"
+      },
+      {
+        "label": "Seal",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Ruins",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_05",
+    "title": "Void Maw",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Activate gate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Scrap",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_06",
+    "title": "Phase Boundary",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Study",
+        "resolveText": "Gain 1 energy. Reveal 1 adjacent hex.",
         "effects": [
           {
             "op": "gainResource",
@@ -21,8 +192,8 @@
         "placeToken": "ruins"
       },
       {
-        "label": "Harvest tech",
-        "resolveText": "Gain 3 credits, cosmic tension +1.",
+        "label": "Harvest",
+        "resolveText": "Gain 3 credits. Cosmic tension +1.",
         "effects": [
           {
             "op": "gainResource",
@@ -37,11 +208,667 @@
         "placeToken": "ruins"
       }
     ],
-    "placeNote": "Place: Ruins"
+    "placeNoteByChoiceIndex": [
+      "Place: Ruins",
+      "Place: Ruins"
+    ]
   },
   {
-    "id": "PHE_02",
-    "title": "Ancient Jump Gate",
+    "id": "PHE_07",
+    "title": "Nebula Void",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Place beacon",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Study",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_08",
+    "title": "Elder Relic",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Place beacon",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Study",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_09",
+    "title": "The Singing Star",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Salvage",
+        "resolveText": "Gain 3 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Mark",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "derelict"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Place: Derelict"
+    ]
+  },
+  {
+    "id": "PHE_10",
+    "title": "Dead Civilization",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Place beacon",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Harvest",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "PHE_11",
+    "title": "Gravitational Lens",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Study",
+        "resolveText": "Gain 1 energy. Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          },
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "ruins"
+      },
+      {
+        "label": "Harvest",
+        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Ruins",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_12",
+    "title": "Frozen Anomaly",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Study",
+        "resolveText": "Gain 1 energy. Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          },
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "ruins"
+      },
+      {
+        "label": "Harvest",
+        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Ruins",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_13",
+    "title": "Gravity Gate",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Place beacon",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Harvest",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "PHE_14",
+    "title": "Precursor Gate",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Trade route",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Avoid",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "PHE_15",
+    "title": "Gate Anomaly",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Study horizon",
+        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      },
+      {
+        "label": "Harvest matter",
+        "resolveText": "Gain 5 credits. Lose 1 fleet.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 5
+          },
+          {
+            "op": "loseFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Anomaly",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "PHE_16",
+    "title": "Gate Remnant",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Place beacon",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Harvest",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "PHE_17",
+    "title": "Magnetic Anomaly",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Reactivate gate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Scrap",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_18",
+    "title": "Scattered Anomaly",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Map rift",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      },
+      {
+        "label": "Harvest",
+        "resolveText": "Gain 3 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Anomaly",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "PHE_19",
+    "title": "Rift Ruins",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Stabilize",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Drain",
+        "resolveText": "Gain 2 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          }
+        ],
+        "placeToken": "gate"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Gate"
+    ]
+  },
+  {
+    "id": "PHE_20",
+    "title": "Gravity Void",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Study",
+        "resolveText": "Gain 1 energy. Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          },
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "ruins"
+      },
+      {
+        "label": "Harvest",
+        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Ruins",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_21",
+    "title": "Megastructure Anomaly",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Map rift",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      },
+      {
+        "label": "Harvest",
+        "resolveText": "Gain 3 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Anomaly",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "PHE_22",
+    "title": "Megastructure Debris",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Harvest",
+        "resolveText": "Gain 2 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          }
+        ],
+        "placeToken": "anomaly"
+      },
+      {
+        "label": "Study",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Anomaly",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "PHE_23",
+    "title": "Elder Pulse",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Stabilize",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Drain",
+        "resolveText": "Gain 2 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          }
+        ],
+        "placeToken": "gate"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Gate"
+    ]
+  },
+  {
+    "id": "PHE_24",
+    "title": "Dimensional Rift",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Establish route",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Avoid",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "PHE_25",
+    "title": "Reality Anomaly",
     "type": "phenomena",
     "choices": [
       {
@@ -74,13 +901,392 @@
     ]
   },
   {
-    "id": "PHE_03",
-    "title": "Black Hole Choir",
+    "id": "PHE_26",
+    "title": "Star Storm",
     "type": "phenomena",
     "choices": [
       {
-        "label": "Study event horizon",
-        "resolveText": "Gain 2 energy, cosmic tension +1.",
+        "label": "Establish route",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Avoid",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "PHE_27",
+    "title": "Nebula Ruins",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Reactivate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Dismantle",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_28",
+    "title": "Whispering Rift",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Excavate",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "ruins"
+      },
+      {
+        "label": "Seal",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Ruins",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_29",
+    "title": "Screaming Nebula",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Harvest",
+        "resolveText": "Gain 2 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          }
+        ],
+        "placeToken": "anomaly"
+      },
+      {
+        "label": "Study",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Anomaly",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "PHE_30",
+    "title": "Scattered Relics",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Reactivate gate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Scrap",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_31",
+    "title": "Silent Gate",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Stabilize",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Drain",
+        "resolveText": "Gain 2 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          }
+        ],
+        "placeToken": "gate"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Gate"
+    ]
+  },
+  {
+    "id": "PHE_32",
+    "title": "Screaming Gate",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Harvest energy",
+        "resolveText": "Gain 3 energy. Lose 1 fleet.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 3
+          },
+          {
+            "op": "loseFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "hazard"
+      },
+      {
+        "label": "Silence",
+        "resolveText": "Cosmic tension +2.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 2
+          }
+        ],
+        "placeToken": "hazard"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Hazard",
+      "Place: Hazard"
+    ]
+  },
+  {
+    "id": "PHE_33",
+    "title": "Frozen Gate",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Place beacon",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Harvest",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "PHE_34",
+    "title": "Dead Star Gate",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Harvest",
+        "resolveText": "Gain 2 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          }
+        ],
+        "placeToken": "anomaly"
+      },
+      {
+        "label": "Study",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Anomaly",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "PHE_35",
+    "title": "Void Singer",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Trade route",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Avoid",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "PHE_36",
+    "title": "Void Storm",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Harvest",
+        "resolveText": "Gain 2 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          }
+        ],
+        "placeToken": "anomaly"
+      },
+      {
+        "label": "Study",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Anomaly",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "PHE_37",
+    "title": "Nebula Anomaly",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Study horizon",
+        "resolveText": "Gain 2 energy. Cosmic tension +1.",
         "effects": [
           {
             "op": "gainResource",
@@ -96,7 +1302,7 @@
       },
       {
         "label": "Harvest matter",
-        "resolveText": "Gain 5 credits, lose 1 fleet.",
+        "resolveText": "Gain 5 credits. Lose 1 fleet.",
         "effects": [
           {
             "op": "gainResource",
@@ -111,16 +1317,483 @@
         "placeToken": "anomaly"
       }
     ],
-    "placeNote": "Place: Anomaly"
+    "placeNoteByChoiceIndex": [
+      "Place: Anomaly",
+      "Place: Anomaly"
+    ]
   },
   {
-    "id": "PHE_04",
-    "title": "The Singing Star",
+    "id": "PHE_38",
+    "title": "Dead Star Remnant",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Establish route",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Avoid",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "PHE_39",
+    "title": "Supernova Remnant",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Trade route",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Avoid",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "PHE_40",
+    "title": "Black Hole Choir",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Reactivate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Dismantle",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_41",
+    "title": "Phase Storm",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Activate gate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Scrap",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_42",
+    "title": "Star Anomaly",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Reactivate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Dismantle",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_43",
+    "title": "Screaming Rift",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Outpost",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Reveal",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "PHE_44",
+    "title": "Gravity Well",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Outpost",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Reveal",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "PHE_45",
+    "title": "Phase Ruins",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Study horizon",
+        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      },
+      {
+        "label": "Harvest matter",
+        "resolveText": "Gain 5 credits. Lose 1 fleet.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 5
+          },
+          {
+            "op": "loseFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Anomaly",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "PHE_46",
+    "title": "Nebula Pulse",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Place beacon",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Harvest",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "PHE_47",
+    "title": "Echoing Anomaly",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Stabilize",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Drain",
+        "resolveText": "Gain 2 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          }
+        ],
+        "placeToken": "gate"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Gate"
+    ]
+  },
+  {
+    "id": "PHE_48",
+    "title": "Spatial Gate",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Reactivate gate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Scrap",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_49",
+    "title": "Collapsed Gate",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Excavate",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "ruins"
+      },
+      {
+        "label": "Seal",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Ruins",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_50",
+    "title": "Neutron Pulse",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Outpost",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Reveal",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "PHE_51",
+    "title": "Buried Gate",
     "type": "phenomena",
     "choices": [
       {
         "label": "Harvest energy",
-        "resolveText": "Gain 3 energy, lose 1 fleet.",
+        "resolveText": "Gain 3 energy. Lose 1 fleet.",
         "effects": [
           {
             "op": "gainResource",
@@ -132,10 +1805,10 @@
             "amount": 1
           }
         ],
-        "placeToken": "dead_star"
+        "placeToken": "hazard"
       },
       {
-        "label": "Silence the star",
+        "label": "Silence",
         "resolveText": "Cosmic tension +2.",
         "effects": [
           {
@@ -143,19 +1816,654 @@
             "amount": 2
           }
         ],
-        "placeToken": "dead_star"
+        "placeToken": "hazard"
       }
     ],
-    "placeNote": "Place: Dead Star"
+    "placeNoteByChoiceIndex": [
+      "Place: Hazard",
+      "Place: Hazard"
+    ]
   },
   {
-    "id": "PHE_05",
-    "title": "Megastructure Ruins",
+    "id": "PHE_52",
+    "title": "Buried Storm",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Activate gate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Scrap",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_53",
+    "title": "Cosmic Choir",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Map rift",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      },
+      {
+        "label": "Harvest",
+        "resolveText": "Gain 3 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Anomaly",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "PHE_54",
+    "title": "Megastructure Pulse",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Place beacon",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Study",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_55",
+    "title": "Hyperspace Bleed",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Trade route",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Avoid",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "PHE_56",
+    "title": "Quantum Echo",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Place beacon",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Harvest",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "PHE_57",
+    "title": "Gate Storm",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Reactivate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Dismantle",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_58",
+    "title": "Ancient Ruins",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Place beacon",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Study",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_59",
+    "title": "Quantum Void",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Salvage ruins",
+        "resolveText": "Gain 3 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Study",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_60",
+    "title": "Precursor Relic",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Activate gate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Scrap",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_61",
+    "title": "Ancient Storm",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Activate gate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Scrap",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_62",
+    "title": "Nebula Song",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Map rift",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      },
+      {
+        "label": "Harvest",
+        "resolveText": "Gain 3 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Anomaly",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "PHE_63",
+    "title": "Elder Structure",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Reactivate gate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Scrap",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_64",
+    "title": "Whispering Void",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Outpost",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Reveal",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "PHE_65",
+    "title": "Quantum Pulse",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Outpost",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Reveal",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "PHE_66",
+    "title": "Lost Technology",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Outpost",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Reveal",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "PHE_67",
+    "title": "Void Ruins",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Harvest energy",
+        "resolveText": "Gain 3 energy. Lose 1 fleet.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 3
+          },
+          {
+            "op": "loseFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "hazard"
+      },
+      {
+        "label": "Silence",
+        "resolveText": "Cosmic tension +2.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 2
+          }
+        ],
+        "placeToken": "hazard"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Hazard",
+      "Place: Hazard"
+    ]
+  },
+  {
+    "id": "PHE_68",
+    "title": "Ancient Jump Gate",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Reactivate gate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Scrap",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_69",
+    "title": "Fragmented Storm",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Stabilize",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Drain",
+        "resolveText": "Gain 2 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          }
+        ],
+        "placeToken": "gate"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Gate"
+    ]
+  },
+  {
+    "id": "PHE_70",
+    "title": "Nebula Gate",
     "type": "phenomena",
     "choices": [
       {
         "label": "Plunder",
-        "resolveText": "Gain 2 credits and 1 energy.",
+        "resolveText": "Gain 2 credits. Gain 1 energy.",
         "effects": [
           {
             "op": "gainResource",
@@ -182,6 +2490,1085 @@
         "placeToken": "ruins"
       }
     ],
-    "placeNote": "Place: Ruins"
+    "placeNoteByChoiceIndex": [
+      "Place: Ruins",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_71",
+    "title": "Burning Ruins",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Biomass node",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "biomass"
+      },
+      {
+        "label": "Contain",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Biomass",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "PHE_72",
+    "title": "Quantum Gate",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Beacon",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Leave",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "PHE_73",
+    "title": "Gate Fragment",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Activate gate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Scrap",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_74",
+    "title": "Whispering Anomaly",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Salvage",
+        "resolveText": "Gain 3 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Mark",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "derelict"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Place: Derelict"
+    ]
+  },
+  {
+    "id": "PHE_75",
+    "title": "Gate Echo",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Beacon",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Leave",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "PHE_76",
+    "title": "Silent Anomaly",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Excavate",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "ruins"
+      },
+      {
+        "label": "Seal",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Ruins",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_77",
+    "title": "Rift Pulse",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Activate gate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Scrap",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_78",
+    "title": "Warp Storm",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Study horizon",
+        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      },
+      {
+        "label": "Harvest matter",
+        "resolveText": "Gain 5 credits. Lose 1 fleet.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 5
+          },
+          {
+            "op": "loseFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Anomaly",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "PHE_79",
+    "title": "Star Tear",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Place beacon",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Harvest",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "PHE_80",
+    "title": "Singularity Echo",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Stabilize",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Drain",
+        "resolveText": "Gain 2 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          }
+        ],
+        "placeToken": "gate"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Gate"
+    ]
+  },
+  {
+    "id": "PHE_81",
+    "title": "Phase Anomaly",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Seed",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "biomass"
+      },
+      {
+        "label": "Purge",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Biomass",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "PHE_82",
+    "title": "Radiation Burst",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Biomass node",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "biomass"
+      },
+      {
+        "label": "Contain",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Biomass",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "PHE_83",
+    "title": "Rift Harmony",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Excavate",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "ruins"
+      },
+      {
+        "label": "Seal",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Ruins",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_84",
+    "title": "Quantum Foam",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Salvage ruins",
+        "resolveText": "Gain 3 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Study",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_85",
+    "title": "Ancient Dead Star",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Harvest energy",
+        "resolveText": "Gain 3 energy. Lose 1 fleet.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 3
+          },
+          {
+            "op": "loseFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "hazard"
+      },
+      {
+        "label": "Silence",
+        "resolveText": "Cosmic tension +2.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 2
+          }
+        ],
+        "placeToken": "hazard"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Hazard",
+      "Place: Hazard"
+    ]
+  },
+  {
+    "id": "PHE_86",
+    "title": "Singing Void",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Salvage ruins",
+        "resolveText": "Gain 3 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Study",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_87",
+    "title": "Abandoned Megastructure",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Reactivate gate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Scrap",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_88",
+    "title": "Magnetic Pulse",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Activate gate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Scrap",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_89",
+    "title": "Buried Ruins",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Biomass node",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "biomass"
+      },
+      {
+        "label": "Contain",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Biomass",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "PHE_90",
+    "title": "Elder Anomaly",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Harvest energy",
+        "resolveText": "Gain 3 energy. Lose 1 fleet.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 3
+          },
+          {
+            "op": "loseFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "hazard"
+      },
+      {
+        "label": "Silence",
+        "resolveText": "Cosmic tension +2.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 2
+          }
+        ],
+        "placeToken": "hazard"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Hazard",
+      "Place: Hazard"
+    ]
+  },
+  {
+    "id": "PHE_91",
+    "title": "Void Harmony",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Biomass node",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "biomass"
+      },
+      {
+        "label": "Contain",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Biomass",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "PHE_92",
+    "title": "Gravity Anomaly",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Study horizon",
+        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      },
+      {
+        "label": "Harvest matter",
+        "resolveText": "Gain 5 credits. Lose 1 fleet.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 5
+          },
+          {
+            "op": "loseFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Anomaly",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "PHE_93",
+    "title": "Phase Shift",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Salvage ruins",
+        "resolveText": "Gain 3 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Study",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "PHE_94",
+    "title": "Rift Storm",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Outpost",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Reveal",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "PHE_95",
+    "title": "Quantum Rift",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Study horizon",
+        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      },
+      {
+        "label": "Harvest matter",
+        "resolveText": "Gain 5 credits. Lose 1 fleet.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 5
+          },
+          {
+            "op": "loseFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Anomaly",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "PHE_96",
+    "title": "Phase Echo",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Outpost",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Reveal",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "PHE_97",
+    "title": "Reality Bubble",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Study horizon",
+        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      },
+      {
+        "label": "Harvest matter",
+        "resolveText": "Gain 5 credits. Lose 1 fleet.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 5
+          },
+          {
+            "op": "loseFleet",
+            "amount": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Anomaly",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "PHE_98",
+    "title": "Megastructure Ruins",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Beacon",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Leave",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "PHE_99",
+    "title": "Temporal Gate",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Seed",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "biomass"
+      },
+      {
+        "label": "Purge",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Biomass",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "PHE_100",
+    "title": "Singing Gate",
+    "type": "phenomena",
+    "choices": [
+      {
+        "label": "Seed",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "biomass"
+      },
+      {
+        "label": "Purge",
+        "resolveText": "Cosmic tension -1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": -1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Biomass",
+      "Leave: Nothing"
+    ]
   }
 ]

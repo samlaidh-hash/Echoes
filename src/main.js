@@ -19,7 +19,9 @@ import {
   countFleets,
   getHexFleets,
   createFleet,
-  addFleetToHex
+  addFleetToHex,
+  getHexesWithinRange,
+  computePolygonStartPositions
 } from "./rules.js";
 import { render, setSmokeBadge } from "./ui.js";
 
@@ -65,24 +67,24 @@ async function boot() {
   state.map.height = content.hexMap.height;
   state.map.hexes = content.hexMap.hexes;
 
-  const markCapital = (hexId, tokenId) => {
-    const hex = state.map.hexes.find(h => h.id === hexId);
-    if (!hex) return;
-    hex.revealed = true;
-    hex.type = "system";
-    hex.token = tokenId;
-  };
+  const startHexIds = computePolygonStartPositions(state.map, state.players.length);
+  const capitalTokens = ["capital_directorate", "capital_choir", "capital_bloom", "capital_neutral", "capital_salvagers", "capital_gatekeepers", "capital_syndicate"];
+  state.capitalsByFaction = {};
 
-  markCapital("A1", "capital_directorate");
-  markCapital("G1", "capital_choir");
-  markCapital("A7", "capital_bloom");
-  markCapital("G7", "capital_neutral");
-
-  state.capitalsByFaction = {
-    directorate: "A1",
-    choir: "G1",
-    bloom: "A7"
-  };
+  state.players.forEach((p, i) => {
+    const hexId = startHexIds[i];
+    const factionId = String(p.factionId).toLowerCase();
+    const tokenId = capitalTokens[i] ?? `capital_${factionId}`;
+    if (hexId) {
+      const hex = state.map.hexes.find(h => h.id === hexId);
+      if (hex) {
+        hex.revealed = true;
+        hex.type = "system";
+        hex.token = tokenId;
+      }
+      state.capitalsByFaction[factionId] = hexId;
+    }
+  });
 
   if (!state.fleetsByHex || Object.keys(state.fleetsByHex).length === 0) {
     state.fleetsByHex = {};
@@ -254,11 +256,22 @@ async function boot() {
           ].filter(p => p.c >= 0 && p.c < state.map.width && p.r >= 0 && p.r < state.map.height);
           return candidates.some(p => state.map.hexes.find(h => h.col === p.c && h.row === p.r && h.id === hexId));
         };
-        const isWithinTwo = (originId) => {
-          const first = getAdjacentHexesLocal(originId);
-          if (first.some(h => h.id === hexId)) return true;
-          const second = first.flatMap(h => getAdjacentHexesLocal(h.id));
-          return second.some(h => h.id === hexId);
+        const fastEffect = (actionDef?.effects ?? []).find(e => e.op === "fastDeploy");
+        const moveRange = fastEffect?.range ?? 2;
+        const isRelay = (actionDef?.effects ?? []).some(e => e.op === "relayMove");
+        const isWithinRange = (originId, range) => {
+          let frontier = [state.map.hexes.find(h => h.id === originId)].filter(Boolean);
+          const seen = new Set([originId]);
+          for (let r = 0; r < range; r++) {
+            const next = [];
+            for (const h of frontier) {
+              for (const n of getAdjacentHexesLocal(h.id)) {
+                if (!seen.has(n.id)) { seen.add(n.id); next.push(n); }
+              }
+            }
+            frontier = next;
+          }
+          return seen.has(hexId);
         };
         const isControlledSystem = hex && hex.type === "system" &&
           state.controllerByHex?.[hexId] === activeFaction &&
@@ -270,6 +283,14 @@ async function boot() {
         const isAdjToken = (actionDef?.effects ?? []).some(e => e.op === "placeTokenAdjacent");
         const isForward = (actionDef?.effects ?? []).some(e => e.op === "forwardDeploy");
         const isActivate = (actionDef?.effects ?? []).some(e => e.op === "activateSystem");
+        const isRepair = (actionDef?.effects ?? []).some(e => e.op === "repairFleet");
+        const isPlaceOutpost = (actionDef?.effects ?? []).some(e => e.op === "placeOutpost");
+        const isPlaceTradeRoute = (actionDef?.effects ?? []).some(e => e.op === "placeTradeRoute");
+        const revealEffect = (actionDef?.effects ?? []).find(e => e.op === "revealHex");
+        const revealCount = revealEffect?.count ?? 1;
+        const revealRange = revealEffect?.range ?? 1;
+        const isReconOrigin = isScan && revealCount > 1 && revealRange === 1;
+        const isScanRange2 = isScan && revealRange > 1;
         if (requiresTarget && isMove) {
           const factionId = String(active?.factionId ?? "").toLowerCase();
           const entry = getHexFleets(state, hexId, factionId);
@@ -285,7 +306,9 @@ async function boot() {
               return;
             }
           } else if (selection.hexId && selection.hexId !== hexId) {
-            const validDest = isFast ? isWithinTwo(selection.hexId) : isAdjacentTo(selection.hexId);
+            const validDest = isRelay
+              ? (state.beaconsByHex?.[hexId] === activeFaction && hexId !== selection.hexId)
+              : (isFast ? isWithinRange(selection.hexId, moveRange) : isAdjacentTo(selection.hexId));
             if (!validDest) {
               logLine(state, "Invalid target. Select a highlighted hex.");
               render(state, handlers);
@@ -295,9 +318,32 @@ async function boot() {
             return;
           }
         }
+        const hasDamagedHere = (() => {
+          const entry = state.fleetsByHex?.[hexId]?.[activeFaction];
+          return entry && (entry?.damaged?.length ?? 0) > 0;
+        })();
+        const hasFleetHere = (() => {
+          const entry = state.fleetsByHex?.[hexId]?.[activeFaction];
+          return entry && ((entry?.undamaged?.length ?? 0) + (entry?.damaged?.length ?? 0)) > 0;
+        })();
+        const isWithinRange2 = isScanRange2 && fleetHexes.some(hId =>
+          getHexesWithinRange(state, hId, revealRange).some(h => h.id === hexId)
+        );
+        const isPlaceTradeRouteValid = isPlaceTradeRoute && (() => {
+          const fleetHex = Object.keys(state.fleetsByHex ?? {}).find(h => state.fleetsByHex[h]?.[activeFaction]);
+          if (!fleetHex) return false;
+          const adj = getAdjacentHexesLocal(fleetHex).some(h => h.id === hexId);
+          const controlled = state.controllerByHex?.[hexId] === activeFaction && !state.contestedByHex?.[hexId];
+          return adj && controlled;
+        })();
         const valid = requiresTarget && (
-          ((isAdjToken || isScan) && fleetHexes.some(isAdjacentTo)) ||
-          ((isForward || isActivate) && isControlledSystem)
+          ((isAdjToken || (isScan && !isReconOrigin && !isScanRange2)) && fleetHexes.some(isAdjacentTo)) ||
+          (isScanRange2 && isWithinRange2) ||
+          ((isForward || isActivate) && isControlledSystem) ||
+          (isRepair && hasDamagedHere) ||
+          (isReconOrigin && hasFleetHere) ||
+          (isPlaceOutpost && hasFleetHere) ||
+          isPlaceTradeRouteValid
         );
         if (!valid) {
           logLine(state, "Invalid target. Select a highlighted hex.");
@@ -512,12 +558,6 @@ async function boot() {
       render(state, handlers);
     }
   };
-
-  const rollBtn = document.getElementById("rollRoundDiceBtn");
-  if (rollBtn) rollBtn.addEventListener("click", () => handlers.onRollRoundDice());
-
-  const nextBtn = document.getElementById("nextPlayerBtn");
-  if (nextBtn) nextBtn.addEventListener("click", () => handlers.onNextPlayer());
 
   // Startup log
   logLine(state, `BOOT: version=${state.meta.version}`);
