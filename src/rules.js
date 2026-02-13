@@ -1,3 +1,5 @@
+const HAND_LIMIT = 5;
+
 // Pure-ish rules: all mutations happen on the passed-in state object for baseline simplicity.
 
 export function logLine(state, msg) {
@@ -165,17 +167,13 @@ function getControllerSide(state, hexId, attackerFactions, defenderFactions) {
 
 function allocateHit(state, hexId, sideFactions) {
   const influence = state.influence?.[hexId] ?? {};
-    const candidates = sideFactions.map(f => ({
-      factionId: f,
-      influence: influence[f] ?? 0,
-      counts: countFleets(state, hexId, f)
-    })).filter(c => c.counts.total > 0);
+  const candidates = sideFactions.map(f => ({
+    factionId: f,
+    influence: influence[f] ?? 0,
+    counts: countFleets(state, hexId, f)
+  })).filter(c => c.counts.total > 0);
   candidates.sort((a, b) => a.influence - b.influence || a.factionId.localeCompare(b.factionId));
   return candidates[0] ?? null;
-}
-
-function applyHit(state, hexId, factionId) {
-  applyHitToSide(state, hexId, factionId);
 }
 
 export function rollCombatRound(state, rng) {
@@ -207,7 +205,7 @@ export function rollCombatRound(state, rng) {
   for (const hit of hits) {
     const target = allocateHit(state, hexId, hit.side === "attacker" ? attackerFactions : defenderFactions);
     if (target) {
-      applyHit(state, hexId, target.factionId);
+      applyHitToSide(state, hexId, target.factionId);
       logLine(state, `COMBAT: ${hit.side} hit on ${target.factionId}.`);
     }
   }
@@ -224,7 +222,6 @@ export function endCombat(state) {
 export function retreatSide(state, hexId, retreatFactions, enemyFactions) {
   const neighbors = getAdjacentHexes(state, hexId);
   for (const factionId of retreatFactions) {
-    const player = state.players.find(p => String(p.factionId).toLowerCase() === String(factionId).toLowerCase());
     const entry = state.fleetsByHex?.[hexId]?.[String(factionId).toLowerCase()];
     if (!entry) continue;
     const valid = neighbors.filter(h => {
@@ -330,6 +327,9 @@ export function recomputeInfluence(state) {
         if (initial.controllerByHex[n.id] === factionId) bonus += 1;
       }
       final[hex.id][factionId] += bonus;
+      if (!Number.isFinite(final[hex.id][factionId])) {
+        logLine(state, `WARN: influence NaN at ${hex.id} for ${factionId}.`);
+      }
     }
   }
 
@@ -340,7 +340,6 @@ export function recomputeInfluence(state) {
 }
 
 export function weightedPick(rng, entries) {
-  // entries: [{value, weight}]
   const total = entries.reduce((s, e) => s + e.weight, 0);
   let r = rng.nextFloat() * total;
   for (const e of entries) {
@@ -352,7 +351,6 @@ export function weightedPick(rng, entries) {
 
 export function initDeck(state, rng, deckType, cards) {
   const ids = cards.map(c => c.id);
-  // Fisher-Yates shuffle
   for (let i = ids.length - 1; i > 0; i--) {
     const j = rng.nextInt(i + 1);
     [ids[i], ids[j]] = [ids[j], ids[i]];
@@ -361,11 +359,15 @@ export function initDeck(state, rng, deckType, cards) {
   state.decks[deckType].discard = [];
 }
 
-export function drawCard(state, deckType, cardById) {
+export function drawCard(state, deckType, cardById, rng = null) {
   const deck = state.decks[deckType];
   if (deck.draw.length === 0 && deck.discard.length > 0) {
-    // reshuffle discard into draw
-    deck.draw = deck.discard.splice(0);
+    const recycled = deck.discard.splice(0);
+    for (let i = recycled.length - 1; i > 0; i--) {
+      const j = rng ? rng.nextInt(i + 1) : Math.floor(Math.random() * (i + 1));
+      [recycled[i], recycled[j]] = [recycled[j], recycled[i]];
+    }
+    deck.draw = recycled;
   }
   const id = deck.draw.shift();
   if (!id) return null;
@@ -396,7 +398,6 @@ export function applyEffects(state, effects, context) {
     };
     return Object.prototype.hasOwnProperty.call(mapping, key) ? mapping[key] : key;
   };
-
 
   const getCapitalHex = (factionId) => {
     const key = String(factionId ?? "").toLowerCase();
@@ -904,6 +905,7 @@ export function applyEffects(state, effects, context) {
         logLine(state, `Probability Drift: die ${dieId.toUpperCase()} is now ${next}.`);
         break;
       }
+
       case "repairFleet": {
         if (!player) {
           logLine(state, "No active player for repair.");
@@ -1113,9 +1115,9 @@ export function snapshotState(state) {
 
 export function didStateChange(a, b) {
   return a.credits !== b.credits ||
-         a.energy !== b.energy ||
-         a.fleets !== b.fleets ||
-         a.cosmicTension !== b.cosmicTension;
+    a.energy !== b.energy ||
+    a.fleets !== b.fleets ||
+    a.cosmicTension !== b.cosmicTension;
 }
 
 export function getHex(state, hexId) {
@@ -1208,7 +1210,7 @@ export function revealHex(state, rng, cardIndex, hexId, forcedType = null) {
   }
 
   const deckType = forcedType ?? hex.type;
-  const card = drawCard(state, deckType, cardIndex);
+  const card = drawCard(state, deckType, cardIndex, rng);
   if (!card) {
     logLine(state, `No card available for deck: ${deckType}`);
     return null;
@@ -1228,14 +1230,12 @@ export function resolveChoice(state, cardIndex, choiceIndex) {
   const choice = card.choices[choiceIndex];
   if (!choice) return { ok: false, reason: "Invalid choice." };
 
-  const context = { hexId };
+  const context = { hexId, rng: null, cardIndex };
   const res = applyEffects(state, choice.effects ?? [], context);
 
-  // Place token if specified on choice
   const hex = getHex(state, hexId);
   if (hex && choice.placeToken) hex.token = choice.placeToken;
 
-  // discard card
   state.decks[deckType].discard.push(card.id);
 
   logLine(state, `Chose: ${choice.label} → ${choice.resolveText}`);
@@ -1266,49 +1266,6 @@ export function resolveChoice(state, cardIndex, choiceIndex) {
   state.ui.pending = null;
 
   return { ok: true, cardId: card.id, deckType, choiceLabel: choice.label, tokenId: hex?.token ?? null, stateChanged: didStateChange(res.before, res.after) };
-}
-
-
-export function executeQueuedAction(state, rng, cardIndex) {
-  const activePlayer = getActivePlayer(state);
-  if (!activePlayer) return { ok: false, reason: "No active player." };
-  if (!state.turn.actionsQueue.length) return { ok: false, reason: "No queued actions." };
-
-  const actionNumber = state.turn.actionsQueue[0];
-  const factionId = String(activePlayer.factionId ?? "").toLowerCase();
-  const actions = state.actionsByFaction?.[factionId];
-  if (!actions) {
-    logLine(state, `No actions found for factionId="${factionId}". Check actions.json keys.`);
-    return { ok: false, reason: "Missing actions." };
-  }
-
-  const action = actions[String(actionNumber)];
-  if (!action) {
-    logLine(state, `Action #${actionNumber} not found for ${factionId}.`);
-    return { ok: false, reason: "Missing action." };
-  }
-
-  const fleetHexes = Object.keys(state.fleetsByHex ?? {}).filter(h => state.fleetsByHex[h]?.[factionId]);
-  const fallbackHex = state.ui.fleetSelection?.hexId ??
-    state.ui.selectedHexId ??
-    fleetHexes[0] ??
-    null;
-  const context = {
-    hexId: fallbackHex,
-    selectedHexId: state.ui.selectedHexId,
-    selectedDeckType: state.ui.selectedDeckType ?? "phenomena",
-    modifyDie: state.ui.modifyDie,
-    fleetSelection: state.ui.fleetSelection,
-    rng,
-    cardIndex
-  };
-
-  const result = applyEffects(state, action.effects ?? [], context);
-  if (!result.ok) return { ok: false, reason: "Action failed." };
-
-  state.turn.actionsQueue.shift();
-  logLine(state, `ACTION: ${factionId} #${actionNumber} ${action.name ?? "Action"}`);
-  return { ok: true, actionNumber };
 }
 
 export function executeActionNumber(state, rng, cardIndex, actionNumber, selectedHexId = null) {
@@ -1356,8 +1313,6 @@ export function executeActionNumber(state, rng, cardIndex, actionNumber, selecte
 }
 
 export function revealAdjacentHexes(state, context, count) {
-  // Simple square-grid adjacency on IDs like A1..G7:
-  // neighbors = N,S,E,W (good enough for baseline)
   const candidates = getAdjacentHexes(state, context.hexId);
 
   let revealed = 0;
@@ -1370,7 +1325,6 @@ export function revealAdjacentHexes(state, context, count) {
         const visited = ensureVisitedMap(state, active.factionId);
         visited[neighbor.id] = true;
       }
-      // do not auto-assign type or draw card (baseline: "scan" only)
       revealed++;
     }
   }
