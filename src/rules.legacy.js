@@ -335,8 +335,15 @@ export const scoreSpecialResources = (resources) => {
   return maxScore(counts);
 };
 
+const archetypeByFactionId = {
+  directorate: "diplomatic",
+  bloom: "chaos",
+  choir: "pirates"
+};
+
 const getAgreementThresholds = (faction) => {
-  switch (faction?.archetype) {
+  const archetype = faction?.archetype ?? archetypeByFactionId[faction?.id];
+  switch (archetype) {
     case "diplomatic":
       return { make: [1, 6], break: [13, 18] };
     case "chaos":

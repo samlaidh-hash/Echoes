@@ -4,6 +4,14 @@
   "type": "module",
   "scripts": {
     "test": "node tests/rules.test.js",
-    "validate:json": "node scripts/validate-json.mjs"
+    "validate:json": "node scripts/validate-json.mjs",
+    "perchance": "node scripts/generate-perchance-helper.cjs",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "http-server": "^14.1.1"
   }
 }

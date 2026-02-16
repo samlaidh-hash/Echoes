@@ -25,6 +25,8 @@ import {
 } from "./rules.js";
 import { render, setSmokeBadge } from "./ui.js";
 
+const SAVE_KEY = "echoes:save:v1";
+
 function getParams() {
   const p = new URLSearchParams(location.search);
   const seed = Number(p.get("seed") ?? "1");
@@ -44,6 +46,66 @@ function buildCardIndex(cardsByDeck) {
   return idx;
 }
 
+function makeCardTextKey(deckType, cardId) {
+  return `${String(deckType).toLowerCase()}:${cardId}`;
+}
+
+function replaceStateInPlace(target, source) {
+  for (const k of Object.keys(target)) delete target[k];
+  for (const [k, v] of Object.entries(source)) target[k] = v;
+}
+
+function safeSaveState(state) {
+  try {
+    localStorage.setItem(SAVE_KEY, JSON.stringify(state));
+    return { ok: true };
+  } catch (err) {
+    return { ok: false, reason: err?.message ?? String(err) };
+  }
+}
+
+function safeLoadState() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return { ok: false, reason: "No save found." };
+    return { ok: true, state: JSON.parse(raw) };
+  } catch (err) {
+    return { ok: false, reason: err?.message ?? String(err) };
+  }
+}
+
+function computeFactionScore(state, factionId) {
+  const fid = String(factionId).toLowerCase();
+  const player = state.players.find((p) => String(p.factionId).toLowerCase() === fid);
+  const credits = player?.credits ?? 0;
+  const energy = player?.energy ?? 0;
+  const fleets = Object.values(state.fleetsByHex ?? {}).reduce((sum, entry) => {
+    const f = entry?.[fid];
+    return sum + (f?.undamaged?.length ?? 0) + (f?.damaged?.length ?? 0);
+  }, 0);
+  const controlled = Object.values(state.controllerByHex ?? {}).filter((c) => c === fid).length;
+  const influence = Object.values(state.influence ?? {}).reduce((sum, byFaction) => sum + (byFaction?.[fid] ?? 0), 0);
+  return credits + energy + fleets + controlled * 2 + Math.floor(influence / 3);
+}
+
+function tryEnterGameOver(state) {
+  const maxRounds = state.meta?.maxRounds ?? 12;
+  if ((state.turn?.round ?? 1) <= maxRounds) return false;
+  const scores = state.players.map((p) => ({
+    factionId: String(p.factionId).toLowerCase(),
+    score: computeFactionScore(state, p.factionId),
+  }));
+  scores.sort((a, b) => b.score - a.score || a.factionId.localeCompare(b.factionId));
+  state.ui.gameOver = {
+    winnerFactionId: scores[0]?.factionId ?? null,
+    scores,
+    reason: `Reached round limit (${maxRounds}).`,
+  };
+  state.ui.mode = "modal";
+  state.ui.modalType = "gameover";
+  return true;
+}
+
 async function boot() {
   const { seed, smoke } = getParams();
   const rng = makeRng(seed);
@@ -57,6 +119,7 @@ async function boot() {
   }
 
   state.actionsByFaction = content.actionsByFaction;
+  state.cardTextByKey = content.cardTextByKey ?? {};
 
   window.__ECHOES_STATE__ = state;
   window.__ECHOES_CONTENT__ = content;
@@ -222,6 +285,10 @@ async function boot() {
       state.ui.pendingAction = null;
       setMode("idle");
       state.ui.modalType = null;
+      if (tryEnterGameOver(state)) {
+        logLine(state, `GAME OVER: winner=${state.ui.gameOver?.winnerFactionId ?? "none"}`);
+        return;
+      }
       logLine(state, `Round ${state.turn.round} begins. Roll round dice.`);
     } else {
       state.turn.activePlayerIndex = next;
@@ -235,6 +302,7 @@ async function boot() {
   // handlers
   const handlers = {
     onHexClick(hexId, evt) {
+      if (state.ui.gameOver) return;
       if (state.ui.mode === "modal") return;
       state.ui.selectedHexId = hexId;
       if (state.ui.mode === "targeting") {
@@ -400,6 +468,11 @@ async function boot() {
       }
 
       if (state.ui.lastResolution) {
+        const lr = state.ui.lastResolution;
+        const authored = state.cardTextByKey?.[makeCardTextKey(lr.deckType, lr.cardId)];
+        if (authored) {
+          state.ui.lastResolution.authored = authored;
+        }
         setMode("modal");
         state.ui.modalType = "card";
       }
@@ -413,15 +486,18 @@ async function boot() {
       renderAll();
     },
     onRollRoundDice() {
+      if (state.ui.gameOver) return;
       if (state.ui.mode !== "idle") return;
       rollRoundDice();
       render(state, handlers);
     },
     onNextPlayer() {
+      if (state.ui.gameOver) return;
       advancePlayer();
       render(state, handlers);
     },
     onPerformAction() {
+      if (state.ui.gameOver) return;
       const pending = state.ui.pendingAction;
       if (!pending) {
         logLine(state, "Select an action first.");
@@ -448,6 +524,7 @@ async function boot() {
       renderAll();
     },
     onActionSelect(actionNumber) {
+      if (state.ui.gameOver) return;
       if (state.ui.pending || state.ui.lastResolution) {
         setMode("modal");
         state.ui.modalType = "card";
@@ -490,6 +567,7 @@ async function boot() {
       handlers.onPerformAction();
     },
     onCombatToggleFaction(factionId) {
+      if (state.ui.gameOver) return;
       const combat = state.ui.combat;
       if (!combat) return;
       if (combat.engagedFactions.includes(factionId)) {
@@ -500,6 +578,7 @@ async function boot() {
       render(state, handlers);
     },
     onCombatEngage() {
+      if (state.ui.gameOver) return;
       const combat = state.ui.combat;
       if (!combat) return;
       if (combat.engagedFactions.length === 0) {
@@ -509,12 +588,14 @@ async function boot() {
       render(state, handlers);
     },
     onCombatDisengage() {
+      if (state.ui.gameOver) return;
       endCombat(state);
       consumePendingAction();
       setMode("idle");
       render(state, handlers);
     },
     onCombatRoll() {
+      if (state.ui.gameOver) return;
       const combat = state.ui.combat;
       if (!combat) return;
       rollCombatRound(state, rng);
@@ -531,12 +612,14 @@ async function boot() {
       render(state, handlers);
     },
     onCombatContinue() {
+      if (state.ui.gameOver) return;
       const combat = state.ui.combat;
       if (!combat) return;
       combat.phase = "roll";
       render(state, handlers);
     },
     onCombatRetreat() {
+      if (state.ui.gameOver) return;
       const combat = state.ui.combat;
       if (!combat) return;
       retreatSide(state, combat.hexId, combat.attackerFactions, combat.engagedFactions);
@@ -556,6 +639,37 @@ async function boot() {
     onModifyDie(dieId, delta) {
       state.ui.modifyDie = { die: dieId, delta };
       render(state, handlers);
+    },
+    onSaveGame() {
+      const res = safeSaveState(state);
+      logLine(state, res.ok ? "SAVE: success." : `SAVE: failed (${res.reason}).`);
+      renderAll();
+    },
+    onLoadGame() {
+      const res = safeLoadState();
+      if (!res.ok) {
+        logLine(state, `LOAD: failed (${res.reason}).`);
+        renderAll();
+        return;
+      }
+      replaceStateInPlace(state, res.state);
+      state.cardTextByKey = content.cardTextByKey ?? {};
+      state.ui.pendingAction = null;
+      state.ui.modalType = state.ui.gameOver ? "gameover" : null;
+      state.ui.mode = state.ui.gameOver ? "modal" : "idle";
+      recomputeInfluence(state);
+      logLine(state, "LOAD: success.");
+      renderAll();
+    },
+    onNewGame() {
+      location.href = `${location.pathname}?seed=${seed}`;
+    },
+    onDismissGameOver() {
+      if (!state.ui.gameOver) return;
+      state.ui.gameOver = null;
+      state.ui.modalType = null;
+      state.ui.mode = "idle";
+      renderAll();
     }
   };
 

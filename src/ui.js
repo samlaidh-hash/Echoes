@@ -40,6 +40,14 @@ function tokenGlyph(state, tokenId) {
   return t?.glyph ?? "?";
 }
 
+function authoredCardKey(deckType, cardId) {
+  return `${String(deckType).toLowerCase()}:${cardId}`;
+}
+
+function getAuthoredCard(state, deckType, cardId) {
+  return state.cardTextByKey?.[authoredCardKey(deckType, cardId)] ?? null;
+}
+
 function getAdjacentHexesForUi(state, hexId) {
   const hex = state.map.hexes.find(h => h.id === hexId);
   if (!hex) return [];
@@ -307,6 +315,27 @@ function renderCard(state, handlers) {
       placeGlyph ? `${placeGlyph} ${placeText}` : placeText
     ]));
 
+    const authored = getAuthoredCard(state, resolved.deckType, resolved.cardId);
+    if (authored) {
+      const idx = Number.isFinite(resolved.choiceIndex) ? resolved.choiceIndex : 0;
+      const optionKey = ["optionA", "optionB", "optionC"][Math.max(0, Math.min(2, idx))];
+      const resolvedOption = authored.instantOptionResults?.[optionKey];
+      if (resolvedOption) {
+        panel.appendChild(el("div", { class: "card-body" }, [
+          `Instant (${resolvedOption.profile}): ${resolvedOption.effect}`
+        ]));
+        if (resolvedOption.cost) {
+          panel.appendChild(el("div", { class: "card-body" }, [`Cost paid: ${resolvedOption.cost}`]));
+        }
+      }
+      panel.appendChild(el("div", { class: "card-body" }, [
+        `On Activation: ${authored.rear?.primaryAction?.effect ?? "—"}`
+      ]));
+      panel.appendChild(el("div", { class: "card-body" }, [
+        `Secondary (auto): ${authored.rear?.secondaryOnActivation?.effect ?? "—"}`
+      ]));
+    }
+
     const btn = el("button", {
       class: "btn",
       type: "button",
@@ -318,25 +347,42 @@ function renderCard(state, handlers) {
   }
 
   const { deckType, card } = pending;
+  const authored = getAuthoredCard(state, deckType, card.id);
 
   panel.appendChild(el("div", { class: "card-header" }, [
     el("div", { class: "card-title", "data-testid": "card-title" }, [card.title]),
     el("div", { class: "card-meta" }, [`Deck: ${deckType}`])
   ]));
 
-  panel.appendChild(el("div", { class: "card-body" }, [
-    "Choose an option:"
-  ]));
+  if (authored?.front) {
+    const frontLines = [
+      authored.front.line2_description,
+      authored.front.line3_decision
+    ].filter(Boolean);
+    for (const line of frontLines) {
+      panel.appendChild(el("div", { class: "card-body" }, [line]));
+    }
+  } else {
+    panel.appendChild(el("div", { class: "card-body" }, [
+      "Choose an option:"
+    ]));
+  }
 
   const choices = el("div", { class: "card-choices" }, []);
+  const authoredOptionLines = authored?.front
+    ? [authored.front.line4_optionA, authored.front.line5_optionB, authored.front.line6_optionC]
+    : [];
   card.choices.forEach((ch, idx) => {
+    const authoredLabel = authoredOptionLines[idx];
+    const primary = authoredLabel || ch.label;
+    const secondary = authoredLabel && authoredLabel !== ch.label ? ch.label : null;
     const choiceBtn = el("button", {
       class: "choice",
       type: "button",
       "data-testid": `card-choice-${idx}`
     }, [
-      el("div", {}, [ch.label]),
-      el("small", {}, ["→"])
+      el("div", {}, [primary]),
+      secondary ? el("small", {}, [`Base: ${secondary}`]) : el("small", {}, ["→"])
     ]);
     choiceBtn.addEventListener("click", () => handlers.onCardChoice(idx));
     choices.appendChild(choiceBtn);
@@ -540,6 +586,20 @@ function renderActions(state, handlers) {
     modifySelect,
     deltaSelect
   ]));
+
+  const saveLoad = el("div", { class: "action-controls" }, [
+    el("span", { class: "action-label" }, ["Session: "])
+  ]);
+  const saveBtn = el("button", { class: "btn", type: "button", "data-testid": "save-game-btn" }, ["Save"]);
+  const loadBtn = el("button", { class: "btn", type: "button", "data-testid": "load-game-btn" }, ["Load"]);
+  const newBtn = el("button", { class: "btn", type: "button", "data-testid": "new-game-btn" }, ["New"]);
+  saveBtn.addEventListener("click", () => handlers.onSaveGame?.());
+  loadBtn.addEventListener("click", () => handlers.onLoadGame?.());
+  newBtn.addEventListener("click", () => handlers.onNewGame?.());
+  saveLoad.appendChild(saveBtn);
+  saveLoad.appendChild(loadBtn);
+  saveLoad.appendChild(newBtn);
+  panel.appendChild(saveLoad);
 }
 
 export function setSmokeBadge(text, kind = "warn") {
@@ -552,6 +612,32 @@ export function setSmokeBadge(text, kind = "warn") {
 function renderCombat(state, handlers) {
   const modal = document.getElementById("combatModal");
   if (!modal) return;
+  if (state.ui?.gameOver && state.ui?.modalType === "gameover") {
+    modal.classList.remove("hidden");
+    modal.innerHTML = "";
+    modal.appendChild(el("div", { class: "combat-title" }, ["GAME OVER"]));
+    modal.appendChild(el("div", { class: "combat-section" }, [state.ui.gameOver.reason ?? "Game complete."]));
+    const winner = state.ui.gameOver.winnerFactionId ?? "none";
+    modal.appendChild(el("div", { class: "combat-section" }, [`Winner: ${factionName(state, winner)}`]));
+    const scoreList = el("div", { class: "combat-section" }, [
+      el("div", { class: "combat-title" }, ["Scores"])
+    ]);
+    for (const row of state.ui.gameOver.scores ?? []) {
+      scoreList.appendChild(el("div", {}, [
+        `${factionGlyph(row.factionId)} ${factionName(state, row.factionId)}: ${row.score}`
+      ]));
+    }
+    modal.appendChild(scoreList);
+    const actions = el("div", { class: "combat-actions" }, []);
+    const dismissBtn = el("button", { class: "btn", type: "button", "data-testid": "dismiss-gameover-btn" }, ["Close"]);
+    dismissBtn.addEventListener("click", () => handlers.onDismissGameOver?.());
+    const newBtn = el("button", { class: "btn", type: "button", "data-testid": "gameover-new-btn" }, ["New Game"]);
+    newBtn.addEventListener("click", () => handlers.onNewGame?.());
+    actions.appendChild(dismissBtn);
+    actions.appendChild(newBtn);
+    modal.appendChild(actions);
+    return;
+  }
   const combat = state.ui.combat;
   if (!combat) {
     modal.classList.add("hidden");

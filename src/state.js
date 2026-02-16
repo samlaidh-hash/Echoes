@@ -3,7 +3,8 @@ export function initialState({ seed }) {
     meta: {
       version: "v0.2",
       seed,
-      round: 1
+      round: 1,
+      maxRounds: 12
     },
     flags: {
       smoke: false
@@ -57,6 +58,7 @@ export function initialState({ seed }) {
       pulseHexId: null,
       fleetSelection: { hexId: null, factionId: null, fleetIds: [] },
       combat: null,
+      gameOver: null,
       lastResolution: null,
       pending: null // { deckType, card, hexId }
     },
@@ -72,6 +74,7 @@ export function initialState({ seed }) {
     },
     tokensById: {}, // tokenId -> {label,glyph}
     tokens: {}, // legacy alias
+    cardTextByKey: {}, // { [deck:id]: authored text payload }
     log: []
   };
 }

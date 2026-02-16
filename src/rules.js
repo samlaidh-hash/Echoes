@@ -1258,6 +1258,7 @@ export function resolveChoice(state, cardIndex, choiceIndex) {
     deckType,
     cardId: card.id,
     cardTitle: card.title,
+    choiceIndex,
     choiceLabel: choice.label,
     resolveText: choice.resolveText ?? "",
     tokenId: hex?.token ?? null,
