@@ -330,7 +330,8 @@ function renderHud(state) {
 function renderMap(state, handlers) {
   const map = document.getElementById("map");
   map.classList.toggle("targeting", state.ui.mode === "targeting");
-  map.style.setProperty("--map-cols", String(state.map.width ?? 9));
+  map.style.setProperty("--map-cols", String(state.map.width ?? 7));
+  map.style.setProperty("--map-rows", String(state.map.height ?? 7));
   map.innerHTML = "";
 
   const activeFaction = String(state.players?.[state.turn?.activePlayerIndex ?? 0]?.factionId ?? "").toLowerCase();
@@ -447,6 +448,19 @@ function renderMap(state, handlers) {
     const beaconLine = state.beaconsByHex?.[hex.id] ? `Beacon: ${factionName(state, state.beaconsByHex[hex.id])}` : "";
     const outpostLine = state.outpostByHex?.[hex.id] ? `Outpost: ${factionName(state, state.outpostByHex[hex.id])}` : "";
 
+    const cardInfo = state.cardByHex?.[hex.id];
+    const hexChildren = [
+      el("div", { class: "id" }, [hex.id]),
+      el("div", { class: "type" }, [labelType]),
+      occContainer,
+      selectedCount > 0 ? el("div", { class: "fleet-selected" }, [`x${selectedCount}`]) : null,
+      el("div", { class: "token" }, [glyph])
+    ];
+    if (cardInfo && hex.revealed) {
+      const cardIcon = el("div", { class: "hex-card-icon", title: "Hover to read card" }, ["📄"]);
+      hexChildren.push(cardIcon);
+    }
+
     const btn = el("button", {
       class: `hex ${fogged ? "fogged" : ""} ${isTargetable ? "targetable" : ""} ${isSelectedOrigin ? "selected-origin" : ""} ${state.ui.pulseHexId === hex.id ? "pulse" : ""}`,
       type: "button",
@@ -463,21 +477,70 @@ function renderMap(state, handlers) {
       ].filter(Boolean).join("\n"),
       "data-testid": `hex-${hex.id}`,
       "data-hexid": hex.id
-    }, [
-      el("div", { class: "id" }, [hex.id]),
-      el("div", { class: "type" }, [labelType]),
-      occContainer,
-      selectedCount > 0 ? el("div", { class: "fleet-selected" }, [`x${selectedCount}`]) : null,
-      el("div", { class: "token" }, [glyph])
-    ]);
+    }, hexChildren);
 
     btn.addEventListener("click", (e) => handlers.onHexClick(hex.id, e));
     btn.addEventListener("contextmenu", (e) => {
       e.preventDefault();
       handlers.onHexContextMenu(hex.id, e);
     });
+    if (cardInfo && hex.revealed) {
+      let hideTimer = null;
+      btn.addEventListener("mouseenter", () => {
+        if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+        showHexCardPopover(state, hex.id, cardInfo, btn);
+      });
+      btn.addEventListener("mouseleave", () => {
+        hideTimer = setTimeout(() => hideHexCardPopover(), 200);
+      });
+    }
     map.appendChild(btn);
   }
+}
+
+let hexCardPopoverEl = null;
+let hexCardPopoverHideTimer = null;
+
+function showHexCardPopover(state, hexId, cardInfo, triggerEl) {
+  if (hexCardPopoverHideTimer) {
+    clearTimeout(hexCardPopoverHideTimer);
+    hexCardPopoverHideTimer = null;
+  }
+  if (!hexCardPopoverEl) {
+    hexCardPopoverEl = document.createElement("div");
+    hexCardPopoverEl.className = "hex-card-popover";
+    hexCardPopoverEl.addEventListener("mouseenter", () => {
+      if (hexCardPopoverHideTimer) { clearTimeout(hexCardPopoverHideTimer); hexCardPopoverHideTimer = null; }
+    });
+    hexCardPopoverEl.addEventListener("mouseleave", () => {
+      hexCardPopoverHideTimer = setTimeout(() => hideHexCardPopover(), 200);
+    });
+    document.body.appendChild(hexCardPopoverEl);
+  }
+  const authored = getAuthoredCard(state, cardInfo.deckType, cardInfo.cardId);
+  const lines = [cardInfo.cardTitle];
+  if (authored?.front) {
+    if (authored.front.line2_description) lines.push(authored.front.line2_description);
+    if (authored.front.line3_decision) lines.push(authored.front.line3_decision);
+    const opts = [authored.front.line4_optionA, authored.front.line5_optionB, authored.front.line6_optionC].filter(Boolean);
+    if (opts.length) lines.push("Options: " + opts.join(" | "));
+  }
+  hexCardPopoverEl.innerHTML = lines.map(l => `<div class="hex-card-popover-line">${escapeHtml(l)}</div>`).join("");
+  const rect = triggerEl.getBoundingClientRect();
+  hexCardPopoverEl.style.left = `${rect.left}px`;
+  hexCardPopoverEl.style.top = `${Math.max(8, rect.top - 4)}px`;
+  hexCardPopoverEl.style.transform = `translateY(-100%)`;
+  hexCardPopoverEl.classList.add("visible");
+}
+
+function escapeHtml(s) {
+  const div = document.createElement("div");
+  div.textContent = s;
+  return div.innerHTML;
+}
+
+function hideHexCardPopover() {
+  if (hexCardPopoverEl) hexCardPopoverEl.classList.remove("visible");
 }
 
 
@@ -702,14 +765,6 @@ function renderActions(state, handlers) {
   }
   if (state.ui.mode === "modal") hint = "Resolve current event first.";
 
-  const diceArea = el("div", { class: "action-dice" }, [
-    rollBtn,
-    nextPlayerBtn,
-    dicePills,
-    el("div", { class: "action-hint" }, [hint]),
-    performBtn
-  ]);
-
   const makeGroup = (label, keys) => {
     const group = el("div", { class: "action-group" }, [
       el("div", { class: "action-group-label" }, [label])
@@ -747,22 +802,11 @@ function renderActions(state, handlers) {
     makeGroup("1–6", ["1", "2", "3", "4", "5", "6"]),
     makeGroup("7–12", ["7", "8", "9", "10", "11", "12"])
   ]);
+  panel.appendChild(actionsArea);
 
-  const bar = el("div", { class: "action-bar" }, [
-    diceArea,
-    actionsArea
-  ]);
-  panel.appendChild(bar);
-
-  const controls = el("div", { class: "action-controls" }, [
-    el("label", { class: "action-label" }, ["Free Explore (dev) "]),
-    el("input", {
-      type: "checkbox",
-      checked: !!state.ui.freeExplore
-    })
-  ]);
-  controls.querySelector("input").addEventListener("change", e => handlers.onToggleFreeExplore(e.target.checked));
-  panel.appendChild(controls);
+  const freeExploreInput = el("input", { type: "checkbox", checked: !!state.ui.freeExplore });
+  freeExploreInput.addEventListener("change", e => handlers.onToggleFreeExplore(e.target.checked));
+  const freeExploreLabel = el("label", { class: "action-label" }, [freeExploreInput, " Free Explore"]);
 
   const deckSelect = el("select", { class: "action-select" }, [
     el("option", { value: "empty" }, ["empty"]),
@@ -771,10 +815,6 @@ function renderActions(state, handlers) {
   ]);
   deckSelect.value = state.ui.selectedDeckType ?? "phenomena";
   deckSelect.addEventListener("change", e => handlers.onSelectDeck(e.target.value));
-  panel.appendChild(el("div", { class: "action-controls" }, [
-    el("span", { class: "action-label" }, ["Peek deck: "]),
-    deckSelect
-  ]));
 
   const modifySelect = el("select", { class: "action-select" }, [
     el("option", { value: "a" }, ["Die A"]),
@@ -791,25 +831,32 @@ function renderActions(state, handlers) {
   deltaSelect.value = String(state.ui.modifyDie?.delta ?? 1);
   deltaSelect.addEventListener("change", e => handlers.onModifyDie(state.ui.modifyDie?.die ?? "a", Number(e.target.value)));
 
-  panel.appendChild(el("div", { class: "action-controls" }, [
-    el("span", { class: "action-label" }, ["Modify die: "]),
-    modifySelect,
-    deltaSelect
-  ]));
-
-  const saveLoad = el("div", { class: "action-controls" }, [
-    el("span", { class: "action-label" }, ["Session: "])
-  ]);
   const saveBtn = el("button", { class: "btn", type: "button", title: "Save the current game to browser storage.", "data-testid": "save-game-btn" }, ["Save"]);
   const loadBtn = el("button", { class: "btn", type: "button", title: "Load a previously saved game from browser storage.", "data-testid": "load-game-btn" }, ["Load"]);
   const newBtn = el("button", { class: "btn", type: "button", title: "Start a brand new game (reloads the page).", "data-testid": "new-game-btn" }, ["New"]);
   saveBtn.addEventListener("click", () => handlers.onSaveGame?.());
   loadBtn.addEventListener("click", () => handlers.onLoadGame?.());
   newBtn.addEventListener("click", () => handlers.onNewGame?.());
-  saveLoad.appendChild(saveBtn);
-  saveLoad.appendChild(loadBtn);
-  saveLoad.appendChild(newBtn);
-  panel.appendChild(saveLoad);
+
+  const bottomRow = el("div", { class: "action-panel-bottom" }, [
+    rollBtn,
+    nextPlayerBtn,
+    dicePills,
+    performBtn,
+    el("span", { class: "action-hint-inline" }, [hint]),
+    el("span", { class: "action-sep" }, ["|"]),
+    el("span", { class: "action-label" }, ["Peek: "]),
+    deckSelect,
+    el("span", { class: "action-label" }, ["Modify: "]),
+    modifySelect,
+    deltaSelect,
+    freeExploreLabel,
+    el("span", { class: "action-sep" }, ["|"]),
+    saveBtn,
+    loadBtn,
+    newBtn
+  ]);
+  panel.appendChild(bottomRow);
 }
 
 export function setSmokeBadge(text, kind = "warn") {

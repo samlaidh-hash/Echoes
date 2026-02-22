@@ -674,6 +674,7 @@ async function boot() {
       }
       replaceStateInPlace(state, res.state);
       state.cardTextByKey = content.cardTextByKey ?? {};
+      if (!state.cardByHex) state.cardByHex = {};
       state.ui.pendingAction = null;
       state.ui.modalType = state.ui.gameOver ? "gameover" : null;
       state.ui.mode = state.ui.gameOver ? "modal" : "idle";

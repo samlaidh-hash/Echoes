@@ -24,6 +24,7 @@ export function initialState({ seed, playerSetup }) {
     influenceBonusByHex: {}, // { [hexId]: { [factionId]: number } } — persistent influence bonuses
     outpostByHex: {}, // { [hexId]: factionId } — Directorate outposts
     beaconsByHex: {}, // { [hexId]: factionId } — Gatekeepers beacons
+    cardByHex: {}, // { [hexId]: { deckType, cardId, cardTitle } } — resolved card per explored hex
     tradeRouteEdges: [], // { hexA, hexB, factionId } — Syndicate trade routes on edges
     visited: {},
     controllerByHex: {},
