@@ -23,7 +23,7 @@ export function computeAvailableActions(state) {
   if (!dice) return optionsByNumber;
 
   const addOption = (number, option) => {
-    const key = String(Math.min(18, Math.max(1, number)));
+    const key = String(Math.min(12, Math.max(1, number)));
     if (!optionsByNumber[key]) optionsByNumber[key] = [];
     optionsByNumber[key].push(option);
   };
@@ -32,6 +32,7 @@ export function computeAvailableActions(state) {
   const bAvailable = dice.b != null && !used?.b;
   const bonusAvailable = dice.bonus != null && !used?.bonus;
 
+  // Roll 2d6: combinations are A, B, A+B, A & Bonus, B & Bonus, A+Bonus, B+Bonus.
   if (aAvailable) addOption(dice.a, { label: "A", consume: { a: true } });
   if (bAvailable) addOption(dice.b, { label: "B", consume: { b: true } });
   if (aAvailable && bAvailable) addOption(dice.a + dice.b, { label: "A+B", consume: { a: true, b: true } });
@@ -40,7 +41,6 @@ export function computeAvailableActions(state) {
     addOption(dice.bonus, { label: "Bonus", consume: { bonus: true } });
     if (aAvailable) addOption(dice.a + dice.bonus, { label: "A+Bonus", consume: { a: true, bonus: true } });
     if (bAvailable) addOption(dice.b + dice.bonus, { label: "B+Bonus", consume: { b: true, bonus: true } });
-    if (aAvailable && bAvailable) addOption(dice.a + dice.b + dice.bonus, { label: "A+B+Bonus", consume: { a: true, b: true, bonus: true } });
   }
 
   return optionsByNumber;
@@ -302,6 +302,20 @@ export function recomputeInfluence(state) {
     }
   }
 
+  // Add influence bonuses (Directorate outposts, addInfluence effects)
+  for (const hex of state.map.hexes) {
+    const bonusMap = state.influenceBonusByHex?.[hex.id];
+    if (bonusMap) {
+      for (const [fid, amt] of Object.entries(bonusMap)) {
+        base[hex.id][fid] = (base[hex.id][fid] ?? 0) + amt;
+      }
+    }
+    const outpostFaction = state.outpostByHex?.[hex.id];
+    if (outpostFaction) {
+      base[hex.id][outpostFaction] = (base[hex.id][outpostFaction] ?? 0) + 2;
+    }
+  }
+
   const initial = computeControllersFromInfluence(state, base);
   const final = {};
   for (const hex of state.map.hexes) {
@@ -400,6 +414,32 @@ export function applyEffects(state, effects, context) {
         if (player) player[eff.resource] = (player[eff.resource] ?? 0) + (eff.amount ?? 0);
         break;
 
+      case "gainCreditsFromControlled": {
+        if (!player) break;
+        const factionId = String(player.factionId ?? "").toLowerCase();
+        let amount = state.map.hexes.filter(h =>
+          h.type === "system" && state.controllerByHex?.[h.id] === factionId && !state.contestedByHex?.[h.id]
+        ).length;
+        if (eff.includeOutposts) {
+          const outposts = Object.entries(state.outpostByHex ?? {}).filter(([, fid]) => fid === factionId).length;
+          amount += outposts;
+        }
+        if (eff.includeBiomass) {
+          const biomass = state.map.hexes.filter(h =>
+            h.token === "biomass" && state.controllerByHex?.[h.id] === factionId && !state.contestedByHex?.[h.id]
+          ).length;
+          amount += biomass;
+        }
+        if (eff.includeTradeRoutes) {
+          const edges = (state.tradeRouteEdges ?? []).filter(e => e.factionId === factionId).length;
+          amount += edges;
+        }
+        amount = Math.max(1, amount);
+        player.credits = (player.credits ?? 0) + amount;
+        logLine(state, `Gained ${amount} credits.`);
+        break;
+      }
+
       case "loseResource":
         if (player) player[eff.resource] = Math.max(0, (player[eff.resource] ?? 0) - (eff.amount ?? 0));
         break;
@@ -437,17 +477,228 @@ export function applyEffects(state, effects, context) {
         break;
 
       case "modifyCosmicTension":
-        state.cosmicTension += (eff.amount ?? 0);
+        state.cosmicTension = Math.max(0, (state.cosmicTension ?? 0) + (eff.amount ?? 0));
         break;
 
+      case "addInfluence": {
+        if (!player) break;
+        const targetId = context.selectedHexId ?? state.ui?.selectedHexId;
+        if (!targetId) break;
+        const factionId = String(player.factionId).toLowerCase();
+        if (!state.influenceBonusByHex) state.influenceBonusByHex = {};
+        if (!state.influenceBonusByHex[targetId]) state.influenceBonusByHex[targetId] = {};
+        const amt = eff.amount ?? 1;
+        state.influenceBonusByHex[targetId][factionId] = (state.influenceBonusByHex[targetId][factionId] ?? 0) + amt;
+        logLine(state, `+${amt} influence at ${targetId}.`);
+        recomputeInfluence(state);
+        break;
+      }
+
+      case "placeOutpost": {
+        if (!player) {
+          logLine(state, "No active player for outpost.");
+          ok = false;
+          break;
+        }
+        const targetId = context.selectedHexId ?? state.ui?.selectedHexId;
+        if (!targetId) {
+          logLine(state, "Select a hex with your fleet.");
+          ok = false;
+          break;
+        }
+        const factionId = String(player.factionId).toLowerCase();
+        const entry = state.fleetsByHex?.[targetId]?.[factionId];
+        const fleetCount = (entry?.undamaged?.length ?? 0) + (entry?.damaged?.length ?? 0);
+        if (fleetCount <= 0) {
+          logLine(state, "You need a fleet in that hex to establish an outpost.");
+          ok = false;
+          break;
+        }
+        if (!state.outpostByHex) state.outpostByHex = {};
+        state.outpostByHex[targetId] = factionId;
+        const hex = getHex(state, targetId);
+        if (hex) hex.token = "outpost";
+        logLine(state, `Outpost established at ${targetId}.`);
+        recomputeInfluence(state);
+        state.ui.pulseHexId = targetId;
+        break;
+      }
+
       case "placeToken": {
-        const hex = getHex(state, context.hexId);
+        let hexId = context.hexId;
+        if (!hexId && player) {
+          const fid = String(player.factionId ?? "").toLowerCase();
+          hexId = Object.keys(state.fleetsByHex ?? {}).find(h => state.fleetsByHex[h]?.[fid]);
+        }
+        const hex = getHex(state, hexId);
         if (hex) hex.token = normalizeTokenId(eff.tokenId);
         break;
       }
 
+      case "placeDebris": {
+        if (!player) break;
+        const fid = String(player.factionId ?? "").toLowerCase();
+        const hexId = context.hexId ?? Object.keys(state.fleetsByHex ?? {}).find(h => state.fleetsByHex[h]?.[fid]);
+        if (hexId && !state.fleetsByHex?.[hexId]?.[fid]) break;
+        const hex = getHex(state, hexId);
+        if (hex && hexId) {
+          hex.token = "debris_field";
+          logLine(state, `Debris placed at ${hexId}.`);
+        }
+        break;
+      }
+
+      case "salvageFromHex":
+      case "gainCreditsFromDebris": {
+        if (!player) break;
+        const fid = String(player.factionId ?? "").toLowerCase();
+        const fleetHexes = new Set(Object.keys(state.fleetsByHex ?? {}).filter(h => state.fleetsByHex[h]?.[fid]));
+        let count = 0;
+        for (const hex of state.map.hexes) {
+          if (hex.token !== "debris_field" && hex.token !== "derelict") continue;
+          const controlled = state.controllerByHex?.[hex.id] === fid && !state.contestedByHex?.[hex.id];
+          const adjacent = getAdjacentHexes(state, hex.id).some(h => fleetHexes.has(h.id));
+          if (controlled || adjacent) count += 1;
+        }
+        count = Math.max(1, count);
+        player.credits = (player.credits ?? 0) + count;
+        logLine(state, `Salvage: +${count} credits from debris.`);
+        break;
+      }
+
+      case "placeBeacon": {
+        if (!player) break;
+        const fid = String(player.factionId ?? "").toLowerCase();
+        const hexId = context.hexId ?? Object.keys(state.fleetsByHex ?? {}).find(h => state.fleetsByHex[h]?.[fid]);
+        if (hexId && !state.fleetsByHex?.[hexId]?.[fid]) break;
+        const hex = getHex(state, hexId);
+        if (hex && hexId) {
+          if (!state.beaconsByHex) state.beaconsByHex = {};
+          state.beaconsByHex[hexId] = fid;
+          if (!hex.token || !String(hex.token).startsWith("capital_")) hex.token = "beacon";
+          logLine(state, `Beacon placed at ${hexId}.`);
+        }
+        break;
+      }
+
+      case "relayMove": {
+        if (!player) break;
+        const selection = context.fleetSelection ?? state.ui.fleetSelection;
+        const destId = context.selectedHexId ?? state.ui.selectedHexId;
+        const fid = String(player.factionId ?? "").toLowerCase();
+        if (!selection?.hexId || !destId) {
+          logLine(state, "Select fleets and a beacon destination.");
+          ok = false;
+          break;
+        }
+        const destBeacon = state.beaconsByHex?.[destId];
+        const srcBeacon = state.beaconsByHex?.[selection.hexId];
+        if (destBeacon !== fid || !srcBeacon) {
+          logLine(state, "Relay: destination must be your beacon. Beacon-to-beacon only.");
+          ok = false;
+          break;
+        }
+        const entry = getHexFleets(state, selection.hexId, fid);
+        const movingIds = selection.fleetIds?.length ? selection.fleetIds : [...entry.undamaged, ...entry.damaged];
+        moveFleetStack(state, selection.hexId, destId, fid, movingIds);
+        const visited = ensureVisitedMap(state, player.factionId);
+        visited[destId] = true;
+        recomputeInfluence(state);
+        state.ui.fleetSelection = { hexId: null, factionId: null, fleetIds: [] };
+        logLine(state, `Relay jump to ${destId}.`);
+        break;
+      }
+
+      case "placeTradeRoute": {
+        if (!player) break;
+        const fid = String(player.factionId ?? "").toLowerCase();
+        const fleetHex = Object.keys(state.fleetsByHex ?? {}).find(h => state.fleetsByHex[h]?.[fid]);
+        const hexB = context.selectedHexId ?? state.ui?.selectedHexId;
+        const hexA = fleetHex ?? hexB;
+        if (!hexA || !hexB) {
+          logLine(state, "Select an adjacent hex you control for trade route edge.");
+          ok = false;
+          break;
+        }
+        const adj = getAdjacentHexes(state, hexA).some(h => h.id === hexB);
+        if (!adj) {
+          logLine(state, "Hex must be adjacent to your fleet.");
+          ok = false;
+          break;
+        }
+        if (state.controllerByHex?.[hexA] !== fid || state.controllerByHex?.[hexB] !== fid) {
+          logLine(state, "You must control both hexes.");
+          ok = false;
+          break;
+        }
+        if (!state.tradeRouteEdges) state.tradeRouteEdges = [];
+        if (state.tradeRouteEdges.some(e => (e.hexA === hexA && e.hexB === hexB) || (e.hexA === hexB && e.hexB === hexA))) {
+          logLine(state, "Trade route already on this edge.");
+          break;
+        }
+        state.tradeRouteEdges.push({ hexA, hexB, factionId: fid });
+        logLine(state, `Trade route established ${hexA}-${hexB}.`);
+        break;
+      }
+
+      case "gainFromTradeRoute": {
+        if (!player) break;
+        const fid = String(player.factionId ?? "").toLowerCase();
+        const edges = (state.tradeRouteEdges ?? []).filter(e => e.factionId === fid).length;
+        const amount = Math.max(1, edges);
+        player.credits = (player.credits ?? 0) + amount;
+        logLine(state, `Caravan: +${amount} credits from trade routes.`);
+        break;
+      }
+
       case "revealHex": {
-        revealAdjacentHexes(state, context, eff.count ?? 1);
+        const targetId = context.selectedHexId ?? state.ui?.selectedHexId;
+        const count = eff.count ?? 1;
+        const scanRange = eff.range ?? 1;
+        if (targetId) {
+          const hex = getHex(state, targetId);
+          const factionId = String(player?.factionId ?? "").toLowerCase();
+          const fleetHexes = Object.keys(state.fleetsByHex ?? {}).filter(h => state.fleetsByHex[h]?.[factionId]);
+          const isFleetHex = fleetHexes.includes(targetId);
+          const isAdjacentToFleet = fleetHexes.some(hId =>
+            getAdjacentHexes(state, hId).some(h => h.id === targetId)
+          );
+          const isWithinRangeOfFleet = scanRange > 1 && fleetHexes.some(hId =>
+            getHexesWithinRange(state, hId, scanRange).some(h => h.id === targetId)
+          );
+          if (hex && (isFleetHex || isAdjacentToFleet || isWithinRangeOfFleet)) {
+            if (isFleetHex && count > 1 && !isWithinRangeOfFleet) {
+              context.hexId = targetId;
+              revealAdjacentHexes(state, context, count);
+            } else {
+              hex.revealed = true;
+              if (hex.type === "unknown" && context.rng) {
+                hex.type = weightedPick(context.rng, [
+                  { value: "empty", weight: 55 },
+                  { value: "system", weight: 30 },
+                  { value: "phenomena", weight: 15 }
+                ]);
+              }
+              context.revealedHexId = targetId;
+              if (player) {
+                const visited = ensureVisitedMap(state, player.factionId);
+                visited[targetId] = true;
+              }
+              logLine(state, `Scan revealed ${targetId}.`);
+              recomputeInfluence(state);
+              if (eff.peekDeck && hex.type && hex.type !== "unknown") {
+                const deck = state.decks[hex.type];
+                const topId = deck?.draw?.[0];
+                if (topId && context.cardIndex) {
+                  const card = context.cardIndex[topId];
+                  logLine(state, `Oracle Scan: top of ${hex.type} deck is "${card?.title ?? topId}".`);
+                }
+              }
+            }
+          }
+        } else {
+          revealAdjacentHexes(state, context, count);
+        }
         break;
       }
 
@@ -545,16 +796,40 @@ export function applyEffects(state, effects, context) {
           ok = false;
           break;
         }
+        const range = eff.range ?? 2;
         const reachable = (() => {
-          const first = getAdjacentHexes(state, selection.hexId);
-          const second = first.flatMap(h => getAdjacentHexes(state, h.id));
-          const ids = new Set([selection.hexId, ...first.map(h => h.id), ...second.map(h => h.id)]);
+          let frontier = [getHex(state, selection.hexId)].filter(Boolean);
+          const ids = new Set([selection.hexId]);
+          for (let r = 0; r < range; r++) {
+            const next = [];
+            for (const h of frontier) {
+              for (const n of getAdjacentHexes(state, h.id)) {
+                if (!ids.has(n.id)) { ids.add(n.id); next.push(n); }
+              }
+            }
+            frontier = next;
+          }
           return ids.has(destinationId);
         })();
         if (!reachable) {
-          logLine(state, "Destination must be within 2 orthogonal steps.");
+          logLine(state, `Destination must be within ${range} step(s).`);
           ok = false;
           break;
+        }
+        const destHexPre = getHex(state, destinationId);
+        const isDebris = destHexPre && (destHexPre.token === "debris_field" || destHexPre.token === "derelict");
+        const isSalvager = factionId === "salvagers" || eff.salvagerMove;
+        if (isDebris && !isSalvager) {
+          const shipCount = selection.fleetIds?.length ?? (entry.undamaged.length + entry.damaged.length);
+          const cost = shipCount;
+          const energy = player.energy ?? 0;
+          if (energy < cost) {
+            logLine(state, `Entering debris costs ${cost} energy (1 per ship). You have ${energy}.`);
+            ok = false;
+            break;
+          }
+          player.energy = energy - cost;
+          logLine(state, `Paid ${cost} energy to enter debris.`);
         }
         const enemies = state.players
           .filter(p => String(p.factionId).toLowerCase() !== factionId)
@@ -566,7 +841,7 @@ export function applyEffects(state, effects, context) {
         }
         const movingIds = selection.fleetIds.length > 0 ? selection.fleetIds : [...entry.undamaged, ...entry.damaged];
         moveFleetStack(state, selection.hexId, destinationId, factionId, movingIds);
-        const destHex = getHex(state, destinationId);
+        const destHex = destHexPre ?? getHex(state, destinationId);
         if (destHex && !destHex.revealed) {
           if (context.rng && context.cardIndex) {
             revealHex(state, context.rng, context.cardIndex, destinationId, null);
@@ -583,7 +858,7 @@ export function applyEffects(state, effects, context) {
       }
 
       case "peekDeckTop": {
-        const deckType = context.selectedDeckType ?? "phenomena";
+        const deckType = context.selectedDeckType ?? eff.deckType ?? "phenomena";
         const deck = state.decks[deckType];
         if (!deck) {
           logLine(state, `Unknown deck type: ${deckType}.`);
@@ -592,12 +867,16 @@ export function applyEffects(state, effects, context) {
         }
         const topId = deck.draw[0];
         if (!topId) {
-          logLine(state, `Data Probe: ${deckType} deck is empty.`);
+          logLine(state, `Peek: ${deckType} deck is empty.`);
           break;
         }
         const card = context.cardIndex?.[topId];
         const title = card?.title ?? topId;
-        logLine(state, `Data Probe: top of ${deckType} is "${title}".`);
+        logLine(state, `Peek: top of ${deckType} is "${title}".`);
+        if (eff.gainCreditIfSystem && deckType === "system" && player && topId) {
+          player.credits = (player.credits ?? 0) + 1;
+          logLine(state, "Echo Tap: +1 credit (system card).");
+        }
         break;
       }
 
@@ -642,7 +921,40 @@ export function applyEffects(state, effects, context) {
           ok = false;
           break;
         }
-        repairFleetInHex(state, targetHex, factionId);
+        const repairAmount = Math.max(1, eff.amount ?? 1);
+        for (let i = 0; i < repairAmount; i++) {
+          const entry = getHexFleets(state, targetHex, factionId);
+          if ((entry?.damaged?.length ?? 0) === 0) break;
+          repairFleetInHex(state, targetHex, factionId);
+        }
+        break;
+      }
+
+      case "gainCreditsFromBiomass": {
+        if (!player) break;
+        const factionId = String(player.factionId ?? "").toLowerCase();
+        const fleetHexes = new Set(Object.keys(state.fleetsByHex ?? {}).filter(h => state.fleetsByHex[h]?.[factionId]));
+        let count = 0;
+        for (const hex of state.map.hexes) {
+          if (hex.token !== "biomass") continue;
+          const controlled = state.controllerByHex?.[hex.id] === factionId && !state.contestedByHex?.[hex.id];
+          const adjacent = getAdjacentHexes(state, hex.id).some(h => fleetHexes.has(h.id));
+          if (controlled || adjacent) count += 1;
+        }
+        count = Math.max(1, count);
+        player.credits = (player.credits ?? 0) + count;
+        logLine(state, `Absorb: +${count} credits from biomass.`);
+        break;
+      }
+
+      case "placeBiomassIfEmptyOrSystem": {
+        const targetId = context.revealedHexId ?? context.selectedHexId ?? state.ui?.selectedHexId;
+        const hex = getHex(state, targetId);
+        if (!hex || !hex.revealed) break;
+        if (hex.type === "empty" || hex.type === "system") {
+          hex.token = "biomass";
+          logLine(state, `Spore Probe: biomass placed at ${targetId}.`);
+        }
         break;
       }
 
@@ -814,6 +1126,27 @@ export function getHex(state, hexId) {
   return state.map.hexes.find(h => h.id === hexId) ?? null;
 }
 
+/** Compute start hex IDs as vertices of a regular polygon centered on the map. */
+export function computePolygonStartPositions(map, playerCount) {
+  const w = map.width ?? 7;
+  const h = map.height ?? 7;
+  const cx = (w - 1) / 2;
+  const cy = (h - 1) / 2;
+  const n = Math.min(6, Math.max(2, playerCount));
+  const radius = Math.min(cx, cy);
+  const result = [];
+  for (let i = 0; i < n; i++) {
+    const angle = (Math.PI / 2) + (2 * Math.PI * i) / n;
+    const col = Math.round(cx + radius * Math.cos(angle));
+    const row = Math.round(cy - radius * Math.sin(angle));
+    const c = Math.max(0, Math.min(w - 1, col));
+    const r = Math.max(0, Math.min(h - 1, row));
+    const hex = map.hexes.find(hx => hx.col === c && hx.row === r);
+    if (hex) result.push(hex.id);
+  }
+  return result;
+}
+
 export function getAdjacentHexes(state, hexId) {
   const hex = getHex(state, hexId);
   if (!hex) return [];
@@ -828,6 +1161,29 @@ export function getAdjacentHexes(state, hexId) {
   return candidates
     .map(p => state.map.hexes.find(h => h.col === p.c && h.row === p.r))
     .filter(Boolean);
+}
+
+export function getHexesWithinRange(state, hexId, range) {
+  if (range <= 0) return [];
+  const hex = getHex(state, hexId);
+  if (!hex) return [];
+  const seen = new Set([hexId]);
+  let frontier = [hex];
+  const result = [];
+  for (let r = 1; r <= range; r++) {
+    const next = [];
+    for (const h of frontier) {
+      for (const n of getAdjacentHexes(state, h.id)) {
+        if (!seen.has(n.id)) {
+          seen.add(n.id);
+          next.push(n);
+          result.push(n);
+        }
+      }
+    }
+    frontier = next;
+  }
+  return result;
 }
 
 export function revealHex(state, rng, cardIndex, hexId, forcedType = null) {
@@ -904,6 +1260,7 @@ export function resolveChoice(state, cardIndex, choiceIndex) {
     deckType,
     cardId: card.id,
     cardTitle: card.title,
+    choiceIndex,
     choiceLabel: choice.label,
     resolveText: choice.resolveText ?? "",
     tokenId: hex?.token ?? null,
@@ -936,9 +1293,10 @@ export function executeActionNumber(state, rng, cardIndex, actionNumber, selecte
     return { ok: false, reason: "Needs target.", needsTarget: true };
   }
 
+  const fleetHex = Object.keys(state.fleetsByHex ?? {}).find(h => state.fleetsByHex[h]?.[factionId]);
   const fallbackHex = state.ui.fleetSelection?.hexId ??
     state.ui.selectedHexId ??
-    Object.keys(activePlayer.fleetsByHex ?? {})[0] ??
+    fleetHex ??
     null;
   const context = {
     hexId: fallbackHex,

@@ -68,7 +68,7 @@ function normalizeActions(raw) {
     const factionId = String(factionKey).toLowerCase();
     const source = (factionActionsRaw && typeof factionActionsRaw === "object") ? factionActionsRaw : {};
     const actionMap = {};
-    for (let i = 1; i <= 18; i += 1) {
+    for (let i = 1; i <= 12; i += 1) {
       const key = String(i);
       const entry = normalizeActionEntry(source[key], factionId, key);
       actionMap[key] = {
@@ -117,11 +117,26 @@ export async function loadContent() {
   ]);
 
   let actionsRaw = {};
+  let cardTextAll = null;
   try {
     actionsRaw = await loadJson("./data/actions.json");
   } catch (err) {
     console.error("FAILED TO LOAD actions.json", err);
     actionsRaw = {};
+  }
+  try {
+    cardTextAll = await loadJson("./data/card-text-all.json");
+  } catch (err) {
+    // Optional authored text payload; gameplay falls back to base cards if missing.
+    cardTextAll = null;
+  }
+
+  const cardTextByKey = {};
+  if (Array.isArray(cardTextAll?.cards)) {
+    for (const c of cardTextAll.cards) {
+      if (!c?.deck || !c?.id) continue;
+      cardTextByKey[`${String(c.deck).toLowerCase()}:${c.id}`] = c;
+    }
   }
 
   return {
@@ -129,6 +144,7 @@ export async function loadContent() {
     tokensById: tokens,
     factions: normalizeFactionIds(factionsRaw),
     actionsByFaction: normalizeActions(actionsRaw),
+    cardTextByKey,
     cards: {
       empty: normalizeCards(cardsEmpty, "empty"),
       system: normalizeCards(cardsSystem, "system"),

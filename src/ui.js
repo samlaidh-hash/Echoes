@@ -1,4 +1,112 @@
-import { computeAvailableActions, countFleets } from "./rules.js";
+import { computeAvailableActions, countFleets, getHexesWithinRange } from "./rules.js";
+
+const FACTION_DESCRIPTIONS = {
+  directorate: "Military faction — strong fleets, outposts grant +2 influence, wins ties in combat.",
+  choir: "Information faction — peeks at decks, modifies dice, gains intel before acting.",
+  bloom: "Growth faction — spreads biomass tokens, replicates fleets, feeds off organic network.",
+  salvagers: "Scavenger faction — places debris, salvages credits from wreckage, moves freely through debris.",
+  gatekeepers: "Network faction — places beacons, jumps instantly between them, controls the gate network.",
+  syndicate: "Trade faction — builds trade routes on hex edges, earns credits from commerce."
+};
+
+export function showSetupScreen() {
+  return new Promise(resolve => {
+    const overlay = document.createElement("div");
+    overlay.className = "setup-overlay";
+
+    const factions = ["directorate", "choir", "bloom", "salvagers", "gatekeepers", "syndicate"];
+    const factionNames = {
+      directorate: "The Directorate", choir: "The Choir of Glass", bloom: "The Bloom",
+      salvagers: "The Salvagers", gatekeepers: "The Gatekeepers", syndicate: "The Syndicate"
+    };
+    const factionGlyphs = { directorate: "⛨", choir: "◈", bloom: "❖", salvagers: "⚙", gatekeepers: "✶", syndicate: "⇄" };
+
+    let selectedFaction = "directorate";
+    let selectedAI1 = "choir";
+    let selectedAI2 = "bloom";
+
+    function buildUI() {
+      overlay.innerHTML = "";
+      const box = document.createElement("div");
+      box.className = "setup-box";
+
+      box.innerHTML = `
+        <div class="setup-title">ECHOES OF THE GATE</div>
+        <div class="setup-subtitle">Choose your faction (1 Human vs 2 AI)</div>
+        <div class="setup-section">
+          <label class="setup-label">Your Faction</label>
+          <div class="setup-faction-grid" id="humanFactionGrid"></div>
+          <div class="setup-desc" id="humanDesc"></div>
+        </div>
+        <div class="setup-section">
+          <label class="setup-label">AI Opponent 1</label>
+          <select class="setup-select" id="ai1Select"></select>
+        </div>
+        <div class="setup-section">
+          <label class="setup-label">AI Opponent 2</label>
+          <select class="setup-select" id="ai2Select"></select>
+        </div>
+        <div class="setup-buttons">
+          <button class="btn setup-btn" id="startBtn" title="Start a new game with the selected factions">Start Game</button>
+          <button class="btn setup-btn setup-tutorial" id="tutorialBtn" title="Start with step-by-step tutorial hints">Tutorial</button>
+        </div>
+      `;
+      overlay.appendChild(box);
+
+      const grid = box.querySelector("#humanFactionGrid");
+      factions.forEach(f => {
+        const btn = document.createElement("button");
+        btn.className = `setup-faction-btn ${f === selectedFaction ? "selected" : ""}`;
+        btn.title = `${factionNames[f]}: ${FACTION_DESCRIPTIONS[f]}`;
+        btn.textContent = `${factionGlyphs[f]} ${factionNames[f]}`;
+        btn.addEventListener("click", () => { selectedFaction = f; buildUI(); });
+        grid.appendChild(btn);
+      });
+
+      box.querySelector("#humanDesc").textContent = FACTION_DESCRIPTIONS[selectedFaction];
+
+      const buildSelect = (selectEl, current, exclude) => {
+        selectEl.innerHTML = "";
+        factions.filter(f => f !== exclude).forEach(f => {
+          const opt = document.createElement("option");
+          opt.value = f;
+          opt.textContent = `${factionGlyphs[f]} ${factionNames[f]}`;
+          opt.title = FACTION_DESCRIPTIONS[f];
+          if (f === current) opt.selected = true;
+          selectEl.appendChild(opt);
+        });
+      };
+
+      const ai1Sel = box.querySelector("#ai1Select");
+      const ai2Sel = box.querySelector("#ai2Select");
+      if (selectedAI1 === selectedFaction) selectedAI1 = factions.find(f => f !== selectedFaction && f !== selectedAI2);
+      if (selectedAI2 === selectedFaction) selectedAI2 = factions.find(f => f !== selectedFaction && f !== selectedAI1);
+      if (selectedAI1 === selectedAI2) selectedAI2 = factions.find(f => f !== selectedFaction && f !== selectedAI1);
+      buildSelect(ai1Sel, selectedAI1, selectedFaction);
+      buildSelect(ai2Sel, selectedAI2, selectedFaction);
+      ai1Sel.addEventListener("change", () => { selectedAI1 = ai1Sel.value; if (selectedAI2 === selectedAI1) { selectedAI2 = factions.find(f => f !== selectedFaction && f !== selectedAI1); } buildUI(); });
+      ai2Sel.addEventListener("change", () => { selectedAI2 = ai2Sel.value; if (selectedAI1 === selectedAI2) { selectedAI1 = factions.find(f => f !== selectedFaction && f !== selectedAI2); } buildUI(); });
+
+      const finish = (tutorial) => {
+        overlay.remove();
+        resolve({
+          tutorial,
+          players: [
+            { id: "p1", factionId: selectedFaction, credits: 0, energy: 0, isAI: false },
+            { id: "p2", factionId: selectedAI1, credits: 0, energy: 0, isAI: true },
+            { id: "p3", factionId: selectedAI2, credits: 0, energy: 0, isAI: true }
+          ]
+        });
+      };
+
+      box.querySelector("#startBtn").addEventListener("click", () => finish(false));
+      box.querySelector("#tutorialBtn").addEventListener("click", () => finish(true));
+    }
+
+    buildUI();
+    document.getElementById("app").appendChild(overlay);
+  });
+}
 
 function el(tag, attrs = {}, children = []) {
   const node = document.createElement(tag);
@@ -27,6 +135,70 @@ export function render(state, handlers) {
   renderActions(state, handlers);
   renderLog(state);
   renderCombat(state, handlers);
+  renderTutorial(state);
+}
+
+const TUTORIAL_STEPS = [
+  { phase: "roll", text: "Welcome! Click the **Roll** button to roll your action dice for this turn." },
+  { phase: "pick", text: "Your dice are rolled. **Highlighted actions** can be performed. Click one to queue it." },
+  { phase: "target", text: "This action needs a target. Click a **yellow-highlighted hex** on the map." },
+  { phase: "perform", text: "Action queued! Click **Perform Action** or click a target hex to execute it." },
+  { phase: "card", text: "A card was drawn! Read the options and **click one** to resolve it." },
+  { phase: "continue", text: "Card resolved. Click **Continue** to proceed, then use remaining dice or end turn." },
+  { phase: "endturn", text: "Dice spent! Click **Next Player** to end your turn. AI opponents will play automatically." },
+  { phase: "done", text: "You've got the basics! Explore, expand, and compete for control. Hover over anything for tips." }
+];
+
+function getTutorialHint(state) {
+  if (!state.ui.tutorialMode || state.ui.tutorialStep < 0) return null;
+  if (state.ui.tutorialStep >= TUTORIAL_STEPS.length) return TUTORIAL_STEPS[TUTORIAL_STEPS.length - 1].text;
+
+  const dice = state.turn?.dice;
+  const used = state.turn?.used;
+  const noDice = dice?.a == null;
+  const hasPending = !!state.ui.pendingAction;
+  const hasCard = !!state.ui.pending;
+  const hasResolution = !!state.ui.lastResolution;
+  const isTargeting = state.ui.mode === "targeting";
+  const allUsed = (dice?.a != null && used?.a) && (dice?.b != null && used?.b) && (!dice?.bonus || used?.bonus);
+
+  if (hasCard) return TUTORIAL_STEPS[4].text;
+  if (hasResolution) return TUTORIAL_STEPS[5].text;
+  if (noDice) return TUTORIAL_STEPS[0].text;
+  if (isTargeting) return TUTORIAL_STEPS[2].text;
+  if (hasPending) return TUTORIAL_STEPS[3].text;
+  if (allUsed) return TUTORIAL_STEPS[6].text;
+  return TUTORIAL_STEPS[1].text;
+}
+
+function renderTutorial(state) {
+  let bar = document.getElementById("tutorialBar");
+  const hint = getTutorialHint(state);
+  if (!hint) {
+    if (bar) bar.classList.add("hidden");
+    return;
+  }
+  if (!bar) {
+    bar = document.createElement("div");
+    bar.id = "tutorialBar";
+    bar.className = "tutorial-bar";
+    const dismiss = document.createElement("button");
+    dismiss.className = "tutorial-dismiss";
+    dismiss.textContent = "✕";
+    dismiss.title = "Dismiss tutorial hints";
+    dismiss.addEventListener("click", () => {
+      state.ui.tutorialMode = false;
+      bar.classList.add("hidden");
+    });
+    bar.appendChild(dismiss);
+    const text = document.createElement("div");
+    text.className = "tutorial-text";
+    bar.appendChild(text);
+    document.getElementById("app").appendChild(bar);
+  }
+  bar.classList.remove("hidden");
+  const textEl = bar.querySelector(".tutorial-text");
+  textEl.innerHTML = hint.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
 }
 
 function renderSeed(state) {
@@ -38,6 +210,14 @@ function tokenGlyph(state, tokenId) {
   if (!tokenId) return "";
   const t = state.tokensById?.[tokenId] ?? state.tokens?.[tokenId];
   return t?.glyph ?? "?";
+}
+
+function authoredCardKey(deckType, cardId) {
+  return `${String(deckType).toLowerCase()}:${cardId}`;
+}
+
+function getAuthoredCard(state, deckType, cardId) {
+  return state.cardTextByKey?.[authoredCardKey(deckType, cardId)] ?? null;
 }
 
 function getAdjacentHexesForUi(state, hexId) {
@@ -58,14 +238,13 @@ function getAdjacentHexesForUi(state, hexId) {
 
 function factionGlyph(factionId) {
   switch (String(factionId).toLowerCase()) {
-    case "directorate":
-      return "⛨";
-    case "choir":
-      return "◈";
-    case "bloom":
-      return "❖";
-    default:
-      return "?";
+    case "directorate": return "⛨";
+    case "choir": return "◈";
+    case "bloom": return "❖";
+    case "salvagers": return "⚙";
+    case "gatekeepers": return "✶";
+    case "syndicate": return "⇄";
+    default: return "?";
   }
 }
 
@@ -75,14 +254,13 @@ function factionClass(factionId) {
 
 function fleetGlyph(factionId) {
   switch (String(factionId).toLowerCase()) {
-    case "directorate":
-      return "■";
-    case "choir":
-      return "◆";
-    case "bloom":
-      return "●";
-    default:
-      return "■";
+    case "directorate": return "■";
+    case "choir": return "◆";
+    case "bloom": return "●";
+    case "salvagers": return "⚙";
+    case "gatekeepers": return "✶";
+    case "syndicate": return "◇";
+    default: return "■";
   }
 }
 
@@ -104,6 +282,11 @@ function renderTrack(label, value, max, trackClass) {
   ]);
 }
 
+function renderHudCompact(label, value, max) {
+  const v = Math.max(0, Math.min(max, value ?? 0));
+  return el("div", { class: "hud-compact" }, [`${label}: ${v}/${max}`]);
+}
+
 function renderHud(state) {
   const hud = document.getElementById("hud");
   if (!hud) return;
@@ -115,18 +298,28 @@ function renderHud(state) {
       const entry = v[String(player.factionId).toLowerCase()];
       return s + (entry?.undamaged?.length ?? 0) + (entry?.damaged?.length ?? 0);
     }, 0);
-    const panel = el("div", { class: `hud-panel ${factionClass(player.factionId)}` }, [
-      el("div", { class: "hud-title" }, [`${factionGlyph(player.factionId)} ${factionName(state, player.factionId)}`]),
-      renderTrack("Credits", player.credits, 20, "track-credits"),
-      renderTrack("Energy", player.energy, 20, "track-energy"),
+    const isAI = !!player.isAI;
+    const isActive = state.turn?.activePlayerIndex === state.players.indexOf(player);
+    const fid = String(player.factionId).toLowerCase();
+    const desc = FACTION_DESCRIPTIONS[fid] ?? "";
+    const panel = el("div", {
+      class: `hud-panel ${factionClass(player.factionId)} ${isActive ? "hud-active" : ""}`,
+      title: `${factionName(state, player.factionId)}${isAI ? " (AI)" : " (You)"}\n${desc}\nCredits: ${player.credits ?? 0} | Energy: ${player.energy ?? 0} | Fleets: ${totalFleets}`
+    }, [
+      el("div", { class: "hud-title" }, [`${factionGlyph(player.factionId)} ${factionName(state, player.factionId)}${isAI ? " 🤖" : ""}`]),
+      renderHudCompact("C", player.credits, 20),
+      renderHudCompact("E", player.energy, 20),
       el("div", { class: "track-label" }, [`Fleets: ${totalFleets}`])
     ]);
     factionRow.appendChild(panel);
   });
 
-  const tensionPanel = el("div", { class: "hud-panel hud-tension" }, [
+  const tensionPanel = el("div", {
+    class: "hud-panel hud-tension",
+    title: "Cosmic Tension rises from combat. At thresholds (5/10/15/20) events trigger. Higher tension = closer to game end."
+  }, [
     el("div", { class: "hud-title" }, ["Cosmic Tension"]),
-    renderTrack("Tension", state.cosmicTension ?? 0, 20, "track-tension")
+    renderHudCompact("T", state.cosmicTension ?? 0, 20)
   ]);
 
   hud.appendChild(factionRow);
@@ -137,17 +330,31 @@ function renderHud(state) {
 function renderMap(state, handlers) {
   const map = document.getElementById("map");
   map.classList.toggle("targeting", state.ui.mode === "targeting");
+  map.style.setProperty("--map-cols", String(state.map.width ?? 9));
   map.innerHTML = "";
 
   const activeFaction = String(state.players?.[state.turn?.activePlayerIndex ?? 0]?.factionId ?? "").toLowerCase();
   const awaitingAction = state.ui.pendingAction?.actionDef ?? null;
   const needsTarget = state.ui.mode === "targeting" && !!awaitingAction?.requiresTarget;
-  const isFast = (awaitingAction?.effects ?? []).some(e => e.op === "fastDeploy");
-  const isMove = (awaitingAction?.effects ?? []).some(e => e.op === "moveFleet" || e.op === "fastDeploy");
+  const fastEffect = (awaitingAction?.effects ?? []).find(e => e.op === "fastDeploy");
+  const isFast = !!fastEffect;
+  const moveRange = fastEffect?.range ?? 2;
+  const isRelay = (awaitingAction?.effects ?? []).some(e => e.op === "relayMove");
+  const isMove = (awaitingAction?.effects ?? []).some(e => e.op === "moveFleet" || e.op === "fastDeploy" || e.op === "relayMove");
   const isScan = (awaitingAction?.effects ?? []).some(e => e.op === "revealHex");
+  const revealEffect = (awaitingAction?.effects ?? []).find(e => e.op === "revealHex");
+  const revealCount = revealEffect?.count ?? 1;
+  const revealRange = revealEffect?.range ?? 1;
+  const isScanRange2 = isScan && revealRange > 1;
   const isAdjacentToken = (awaitingAction?.effects ?? []).some(e => e.op === "placeTokenAdjacent");
   const isForwardDeploy = (awaitingAction?.effects ?? []).some(e => e.op === "forwardDeploy");
   const isActivate = (awaitingAction?.effects ?? []).some(e => e.op === "activateSystem");
+  const isRepair = (awaitingAction?.effects ?? []).some(e => e.op === "repairFleet");
+  const isPlaceOutpost = (awaitingAction?.effects ?? []).some(e => e.op === "placeOutpost");
+  const isPlaceDebris = (awaitingAction?.effects ?? []).some(e => e.op === "placeDebris");
+  const isPlaceBeacon = (awaitingAction?.effects ?? []).some(e => e.op === "placeBeacon");
+  const isPlaceTradeRoute = (awaitingAction?.effects ?? []).some(e => e.op === "placeTradeRoute");
+  const isReconOrigin = isScan && revealCount > 1 && revealRange === 1;
 
   for (const hex of state.map.hexes) {
     const fogged = !hex.revealed;
@@ -168,17 +375,48 @@ function renderMap(state, handlers) {
           const count = (entry?.undamaged?.length ?? 0) + (entry?.damaged?.length ?? 0);
           return count > 0;
         }
-        const first = getAdjacentHexesForUi(state, sel.hexId);
-        if (first.some(h => h.id === hex.id)) return true;
-        if (isFast) {
-          const second = first.flatMap(h => getAdjacentHexesForUi(state, h.id));
-          return second.some(h => h.id === hex.id);
+        if (isRelay) {
+          return state.beaconsByHex?.[hex.id] === activeFaction && hex.id !== sel.hexId;
         }
-        return false;
+        let frontier = [state.map.hexes.find(h => h.id === sel.hexId)].filter(Boolean);
+        const reachable = new Set([sel.hexId]);
+        for (let r = 0; r < moveRange; r++) {
+          const next = [];
+          for (const h of frontier) {
+            for (const n of getAdjacentHexesForUi(state, h.id)) {
+              if (!reachable.has(n.id)) { reachable.add(n.id); next.push(n); }
+            }
+          }
+          frontier = next;
+        }
+        return reachable.has(hex.id);
       }
-      if (isAdjacentToken || isScan) {
+      if (isScanRange2) {
+        const fleetHexes = Object.keys(state.fleetsByHex ?? {}).filter(h => state.fleetsByHex[h]?.[activeFaction]);
+        return fleetHexes.some(hId => getHexesWithinRange(state, hId, revealRange).some(h => h.id === hex.id));
+      }
+      if (isAdjacentToken || (isScan && !isReconOrigin)) {
         const fleetHexes = Object.keys(state.fleetsByHex ?? {}).filter(h => state.fleetsByHex[h]?.[activeFaction]);
         return fleetHexes.some(hId => getAdjacentHexesForUi(state, hId).some(h => h.id === hex.id));
+      }
+      if (isReconOrigin) {
+        const entry = state.fleetsByHex?.[hex.id]?.[activeFaction];
+        return entry && ((entry?.undamaged?.length ?? 0) + (entry?.damaged?.length ?? 0)) > 0;
+      }
+      if (isRepair) {
+        const entry = state.fleetsByHex?.[hex.id]?.[activeFaction];
+        return entry && (entry?.damaged?.length ?? 0) > 0;
+      }
+      if (isPlaceOutpost || isPlaceDebris || isPlaceBeacon) {
+        const entry = state.fleetsByHex?.[hex.id]?.[activeFaction];
+        return entry && ((entry?.undamaged?.length ?? 0) + (entry?.damaged?.length ?? 0)) > 0;
+      }
+      if (isPlaceTradeRoute) {
+        const fleetHex = Object.keys(state.fleetsByHex ?? {}).find(h => state.fleetsByHex[h]?.[activeFaction]);
+        if (!fleetHex) return false;
+        const adj = getAdjacentHexesForUi(state, fleetHex).some(h => h.id === hex.id);
+        const controlled = state.controllerByHex?.[hex.id] === activeFaction && !state.contestedByHex?.[hex.id];
+        return adj && controlled;
       }
       if (isForwardDeploy || isActivate) {
         const controlled = state.controllerByHex?.[hex.id] === activeFaction;
@@ -199,16 +437,30 @@ function renderMap(state, handlers) {
 
     const isSelectedOrigin = state.ui.fleetSelection?.hexId === hex.id;
     const selectedCount = isSelectedOrigin ? state.ui.fleetSelection?.fleetIds?.length ?? 0 : 0;
+    const tokenLine = hex.token ? `Token: ${hex.token}` : "";
+    const fleetLines = Object.entries(state.fleetsByHex?.[hex.id] ?? {})
+      .map(([f, e]) => {
+        const total = (e?.undamaged?.length ?? 0) + (e?.damaged?.length ?? 0);
+        const dmg = e?.damaged?.length ?? 0;
+        return total > 0 ? `${factionName(state, f)}: ${total} fleet${total > 1 ? "s" : ""}${dmg > 0 ? ` (${dmg} damaged)` : ""}` : null;
+      }).filter(Boolean).join("\n");
+    const beaconLine = state.beaconsByHex?.[hex.id] ? `Beacon: ${factionName(state, state.beaconsByHex[hex.id])}` : "";
+    const outpostLine = state.outpostByHex?.[hex.id] ? `Outpost: ${factionName(state, state.outpostByHex[hex.id])}` : "";
+
     const btn = el("button", {
       class: `hex ${fogged ? "fogged" : ""} ${isTargetable ? "targetable" : ""} ${isSelectedOrigin ? "selected-origin" : ""} ${state.ui.pulseHexId === hex.id ? "pulse" : ""}`,
       type: "button",
       disabled: false,
       title: [
-        fogged ? "Unexplored" : `Type: ${hex.type}`,
+        `Hex ${hex.id}`,
+        fogged ? "Status: Unexplored (fog of war)" : `Type: ${hex.type}`,
+        tokenLine, outpostLine, beaconLine,
+        fleetLines ? `Fleets:\n${fleetLines}` : "",
         "Influence:",
-        influenceLines || "None",
-        controlLine
-      ].join("\n"),
+        influenceLines || "  None",
+        controlLine,
+        isTargetable ? "★ Valid target for current action" : ""
+      ].filter(Boolean).join("\n"),
       "data-testid": `hex-${hex.id}`,
       "data-hexid": hex.id
     }, [
@@ -261,6 +513,27 @@ function renderCard(state, handlers) {
       placeGlyph ? `${placeGlyph} ${placeText}` : placeText
     ]));
 
+    const authored = getAuthoredCard(state, resolved.deckType, resolved.cardId);
+    if (authored) {
+      const idx = Number.isFinite(resolved.choiceIndex) ? resolved.choiceIndex : 0;
+      const optionKey = ["optionA", "optionB", "optionC"][Math.max(0, Math.min(2, idx))];
+      const resolvedOption = authored.instantOptionResults?.[optionKey];
+      if (resolvedOption) {
+        panel.appendChild(el("div", { class: "card-body" }, [
+          `Instant (${resolvedOption.profile}): ${resolvedOption.effect}`
+        ]));
+        if (resolvedOption.cost) {
+          panel.appendChild(el("div", { class: "card-body" }, [`Cost paid: ${resolvedOption.cost}`]));
+        }
+      }
+      panel.appendChild(el("div", { class: "card-body" }, [
+        `On Activation: ${authored.rear?.primaryAction?.effect ?? "—"}`
+      ]));
+      panel.appendChild(el("div", { class: "card-body" }, [
+        `Secondary (auto): ${authored.rear?.secondaryOnActivation?.effect ?? "—"}`
+      ]));
+    }
+
     const btn = el("button", {
       class: "btn",
       type: "button",
@@ -272,25 +545,42 @@ function renderCard(state, handlers) {
   }
 
   const { deckType, card } = pending;
+  const authored = getAuthoredCard(state, deckType, card.id);
 
   panel.appendChild(el("div", { class: "card-header" }, [
     el("div", { class: "card-title", "data-testid": "card-title" }, [card.title]),
     el("div", { class: "card-meta" }, [`Deck: ${deckType}`])
   ]));
 
-  panel.appendChild(el("div", { class: "card-body" }, [
-    "Choose an option:"
-  ]));
+  if (authored?.front) {
+    const frontLines = [
+      authored.front.line2_description,
+      authored.front.line3_decision
+    ].filter(Boolean);
+    for (const line of frontLines) {
+      panel.appendChild(el("div", { class: "card-body" }, [line]));
+    }
+  } else {
+    panel.appendChild(el("div", { class: "card-body" }, [
+      "Choose an option:"
+    ]));
+  }
 
   const choices = el("div", { class: "card-choices" }, []);
+  const authoredOptionLines = authored?.front
+    ? [authored.front.line4_optionA, authored.front.line5_optionB, authored.front.line6_optionC]
+    : [];
   card.choices.forEach((ch, idx) => {
+    const authoredLabel = authoredOptionLines[idx];
+    const primary = authoredLabel || ch.label;
+    const secondary = authoredLabel && authoredLabel !== ch.label ? ch.label : null;
     const choiceBtn = el("button", {
       class: "choice",
       type: "button",
       "data-testid": `card-choice-${idx}`
     }, [
-      el("div", {}, [ch.label]),
-      el("small", {}, ["→"])
+      el("div", {}, [primary]),
+      secondary ? el("small", {}, [`Base: ${secondary}`]) : el("small", {}, ["→"])
     ]);
     choiceBtn.addEventListener("click", () => handlers.onCardChoice(idx));
     choices.appendChild(choiceBtn);
@@ -337,26 +627,51 @@ function renderActions(state, handlers) {
   const dicePills = el("div", { class: "dice-pills" }, [
     (!used?.a && dice?.a != null) ? el("div", {
       class: `dice-pill ${pendingConsume.a ? "pending" : ""}`,
+      title: `Die A (value ${dice?.a}). Spend to perform action #${dice?.a}, or combine with other dice for higher actions.`,
       "data-testid": "die-a"
     }, [`A ${dice?.a ?? "-"}`]) : null,
     (!used?.b && dice?.b != null) ? el("div", {
       class: `dice-pill ${pendingConsume.b ? "pending" : ""}`,
+      title: `Die B (value ${dice?.b}). Spend to perform action #${dice?.b}, or combine with other dice for higher actions.`,
       "data-testid": "die-b"
     }, [`B ${dice?.b ?? "-"}`]) : null,
     (!used?.bonus && dice?.bonus != null) ? el("div", {
       class: `dice-pill ${pendingConsume.bonus ? "pending" : ""}`,
+      title: `Bonus Die (value ${dice?.bonus}). Only first player gets this. Combine with A or B for powerful high-numbered actions.`,
       "data-testid": "die-bonus"
     }, [`Bonus ${dice?.bonus ?? "-"}`]) : null
   ]);
 
-  const rollBtn = el("button", { class: "btn", type: "button", disabled: state.ui.mode !== "idle" }, ["Roll"]);
+  const rollBtn = el("button", {
+    class: "btn", type: "button",
+    disabled: state.ui.mode !== "idle",
+    title: "Roll your action dice for this turn. You get Die A and Die B; first player also gets a Bonus die.",
+    "data-testid": "roll-btn"
+  }, ["Roll"]);
   rollBtn.addEventListener("click", () => handlers.onRollRoundDice());
+
+  const allDiceUsed = (dice?.a != null && used?.a) && (dice?.b != null && used?.b) &&
+    (!dice?.bonus || used?.bonus);
+  const noDiceYet = dice?.a == null && dice?.b == null;
+  const hasAvailableActions = Object.entries(state.ui.availableActionOptions ?? {}).some(
+    ([, opts]) => Array.isArray(opts) && opts.length > 0
+  );
+  const canEndTurn = noDiceYet || allDiceUsed || !hasAvailableActions;
+  const nextPlayerBtn = el("button", {
+    class: "btn",
+    type: "button",
+    disabled: state.ui.mode !== "idle" || !canEndTurn,
+    title: "End your turn and pass to the next player. Available when all dice are used or no actions remain.",
+    "data-testid": "next-player"
+  }, ["Next Player"]);
+  nextPlayerBtn.addEventListener("click", () => handlers.onNextPlayer?.());
 
   const performBtn = el("button", {
     class: "btn",
     type: "button",
-    disabled: state.ui.mode === "modal",
-    "data-testid": "perform-action"
+    title: "Execute the currently queued action. Select an action first, then click here (or click a target hex for targeted actions).",
+    "data-testid": "perform-action-btn",
+    disabled: state.ui.mode === "modal"
   }, ["Perform Action"]);
   performBtn.addEventListener("click", () => handlers.onPerformAction());
 
@@ -370,15 +685,26 @@ function renderActions(state, handlers) {
     const isForward = (actionDef?.effects ?? []).some(e => e.op === "forwardDeploy");
     const isMove = (actionDef?.effects ?? []).some(e => e.op === "moveFleet");
     const isScan = (actionDef?.effects ?? []).some(e => e.op === "revealHex");
+    const revealEffect = (actionDef?.effects ?? []).find(e => e.op === "revealHex");
+    const revealCount = revealEffect?.count ?? 1;
+    const revealRange = revealEffect?.range ?? 1;
+    const isRepair = (actionDef?.effects ?? []).some(e => e.op === "repairFleet");
     if (isForward) hint = "Select a controlled system to deploy to.";
     else if (isMove) hint = "Select an adjacent hex to move into.";
-    else if (isScan) hint = "Select an adjacent hex to scan.";
+    else if (isScan) {
+      if (revealRange > 1) hint = `Select a hex within ${revealRange} steps of a fleet to scan.`;
+      else if (revealCount > 1) hint = "Select a fleet hex (origin) to reveal 2 adjacent.";
+      else hint = "Select an adjacent hex to scan.";
+    }
+    else if (isRepair) hint = "Select a hex with damaged fleet(s).";
+    else if ((actionDef?.effects ?? []).some(e => e.op === "placeOutpost" || e.op === "placeDebris" || e.op === "placeBeacon")) hint = "Select a hex with your fleet.";
     else hint = "Select a valid target.";
   }
   if (state.ui.mode === "modal") hint = "Resolve current event first.";
 
   const diceArea = el("div", { class: "action-dice" }, [
     rollBtn,
+    nextPlayerBtn,
     dicePills,
     el("div", { class: "action-hint" }, [hint]),
     performBtn
@@ -398,11 +724,14 @@ function renderActions(state, handlers) {
         available ? "available" : "",
         (state.ui.pendingAction?.actionNumber === String(key)) ? "queued" : ""
       ].filter(Boolean).join(" ");
+      const reqTarget = entry?.requiresTarget ? "Requires target hex." : "Auto-resolves (no target needed).";
+      const diceHint = available ? `Available via: ${options.map(o => o.label).join(", ")}` : "Not available with current dice.";
       const btn = el("button", {
         class: classes,
         type: "button",
         disabled: state.ui.mode === "modal",
-        title: entry?.text ?? ""
+        title: `#${key} ${entry?.name ?? "Action"}\n${entry?.text ?? ""}\n${reqTarget}\n${diceHint}`,
+        "data-testid": `action-${key}`
       }, [
         el("span", { class: "action-num" }, [`#${key}`]),
         el("span", { class: "action-name" }, [entry?.name ?? "Action"])
@@ -416,8 +745,7 @@ function renderActions(state, handlers) {
 
   const actionsArea = el("div", { class: "action-groups" }, [
     makeGroup("1–6", ["1", "2", "3", "4", "5", "6"]),
-    makeGroup("7–12", ["7", "8", "9", "10", "11", "12"]),
-    makeGroup("13–18", ["13", "14", "15", "16", "17", "18"])
+    makeGroup("7–12", ["7", "8", "9", "10", "11", "12"])
   ]);
 
   const bar = el("div", { class: "action-bar" }, [
@@ -468,6 +796,20 @@ function renderActions(state, handlers) {
     modifySelect,
     deltaSelect
   ]));
+
+  const saveLoad = el("div", { class: "action-controls" }, [
+    el("span", { class: "action-label" }, ["Session: "])
+  ]);
+  const saveBtn = el("button", { class: "btn", type: "button", title: "Save the current game to browser storage.", "data-testid": "save-game-btn" }, ["Save"]);
+  const loadBtn = el("button", { class: "btn", type: "button", title: "Load a previously saved game from browser storage.", "data-testid": "load-game-btn" }, ["Load"]);
+  const newBtn = el("button", { class: "btn", type: "button", title: "Start a brand new game (reloads the page).", "data-testid": "new-game-btn" }, ["New"]);
+  saveBtn.addEventListener("click", () => handlers.onSaveGame?.());
+  loadBtn.addEventListener("click", () => handlers.onLoadGame?.());
+  newBtn.addEventListener("click", () => handlers.onNewGame?.());
+  saveLoad.appendChild(saveBtn);
+  saveLoad.appendChild(loadBtn);
+  saveLoad.appendChild(newBtn);
+  panel.appendChild(saveLoad);
 }
 
 export function setSmokeBadge(text, kind = "warn") {
@@ -480,6 +822,32 @@ export function setSmokeBadge(text, kind = "warn") {
 function renderCombat(state, handlers) {
   const modal = document.getElementById("combatModal");
   if (!modal) return;
+  if (state.ui?.gameOver && state.ui?.modalType === "gameover") {
+    modal.classList.remove("hidden");
+    modal.innerHTML = "";
+    modal.appendChild(el("div", { class: "combat-title" }, ["GAME OVER"]));
+    modal.appendChild(el("div", { class: "combat-section" }, [state.ui.gameOver.reason ?? "Game complete."]));
+    const winner = state.ui.gameOver.winnerFactionId ?? "none";
+    modal.appendChild(el("div", { class: "combat-section" }, [`Winner: ${factionName(state, winner)}`]));
+    const scoreList = el("div", { class: "combat-section" }, [
+      el("div", { class: "combat-title" }, ["Scores"])
+    ]);
+    for (const row of state.ui.gameOver.scores ?? []) {
+      scoreList.appendChild(el("div", {}, [
+        `${factionGlyph(row.factionId)} ${factionName(state, row.factionId)}: ${row.score}`
+      ]));
+    }
+    modal.appendChild(scoreList);
+    const actions = el("div", { class: "combat-actions" }, []);
+    const dismissBtn = el("button", { class: "btn", type: "button", "data-testid": "dismiss-gameover-btn" }, ["Close"]);
+    dismissBtn.addEventListener("click", () => handlers.onDismissGameOver?.());
+    const newBtn = el("button", { class: "btn", type: "button", "data-testid": "gameover-new-btn" }, ["New Game"]);
+    newBtn.addEventListener("click", () => handlers.onNewGame?.());
+    actions.appendChild(dismissBtn);
+    actions.appendChild(newBtn);
+    modal.appendChild(actions);
+    return;
+  }
   const combat = state.ui.combat;
   if (!combat) {
     modal.classList.add("hidden");
@@ -499,10 +867,10 @@ function renderCombat(state, handlers) {
       row.addEventListener("click", () => handlers.onCombatToggleFaction(f));
       modal.appendChild(row);
     });
-    const engageBtn = el("button", { class: "btn", type: "button" }, ["Engage Selected"]);
+    const engageBtn = el("button", { class: "btn", type: "button", title: "Start combat with the selected defender faction(s)." }, ["Engage Selected"]);
     engageBtn.addEventListener("click", () => handlers.onCombatEngage());
     modal.appendChild(engageBtn);
-    const skipBtn = el("button", { class: "btn", type: "button" }, ["Do Not Engage"]);
+    const skipBtn = el("button", { class: "btn", type: "button", title: "Skip combat and end the move peacefully." }, ["Do Not Engage"]);
     skipBtn.addEventListener("click", () => handlers.onCombatDisengage());
     modal.appendChild(skipBtn);
     return;
@@ -551,16 +919,16 @@ function renderCombat(state, handlers) {
   }
 
   if (combat.phase === "roll") {
-    const rollBtn = el("button", { class: "btn", type: "button" }, ["Roll Combat Round"]);
+    const rollBtn = el("button", { class: "btn", type: "button", title: "Roll dice for both sides. Each fleet rolls 1d6; dice are paired high-to-high. Lower die in each pair takes a hit." }, ["Roll Combat Round"]);
     rollBtn.addEventListener("click", () => handlers.onCombatRoll());
     modal.appendChild(rollBtn);
     return;
   }
 
   const actions = el("div", { class: "combat-actions" }, []);
-  const contBtn = el("button", { class: "btn", type: "button" }, ["Continue"]);
+  const contBtn = el("button", { class: "btn", type: "button", title: "Continue fighting. Roll another round of combat dice." }, ["Continue"]);
   contBtn.addEventListener("click", () => handlers.onCombatContinue());
-  const retBtn = el("button", { class: "btn", type: "button" }, ["Retreat"]);
+  const retBtn = el("button", { class: "btn", type: "button", title: "Retreat your attacking fleets to an adjacent hex. Ends combat." }, ["Retreat"]);
   retBtn.addEventListener("click", () => handlers.onCombatRetreat());
   actions.appendChild(contBtn);
   actions.appendChild(retBtn);

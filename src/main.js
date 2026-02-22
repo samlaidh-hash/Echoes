@@ -19,9 +19,15 @@ import {
   countFleets,
   getHexFleets,
   createFleet,
-  addFleetToHex
+  addFleetToHex,
+  getHexesWithinRange,
+  computePolygonStartPositions
 } from "./rules.js";
-import { render, setSmokeBadge } from "./ui.js";
+import { render, setSmokeBadge, showSetupScreen } from "./ui.js";
+import { aiPickAction, aiPickTargetHex, aiPickCardChoice, aiShouldContinueCombat, isCurrentPlayerAI } from "./ai.js";
+
+const SAVE_KEY = "echoes:save:v1";
+const AI_STEP_DELAY = 400;
 
 function getParams() {
   const p = new URLSearchParams(location.search);
@@ -42,12 +48,85 @@ function buildCardIndex(cardsByDeck) {
   return idx;
 }
 
+function makeCardTextKey(deckType, cardId) {
+  return `${String(deckType).toLowerCase()}:${cardId}`;
+}
+
+function replaceStateInPlace(target, source) {
+  for (const k of Object.keys(target)) delete target[k];
+  for (const [k, v] of Object.entries(source)) target[k] = v;
+}
+
+function safeSaveState(state) {
+  try {
+    localStorage.setItem(SAVE_KEY, JSON.stringify(state));
+    return { ok: true };
+  } catch (err) {
+    return { ok: false, reason: err?.message ?? String(err) };
+  }
+}
+
+function safeLoadState() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return { ok: false, reason: "No save found." };
+    return { ok: true, state: JSON.parse(raw) };
+  } catch (err) {
+    return { ok: false, reason: err?.message ?? String(err) };
+  }
+}
+
+function computeFactionScore(state, factionId) {
+  const fid = String(factionId).toLowerCase();
+  const player = state.players.find((p) => String(p.factionId).toLowerCase() === fid);
+  const credits = player?.credits ?? 0;
+  const energy = player?.energy ?? 0;
+  const fleets = Object.values(state.fleetsByHex ?? {}).reduce((sum, entry) => {
+    const f = entry?.[fid];
+    return sum + (f?.undamaged?.length ?? 0) + (f?.damaged?.length ?? 0);
+  }, 0);
+  const controlled = Object.values(state.controllerByHex ?? {}).filter((c) => c === fid).length;
+  const influence = Object.values(state.influence ?? {}).reduce((sum, byFaction) => sum + (byFaction?.[fid] ?? 0), 0);
+  return credits + energy + fleets + controlled * 2 + Math.floor(influence / 3);
+}
+
+function tryEnterGameOver(state) {
+  const maxRounds = state.meta?.maxRounds ?? 12;
+  if ((state.turn?.round ?? 1) <= maxRounds) return false;
+  const scores = state.players.map((p) => ({
+    factionId: String(p.factionId).toLowerCase(),
+    score: computeFactionScore(state, p.factionId),
+  }));
+  scores.sort((a, b) => b.score - a.score || a.factionId.localeCompare(b.factionId));
+  state.ui.gameOver = {
+    winnerFactionId: scores[0]?.factionId ?? null,
+    scores,
+    reason: `Reached round limit (${maxRounds}).`,
+  };
+  state.ui.mode = "modal";
+  state.ui.modalType = "gameover";
+  return true;
+}
+
 async function boot() {
   const { seed, smoke } = getParams();
-  const rng = makeRng(seed);
+  const p = new URLSearchParams(location.search);
+  const skipSetup = smoke || p.get("skip_setup") === "1";
 
-  const state = initialState({ seed });
+  let playerSetup = null;
+  let tutorialMode = false;
+
+  if (!skipSetup) {
+    const setupResult = await showSetupScreen();
+    playerSetup = setupResult.players;
+    tutorialMode = setupResult.tutorial;
+  }
+
+  const rng = makeRng(seed);
+  const state = initialState({ seed, playerSetup });
   state.flags.smoke = smoke;
+  state.ui.tutorialMode = tutorialMode;
+  state.ui.tutorialStep = tutorialMode ? 0 : -1;
 
   const content = await loadContent();
   if (!content.actionsByFaction || Object.keys(content.actionsByFaction).length === 0) {
@@ -55,6 +134,7 @@ async function boot() {
   }
 
   state.actionsByFaction = content.actionsByFaction;
+  state.cardTextByKey = content.cardTextByKey ?? {};
 
   window.__ECHOES_STATE__ = state;
   window.__ECHOES_CONTENT__ = content;
@@ -65,24 +145,24 @@ async function boot() {
   state.map.height = content.hexMap.height;
   state.map.hexes = content.hexMap.hexes;
 
-  const markCapital = (hexId, tokenId) => {
-    const hex = state.map.hexes.find(h => h.id === hexId);
-    if (!hex) return;
-    hex.revealed = true;
-    hex.type = "system";
-    hex.token = tokenId;
-  };
+  const startHexIds = computePolygonStartPositions(state.map, state.players.length);
+  const capitalTokens = ["capital_directorate", "capital_choir", "capital_bloom", "capital_neutral", "capital_salvagers", "capital_gatekeepers", "capital_syndicate"];
+  state.capitalsByFaction = {};
 
-  markCapital("A1", "capital_directorate");
-  markCapital("G1", "capital_choir");
-  markCapital("A7", "capital_bloom");
-  markCapital("G7", "capital_neutral");
-
-  state.capitalsByFaction = {
-    directorate: "A1",
-    choir: "G1",
-    bloom: "A7"
-  };
+  state.players.forEach((p, i) => {
+    const hexId = startHexIds[i];
+    const factionId = String(p.factionId).toLowerCase();
+    const tokenId = capitalTokens[i] ?? `capital_${factionId}`;
+    if (hexId) {
+      const hex = state.map.hexes.find(h => h.id === hexId);
+      if (hex) {
+        hex.revealed = true;
+        hex.type = "system";
+        hex.token = tokenId;
+      }
+      state.capitalsByFaction[factionId] = hexId;
+    }
+  });
 
   if (!state.fleetsByHex || Object.keys(state.fleetsByHex).length === 0) {
     state.fleetsByHex = {};
@@ -220,6 +300,10 @@ async function boot() {
       state.ui.pendingAction = null;
       setMode("idle");
       state.ui.modalType = null;
+      if (tryEnterGameOver(state)) {
+        logLine(state, `GAME OVER: winner=${state.ui.gameOver?.winnerFactionId ?? "none"}`);
+        return;
+      }
       logLine(state, `Round ${state.turn.round} begins. Roll round dice.`);
     } else {
       state.turn.activePlayerIndex = next;
@@ -233,6 +317,7 @@ async function boot() {
   // handlers
   const handlers = {
     onHexClick(hexId, evt) {
+      if (state.ui.gameOver) return;
       if (state.ui.mode === "modal") return;
       state.ui.selectedHexId = hexId;
       if (state.ui.mode === "targeting") {
@@ -254,11 +339,22 @@ async function boot() {
           ].filter(p => p.c >= 0 && p.c < state.map.width && p.r >= 0 && p.r < state.map.height);
           return candidates.some(p => state.map.hexes.find(h => h.col === p.c && h.row === p.r && h.id === hexId));
         };
-        const isWithinTwo = (originId) => {
-          const first = getAdjacentHexesLocal(originId);
-          if (first.some(h => h.id === hexId)) return true;
-          const second = first.flatMap(h => getAdjacentHexesLocal(h.id));
-          return second.some(h => h.id === hexId);
+        const fastEffect = (actionDef?.effects ?? []).find(e => e.op === "fastDeploy");
+        const moveRange = fastEffect?.range ?? 2;
+        const isRelay = (actionDef?.effects ?? []).some(e => e.op === "relayMove");
+        const isWithinRange = (originId, range) => {
+          let frontier = [state.map.hexes.find(h => h.id === originId)].filter(Boolean);
+          const seen = new Set([originId]);
+          for (let r = 0; r < range; r++) {
+            const next = [];
+            for (const h of frontier) {
+              for (const n of getAdjacentHexesLocal(h.id)) {
+                if (!seen.has(n.id)) { seen.add(n.id); next.push(n); }
+              }
+            }
+            frontier = next;
+          }
+          return seen.has(hexId);
         };
         const isControlledSystem = hex && hex.type === "system" &&
           state.controllerByHex?.[hexId] === activeFaction &&
@@ -270,6 +366,16 @@ async function boot() {
         const isAdjToken = (actionDef?.effects ?? []).some(e => e.op === "placeTokenAdjacent");
         const isForward = (actionDef?.effects ?? []).some(e => e.op === "forwardDeploy");
         const isActivate = (actionDef?.effects ?? []).some(e => e.op === "activateSystem");
+        const isRepair = (actionDef?.effects ?? []).some(e => e.op === "repairFleet");
+        const isPlaceOutpost = (actionDef?.effects ?? []).some(e => e.op === "placeOutpost");
+        const isPlaceDebris = (actionDef?.effects ?? []).some(e => e.op === "placeDebris");
+        const isPlaceBeacon = (actionDef?.effects ?? []).some(e => e.op === "placeBeacon");
+        const isPlaceTradeRoute = (actionDef?.effects ?? []).some(e => e.op === "placeTradeRoute");
+        const revealEffect = (actionDef?.effects ?? []).find(e => e.op === "revealHex");
+        const revealCount = revealEffect?.count ?? 1;
+        const revealRange = revealEffect?.range ?? 1;
+        const isReconOrigin = isScan && revealCount > 1 && revealRange === 1;
+        const isScanRange2 = isScan && revealRange > 1;
         if (requiresTarget && isMove) {
           const factionId = String(active?.factionId ?? "").toLowerCase();
           const entry = getHexFleets(state, hexId, factionId);
@@ -285,7 +391,9 @@ async function boot() {
               return;
             }
           } else if (selection.hexId && selection.hexId !== hexId) {
-            const validDest = isFast ? isWithinTwo(selection.hexId) : isAdjacentTo(selection.hexId);
+            const validDest = isRelay
+              ? (state.beaconsByHex?.[hexId] === activeFaction && hexId !== selection.hexId)
+              : (isFast ? isWithinRange(selection.hexId, moveRange) : isAdjacentTo(selection.hexId));
             if (!validDest) {
               logLine(state, "Invalid target. Select a highlighted hex.");
               render(state, handlers);
@@ -295,9 +403,34 @@ async function boot() {
             return;
           }
         }
+        const hasDamagedHere = (() => {
+          const entry = state.fleetsByHex?.[hexId]?.[activeFaction];
+          return entry && (entry?.damaged?.length ?? 0) > 0;
+        })();
+        const hasFleetHere = (() => {
+          const entry = state.fleetsByHex?.[hexId]?.[activeFaction];
+          return entry && ((entry?.undamaged?.length ?? 0) + (entry?.damaged?.length ?? 0)) > 0;
+        })();
+        const isWithinRange2 = isScanRange2 && fleetHexes.some(hId =>
+          getHexesWithinRange(state, hId, revealRange).some(h => h.id === hexId)
+        );
+        const isPlaceTradeRouteValid = isPlaceTradeRoute && (() => {
+          const fleetHex = Object.keys(state.fleetsByHex ?? {}).find(h => state.fleetsByHex[h]?.[activeFaction]);
+          if (!fleetHex) return false;
+          const adj = getAdjacentHexesLocal(fleetHex).some(h => h.id === hexId);
+          const controlled = state.controllerByHex?.[hexId] === activeFaction && !state.contestedByHex?.[hexId];
+          return adj && controlled;
+        })();
         const valid = requiresTarget && (
-          ((isAdjToken || isScan) && fleetHexes.some(isAdjacentTo)) ||
-          ((isForward || isActivate) && isControlledSystem)
+          ((isAdjToken || (isScan && !isReconOrigin && !isScanRange2)) && fleetHexes.some(isAdjacentTo)) ||
+          (isScanRange2 && isWithinRange2) ||
+          ((isForward || isActivate) && isControlledSystem) ||
+          (isRepair && hasDamagedHere) ||
+          (isReconOrigin && hasFleetHere) ||
+          (isPlaceOutpost && hasFleetHere) ||
+          (isPlaceDebris && hasFleetHere) ||
+          (isPlaceBeacon && hasFleetHere) ||
+          isPlaceTradeRouteValid
         );
         if (!valid) {
           logLine(state, "Invalid target. Select a highlighted hex.");
@@ -354,6 +487,11 @@ async function boot() {
       }
 
       if (state.ui.lastResolution) {
+        const lr = state.ui.lastResolution;
+        const authored = state.cardTextByKey?.[makeCardTextKey(lr.deckType, lr.cardId)];
+        if (authored) {
+          state.ui.lastResolution.authored = authored;
+        }
         setMode("modal");
         state.ui.modalType = "card";
       }
@@ -367,15 +505,19 @@ async function boot() {
       renderAll();
     },
     onRollRoundDice() {
+      if (state.ui.gameOver) return;
       if (state.ui.mode !== "idle") return;
       rollRoundDice();
       render(state, handlers);
     },
     onNextPlayer() {
+      if (state.ui.gameOver) return;
       advancePlayer();
       render(state, handlers);
+      scheduleAI();
     },
     onPerformAction() {
+      if (state.ui.gameOver) return;
       const pending = state.ui.pendingAction;
       if (!pending) {
         logLine(state, "Select an action first.");
@@ -402,6 +544,7 @@ async function boot() {
       renderAll();
     },
     onActionSelect(actionNumber) {
+      if (state.ui.gameOver) return;
       if (state.ui.pending || state.ui.lastResolution) {
         setMode("modal");
         state.ui.modalType = "card";
@@ -444,6 +587,7 @@ async function boot() {
       handlers.onPerformAction();
     },
     onCombatToggleFaction(factionId) {
+      if (state.ui.gameOver) return;
       const combat = state.ui.combat;
       if (!combat) return;
       if (combat.engagedFactions.includes(factionId)) {
@@ -454,6 +598,7 @@ async function boot() {
       render(state, handlers);
     },
     onCombatEngage() {
+      if (state.ui.gameOver) return;
       const combat = state.ui.combat;
       if (!combat) return;
       if (combat.engagedFactions.length === 0) {
@@ -463,12 +608,14 @@ async function boot() {
       render(state, handlers);
     },
     onCombatDisengage() {
+      if (state.ui.gameOver) return;
       endCombat(state);
       consumePendingAction();
       setMode("idle");
       render(state, handlers);
     },
     onCombatRoll() {
+      if (state.ui.gameOver) return;
       const combat = state.ui.combat;
       if (!combat) return;
       rollCombatRound(state, rng);
@@ -485,12 +632,14 @@ async function boot() {
       render(state, handlers);
     },
     onCombatContinue() {
+      if (state.ui.gameOver) return;
       const combat = state.ui.combat;
       if (!combat) return;
       combat.phase = "roll";
       render(state, handlers);
     },
     onCombatRetreat() {
+      if (state.ui.gameOver) return;
       const combat = state.ui.combat;
       if (!combat) return;
       retreatSide(state, combat.hexId, combat.attackerFactions, combat.engagedFactions);
@@ -510,22 +659,138 @@ async function boot() {
     onModifyDie(dieId, delta) {
       state.ui.modifyDie = { die: dieId, delta };
       render(state, handlers);
+    },
+    onSaveGame() {
+      const res = safeSaveState(state);
+      logLine(state, res.ok ? "SAVE: success." : `SAVE: failed (${res.reason}).`);
+      renderAll();
+    },
+    onLoadGame() {
+      const res = safeLoadState();
+      if (!res.ok) {
+        logLine(state, `LOAD: failed (${res.reason}).`);
+        renderAll();
+        return;
+      }
+      replaceStateInPlace(state, res.state);
+      state.cardTextByKey = content.cardTextByKey ?? {};
+      state.ui.pendingAction = null;
+      state.ui.modalType = state.ui.gameOver ? "gameover" : null;
+      state.ui.mode = state.ui.gameOver ? "modal" : "idle";
+      recomputeInfluence(state);
+      logLine(state, "LOAD: success.");
+      renderAll();
+    },
+    onNewGame() {
+      location.href = `${location.pathname}?seed=${seed}`;
+    },
+    onDismissGameOver() {
+      if (!state.ui.gameOver) return;
+      state.ui.gameOver = null;
+      state.ui.modalType = null;
+      state.ui.mode = "idle";
+      renderAll();
     }
   };
 
-  const rollBtn = document.getElementById("rollRoundDiceBtn");
-  if (rollBtn) rollBtn.addEventListener("click", () => handlers.onRollRoundDice());
+  let aiRunning = false;
+  const scheduleAI = () => {
+    if (aiRunning || state.ui.gameOver) return;
+    if (!isCurrentPlayerAI(state)) return;
+    aiRunning = true;
+    runAITurn();
+  };
 
-  const nextBtn = document.getElementById("nextPlayerBtn");
-  if (nextBtn) nextBtn.addEventListener("click", () => handlers.onNextPlayer());
+  function runAITurn() {
+    if (!isCurrentPlayerAI(state) || state.ui.gameOver) { aiRunning = false; return; }
+
+    const step = () => {
+      if (!isCurrentPlayerAI(state) || state.ui.gameOver) { aiRunning = false; renderAll(); return; }
+
+      if (state.ui.combat) {
+        if (state.ui.combat.phase === "prompt") {
+          handlers.onCombatEngage();
+        } else if (state.ui.combat.phase === "roll") {
+          handlers.onCombatRoll();
+        } else if (state.ui.combat.phase === "choice") {
+          if (aiShouldContinueCombat(state)) handlers.onCombatContinue();
+          else handlers.onCombatRetreat();
+        }
+        setTimeout(step, AI_STEP_DELAY);
+        return;
+      }
+
+      if (state.ui.pending) {
+        const idx = aiPickCardChoice(state);
+        handlers.onCardChoice(idx);
+        setTimeout(step, AI_STEP_DELAY);
+        return;
+      }
+
+      if (state.ui.lastResolution) {
+        handlers.onCardContinue();
+        setTimeout(step, AI_STEP_DELAY);
+        return;
+      }
+
+      if (state.turn.dice.a == null) {
+        rollRoundDice();
+        renderAll();
+        setTimeout(step, AI_STEP_DELAY);
+        return;
+      }
+
+      const pick = aiPickAction(state);
+      if (!pick) {
+        advancePlayer();
+        renderAll();
+        setTimeout(() => { aiRunning = false; scheduleAI(); }, AI_STEP_DELAY);
+        return;
+      }
+
+      const factionId = String(getActivePlayer(state)?.factionId ?? "").toLowerCase();
+      const action = pick.actionDef;
+      state.ui.pendingAction = { actionNumber: pick.actionNumber, consume: pick.consume, actionDef: action };
+
+      if (action?.requiresTarget) {
+        const target = aiPickTargetHex(state);
+        if (target?.originHex) {
+          const entry = state.fleetsByHex?.[target.originHex]?.[factionId];
+          const allIds = [...(entry?.undamaged ?? []), ...(entry?.damaged ?? [])];
+          state.ui.fleetSelection = { hexId: target.originHex, factionId, fleetIds: allIds };
+        }
+        if (target?.targetHex) {
+          state.ui.selectedHexId = target.targetHex;
+        } else {
+          state.ui.pendingAction = null;
+          advancePlayer();
+          renderAll();
+          setTimeout(() => { aiRunning = false; scheduleAI(); }, AI_STEP_DELAY);
+          return;
+        }
+      }
+
+      handlers.onPerformAction();
+      setTimeout(step, AI_STEP_DELAY);
+    };
+
+    setTimeout(step, AI_STEP_DELAY);
+  }
+
+  const origAdvance = advancePlayer;
 
   // Startup log
   logLine(state, `BOOT: version=${state.meta.version}`);
   logLine(state, `BOOT: seed=${seed}`);
+  const humanFaction = state.players.find(p => !p.isAI)?.factionId ?? "all";
+  const aiCount = state.players.filter(p => p.isAI).length;
+  logLine(state, aiCount > 0 ? `You are ${humanFaction}. ${aiCount} AI opponent(s).` : "All players are human (hot-seat).");
+  if (tutorialMode) logLine(state, "TUTORIAL: Follow the highlighted hints to learn the game.");
   logLine(state, `Prototype ready. Explore the map.`);
 
   renderAll();
   setReady();
+  scheduleAI();
 
   if (smoke) {
     await runSmoke(state, rng, cardIndex, handlers);

@@ -1,12 +1,46 @@
 [
   {
     "id": "EMPTY_01",
-    "title": "Cold Wake",
+    "title": "Cargo Drift",
     "type": "empty",
     "choices": [
       {
-        "label": "Follow the wake",
-        "resolveText": "Find drifting cargo pods. Gain 2 credits.",
+        "label": "Reactivate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Dismantle",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "EMPTY_02",
+    "title": "Hull Scatter",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Establish trade lane",
+        "resolveText": "Gain 2 credits.",
         "effects": [
           {
             "op": "gainResource",
@@ -14,54 +48,15 @@
             "amount": 2
           }
         ],
-        "placeToken": "debris_field"
+        "placeToken": "trade_route"
       },
       {
-        "label": "Mark and move on",
+        "label": "Bypass",
         "resolveText": "Nothing else happens.",
         "effects": [
           {
             "op": "log",
-            "message": "Logged coordinates: Cold Wake."
-          }
-        ],
-        "placeToken": "empty"
-      }
-    ],
-    "placeNoteByChoiceIndex": [
-      "Place: Debris Field",
-      "Leave: Nothing"
-    ]
-  },
-  {
-    "id": "EMPTY_02",
-    "title": "Rogue Trader",
-    "type": "empty",
-    "choices": [
-      {
-        "label": "Trade openly",
-        "resolveText": "Gain 1 credits and 1 energy.",
-        "effects": [
-          {
-            "op": "gainResource",
-            "resource": "credits",
-            "amount": 1
-          },
-          {
-            "op": "gainResource",
-            "resource": "energy",
-            "amount": 1
-          }
-        ],
-        "placeToken": "trade_route"
-      },
-      {
-        "label": "Ignore",
-        "resolveText": "Nothing happens.",
-        "effects": [
-          {
-            "op": "log",
-            "message": "Ignored a trader."
+            "message": "Logged."
           }
         ],
         "placeToken": "empty"
@@ -74,42 +69,45 @@
   },
   {
     "id": "EMPTY_03",
-    "title": "Micrometeor Swarm",
+    "title": "Stray Hull",
     "type": "empty",
     "choices": [
       {
-        "label": "Push through",
-        "resolveText": "Lose 1 energy.",
+        "label": "Strip for scrap",
+        "resolveText": "Gain 2 credits.",
         "effects": [
           {
-            "op": "loseResource",
-            "resource": "energy",
-            "amount": 1
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
           }
         ],
-        "placeToken": "anomaly"
+        "placeToken": "debris_field"
       },
       {
-        "label": "Detour",
-        "resolveText": "Cosmic tension +1.",
+        "label": "Leave",
+        "resolveText": "Nothing else happens.",
         "effects": [
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "log",
+            "message": "Logged."
           }
         ],
-        "placeToken": "anomaly"
+        "placeToken": "empty"
       }
     ],
-    "placeNote": "Place: Anomaly"
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Leave: Nothing"
+    ]
   },
   {
     "id": "EMPTY_04",
-    "title": "Derelict Buoy Field",
+    "title": "Debris Field",
     "type": "empty",
     "choices": [
       {
-        "label": "Salvage",
+        "label": "Harvest",
         "resolveText": "Gain 2 energy.",
         "effects": [
           {
@@ -139,12 +137,2624 @@
   },
   {
     "id": "EMPTY_05",
+    "title": "Void Drift",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Strip hull",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "derelict"
+      },
+      {
+        "label": "Mark hazard",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "hazard"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Derelict",
+      "Place: Hazard"
+    ]
+  },
+  {
+    "id": "EMPTY_06",
+    "title": "Abandoned Outpost",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Beacon network",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Chart",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_07",
+    "title": "Cargo Cluster",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Strip for scrap",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Leave",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_08",
+    "title": "Orphaned Buoy",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Strip hull",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "derelict"
+      },
+      {
+        "label": "Mark hazard",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "hazard"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Derelict",
+      "Place: Hazard"
+    ]
+  },
+  {
+    "id": "EMPTY_09",
+    "title": "Silent Beacon",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Salvage wreck",
+        "resolveText": "Gain 2 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          }
+        ],
+        "placeToken": "derelict"
+      },
+      {
+        "label": "Avoid",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Derelict",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_10",
+    "title": "Void Remnant",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Garrison",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Scout",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_11",
+    "title": "Scavenger Mark",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Establish contact",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "neutral_enclave"
+      },
+      {
+        "label": "Avoid",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Neutral Enclave",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_12",
+    "title": "Lost Buoy",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Trade",
+        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Ignore",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_13",
+    "title": "Derelict Probe Field",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Beacon network",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Chart",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_14",
+    "title": "Scrap Veil",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Push through",
+        "resolveText": "Lose 1 energy.",
+        "effects": [
+          {
+            "op": "loseResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      },
+      {
+        "label": "Detour",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Anomaly",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "EMPTY_15",
+    "title": "Signal Burst",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Establish outpost",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Survey only",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_16",
+    "title": "Scattered Hulls",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Establish contact",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "neutral_enclave"
+      },
+      {
+        "label": "Avoid",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Neutral Enclave",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_17",
+    "title": "Floating Cache",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Deploy relay beacon",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Mark only",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "EMPTY_18",
+    "title": "Wreck Cluster",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Reactivate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Dismantle",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "EMPTY_19",
+    "title": "Cold Wake",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Seed biomass",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "biomass"
+      },
+      {
+        "label": "Contain",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Biomass",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_20",
+    "title": "Orphaned Station",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Establish outpost",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Survey only",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_21",
+    "title": "Ghost Drift",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Garrison",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Scout",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_22",
+    "title": "Signal Drift",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Strip hull",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "derelict"
+      },
+      {
+        "label": "Mark hazard",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "hazard"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Derelict",
+      "Place: Hazard"
+    ]
+  },
+  {
+    "id": "EMPTY_23",
+    "title": "Scavenger's Mark",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Set up route",
+        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Pass",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_24",
+    "title": "Floating Hull",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Harvest",
+        "resolveText": "Gain 2 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Map it",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "EMPTY_25",
+    "title": "Wreckage Cluster",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Establish contact",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "neutral_enclave"
+      },
+      {
+        "label": "Avoid",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Neutral Enclave",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_26",
+    "title": "Micrometeor Swarm",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Reactivate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Dismantle",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "EMPTY_27",
     "title": "Unclaimed Cache",
     "type": "empty",
     "choices": [
       {
-        "label": "Crack it open",
-        "resolveText": "Gain 3 credits, cosmic tension +1.",
+        "label": "Harvest",
+        "resolveText": "Gain 2 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Map it",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "EMPTY_28",
+    "title": "Scattered Wreck",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Strip hull",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "derelict"
+      },
+      {
+        "label": "Mark hazard",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "hazard"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Derelict",
+      "Place: Hazard"
+    ]
+  },
+  {
+    "id": "EMPTY_29",
+    "title": "Floating Debris",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Establish outpost",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Survey only",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_30",
+    "title": "Orphaned Cargo",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Seed biomass",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "biomass"
+      },
+      {
+        "label": "Contain",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Biomass",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_31",
+    "title": "Orphaned Relay",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Seed biomass",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "biomass"
+      },
+      {
+        "label": "Contain",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Biomass",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_32",
+    "title": "Derelict Hull",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Push through",
+        "resolveText": "Lose 1 energy.",
+        "effects": [
+          {
+            "op": "loseResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      },
+      {
+        "label": "Detour",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Anomaly",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "EMPTY_33",
+    "title": "Scattered Remains",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Trade",
+        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Ignore",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_34",
+    "title": "Drift Remnant",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Beacon network",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Chart",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_35",
+    "title": "Cargo Graveyard",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Spread spores",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "biomass"
+      },
+      {
+        "label": "Sterilize",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Biomass",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_36",
+    "title": "Signal Ghost",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Set up route",
+        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Pass",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_37",
+    "title": "Wreckage Field",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Salvage",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Move on",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_38",
+    "title": "Orphaned Pod",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Salvage tech",
+        "resolveText": "Gain 2 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Leave it",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_39",
+    "title": "Void Remains",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Beacon network",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Chart",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_40",
+    "title": "Cargo Scatter",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Salvage tech",
+        "resolveText": "Gain 2 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Leave it",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_41",
+    "title": "Lost Freighter",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Establish outpost",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Survey only",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_42",
+    "title": "Signal Static",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Salvage",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Move on",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_43",
+    "title": "Dust Field",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Set up route",
+        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Pass",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_44",
+    "title": "Floating Debris Field",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Harvest",
+        "resolveText": "Gain 2 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Map it",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "EMPTY_45",
+    "title": "Debris Scatter",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Place beacon",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Skip",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_46",
+    "title": "Scavenger Haul",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Establish outpost",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Survey only",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_47",
+    "title": "Wreck Trail",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Set up route",
+        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Pass",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_48",
+    "title": "Drift Net",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Salvage",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Move on",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_49",
+    "title": "Void Pocket",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Place beacon",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Skip",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_50",
+    "title": "Lost Cargo",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Beacon network",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Chart",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_51",
+    "title": "Ghost Cargo",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Seed biomass",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "biomass"
+      },
+      {
+        "label": "Contain",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Biomass",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_52",
+    "title": "Drift Station",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Caravan stop",
+        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Pass",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_53",
+    "title": "Lost Beacon",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Seed biomass",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "biomass"
+      },
+      {
+        "label": "Contain",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Biomass",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_54",
+    "title": "Debris Ring",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Push through",
+        "resolveText": "Lose 1 energy.",
+        "effects": [
+          {
+            "op": "loseResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      },
+      {
+        "label": "Detour",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Anomaly",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "EMPTY_55",
+    "title": "Debris Trail",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Strip for scrap",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Leave",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_56",
+    "title": "Ghost Freighter",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Deploy relay beacon",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Mark only",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "EMPTY_57",
+    "title": "Void Anomaly",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Garrison",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Scout",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_58",
+    "title": "Hull Fragment",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Push through",
+        "resolveText": "Lose 1 energy.",
+        "effects": [
+          {
+            "op": "loseResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      },
+      {
+        "label": "Detour",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Anomaly",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "EMPTY_59",
+    "title": "Dust Ring",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Trade",
+        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Ignore",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_60",
+    "title": "Void Echo",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Plunder",
+        "resolveText": "Gain 2 credits. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "pirate_den"
+      },
+      {
+        "label": "Report",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Pirate Den",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_61",
+    "title": "Lost Station",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Reactivate",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "gate"
+      },
+      {
+        "label": "Dismantle",
+        "resolveText": "Gain 4 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 4
+          }
+        ],
+        "placeToken": "ruins"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Gate",
+      "Place: Ruins"
+    ]
+  },
+  {
+    "id": "EMPTY_62",
+    "title": "Signal Echo",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Push through",
+        "resolveText": "Lose 1 energy.",
+        "effects": [
+          {
+            "op": "loseResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      },
+      {
+        "label": "Detour",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Anomaly",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "EMPTY_63",
+    "title": "Drift Hull",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Harvest debris",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Chart",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "EMPTY_64",
+    "title": "Derelict Cache",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Salvage",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Move on",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_65",
+    "title": "Silent Remains",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Caravan stop",
+        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Pass",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_66",
+    "title": "Scrap Cluster",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Establish outpost",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Survey only",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_67",
+    "title": "Lost Pod",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Harvest debris",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Chart",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "EMPTY_68",
+    "title": "Orbital Scrap",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Strip hull",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "derelict"
+      },
+      {
+        "label": "Mark hazard",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "hazard"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Derelict",
+      "Place: Hazard"
+    ]
+  },
+  {
+    "id": "EMPTY_69",
+    "title": "Derelict Convoy",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Push through",
+        "resolveText": "Lose 1 energy.",
+        "effects": [
+          {
+            "op": "loseResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      },
+      {
+        "label": "Detour",
+        "resolveText": "Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Anomaly",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "EMPTY_70",
+    "title": "Dust Veil",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Beacon network",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Chart",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_71",
+    "title": "Abandoned Probe",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Strip hull",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "derelict"
+      },
+      {
+        "label": "Mark hazard",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "hazard"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Derelict",
+      "Place: Hazard"
+    ]
+  },
+  {
+    "id": "EMPTY_72",
+    "title": "Scrap Trail",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Establish contact",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "neutral_enclave"
+      },
+      {
+        "label": "Avoid",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Neutral Enclave",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_73",
+    "title": "Orbital Wreck",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Salvage wreck",
+        "resolveText": "Gain 2 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          }
+        ],
+        "placeToken": "derelict"
+      },
+      {
+        "label": "Avoid",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Derelict",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_74",
+    "title": "Floating Ruins",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Trade",
+        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Ignore",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_75",
+    "title": "Silent Buoy",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Deploy relay beacon",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Mark only",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Place: Anomaly"
+    ]
+  },
+  {
+    "id": "EMPTY_76",
+    "title": "Wreck Field",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Strip hull",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "derelict"
+      },
+      {
+        "label": "Mark hazard",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "hazard"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Derelict",
+      "Place: Hazard"
+    ]
+  },
+  {
+    "id": "EMPTY_77",
+    "title": "Silent Wreck",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Caravan stop",
+        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Pass",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_78",
+    "title": "Scavenger Trail",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Salvage",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Move on",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_79",
+    "title": "Abandoned Mine",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Crack it",
+        "resolveText": "Gain 3 credits. Cosmic tension +1.",
         "effects": [
           {
             "op": "gainResource",
@@ -159,12 +2769,12 @@
         "placeToken": "debris_field"
       },
       {
-        "label": "Tag for later",
-        "resolveText": "Nothing now.",
+        "label": "Tag it",
+        "resolveText": "Nothing else happens.",
         "effects": [
           {
             "op": "log",
-            "message": "Tagged an unclaimed cache (future hook)."
+            "message": "Logged."
           }
         ],
         "placeToken": "empty"
@@ -173,6 +2783,772 @@
     "placeNoteByChoiceIndex": [
       "Place: Debris Field",
       "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_80",
+    "title": "Abandoned Station",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Strip hull",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "derelict"
+      },
+      {
+        "label": "Mark hazard",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "hazard"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Derelict",
+      "Place: Hazard"
+    ]
+  },
+  {
+    "id": "EMPTY_81",
+    "title": "Drift Cache",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Establish contact",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "neutral_enclave"
+      },
+      {
+        "label": "Avoid",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Neutral Enclave",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_82",
+    "title": "Abandoned Freighter",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Crack it",
+        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Tag it",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_83",
+    "title": "Scavenger's Haul",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Trade",
+        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Ignore",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_84",
+    "title": "Silent Scatter",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Salvage",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Move on",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_85",
+    "title": "Cargo Void",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Trade",
+        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Ignore",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_86",
+    "title": "Silent Convoy",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Crack it",
+        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Tag it",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_87",
+    "title": "Void Scatter",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Plunder",
+        "resolveText": "Gain 2 credits. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "pirate_den"
+      },
+      {
+        "label": "Report",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Pirate Den",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_88",
+    "title": "Drift Cargo",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Place beacon",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Skip",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_89",
+    "title": "Silent Drift",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Strip for scrap",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Leave",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_90",
+    "title": "Derelict Station",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Strip for scrap",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Leave",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_91",
+    "title": "Scrap Field",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Plunder",
+        "resolveText": "Gain 2 credits. Cosmic tension +1.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          },
+          {
+            "op": "modifyCosmicTension",
+            "amount": 1
+          }
+        ],
+        "placeToken": "pirate_den"
+      },
+      {
+        "label": "Report",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Pirate Den",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_92",
+    "title": "Scattered Cargo",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Spread spores",
+        "resolveText": "Gain 1 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "biomass"
+      },
+      {
+        "label": "Sterilize",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Biomass",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_93",
+    "title": "Lost Convoy",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Set up route",
+        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Pass",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_94",
+    "title": "Derelict Buoy Field",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Trade",
+        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Ignore",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_95",
+    "title": "Abandoned Relay",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Place beacon",
+        "resolveText": "Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "beacon"
+      },
+      {
+        "label": "Skip",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Beacon",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_96",
+    "title": "Derelict Probe",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Salvage wreck",
+        "resolveText": "Gain 2 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
+          }
+        ],
+        "placeToken": "derelict"
+      },
+      {
+        "label": "Avoid",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Derelict",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_97",
+    "title": "Abandoned Cargo",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Garrison",
+        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Scout",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Outpost",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_98",
+    "title": "Orbital Cache",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Trade",
+        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Ignore",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_99",
+    "title": "Void Cache",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Set up route",
+        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
+          }
+        ],
+        "placeToken": "trade_route"
+      },
+      {
+        "label": "Pass",
+        "resolveText": "Nothing else happens.",
+        "effects": [
+          {
+            "op": "log",
+            "message": "Logged."
+          }
+        ],
+        "placeToken": "empty"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Trade Route",
+      "Leave: Nothing"
+    ]
+  },
+  {
+    "id": "EMPTY_100",
+    "title": "Rogue Trader",
+    "type": "empty",
+    "choices": [
+      {
+        "label": "Harvest debris",
+        "resolveText": "Gain 2 credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
+          }
+        ],
+        "placeToken": "debris_field"
+      },
+      {
+        "label": "Chart",
+        "resolveText": "Reveal 1 adjacent hex.",
+        "effects": [
+          {
+            "op": "revealHex",
+            "count": 1
+          }
+        ],
+        "placeToken": "anomaly"
+      }
+    ],
+    "placeNoteByChoiceIndex": [
+      "Place: Debris Field",
+      "Place: Anomaly"
     ]
   }
 ]

@@ -1,62 +1,30 @@
-/**
- * @typedef {Object} Player
- * @property {string} id
- * @property {string} factionId
- * @property {number} credits
- * @property {number} energy
- */
-
-/**
- * @typedef {Object} DeckState
- * @property {string[]} draw
- * @property {string[]} discard
- */
-
-/**
- * @typedef {Object} State
- * @property {{version: string, seed: number, round: number}} meta
- * @property {{smoke: boolean}} flags
- * @property {Player[]} players
- * @property {Object} actionsByFaction
- * @property {Object} capitalsByFaction
- * @property {Object} techByFaction
- * @property {Object} influence
- * @property {Object} visited
- * @property {Object} controllerByHex
- * @property {Object} contestedByHex
- * @property {Object} fleetsByHex
- * @property {Object} fleetMeta
- * @property {number} nextFleetId
- * @property {Object} turn
- * @property {number} cosmicTension
- * @property {Object} ui
- * @property {{width: number, height: number, hexes: Array}} map
- * @property {{empty: DeckState, system: DeckState, phenomena: DeckState}} decks
- * @property {Object} tokensById
- * @property {Object} tokens
- * @property {string[]} log
- */
-
-export function initialState({ seed }) {
+export function initialState({ seed, playerSetup }) {
+  const defaultPlayers = [
+    { id: "p1", factionId: "directorate", credits: 0, energy: 0, isAI: false },
+    { id: "p2", factionId: "choir", credits: 0, energy: 0, isAI: true },
+    { id: "p3", factionId: "bloom", credits: 0, energy: 0, isAI: true }
+  ];
+  const players = playerSetup ?? defaultPlayers;
   return {
     meta: {
       version: "v0.2",
       seed,
-      round: 1
+      round: 1,
+      maxRounds: 12
     },
     flags: {
       smoke: false
     },
-    players: [
-      { id: "p1", factionId: "directorate", credits: 0, energy: 0 },
-      { id: "p2", factionId: "choir", credits: 0, energy: 0 },
-      { id: "p3", factionId: "bloom", credits: 0, energy: 0 }
-    ],
+    players,
     factions: [],
     actionsByFaction: {},
     capitalsByFaction: {},
     techByFaction: {},
     influence: {},
+    influenceBonusByHex: {}, // { [hexId]: { [factionId]: number } } — persistent influence bonuses
+    outpostByHex: {}, // { [hexId]: factionId } — Directorate outposts
+    beaconsByHex: {}, // { [hexId]: factionId } — Gatekeepers beacons
+    tradeRouteEdges: [], // { hexA, hexB, factionId } — Syndicate trade routes on edges
     visited: {},
     controllerByHex: {},
     contestedByHex: {},
@@ -86,27 +54,31 @@ export function initialState({ seed }) {
       freeExplore: false,
       actionWarningLogged: false,
       availableActionOptions: {},
-      mode: "idle",
-      pendingAction: null,
-      modalType: null,
+      mode: "idle", // idle | targeting | modal
+      pendingAction: null, // { actionNumber, consumes:{a,b,bonus} }
+      modalType: null, // card | combat | null
       pulseHexId: null,
       fleetSelection: { hexId: null, factionId: null, fleetIds: [] },
       combat: null,
+      gameOver: null,
       lastResolution: null,
-      pending: null
+      pending: null, // { deckType, card, hexId }
+      tutorialMode: false,
+      tutorialStep: -1
     },
     map: {
-      width: 7,
-      height: 7,
-      hexes: []
+      width: 9,
+      height: 9,
+      hexes: [] // filled from hex_map.json
     },
     decks: {
       empty: { draw: [], discard: [] },
       system: { draw: [], discard: [] },
       phenomena: { draw: [], discard: [] }
     },
-    tokensById: {},
-    tokens: {},
+    tokensById: {}, // tokenId -> {label,glyph}
+    tokens: {}, // legacy alias
+    cardTextByKey: {}, // { [deck:id]: authored text payload }
     log: []
   };
 }

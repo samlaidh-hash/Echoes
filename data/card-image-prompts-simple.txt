@@ -1,0 +1,901 @@
+INSTRUCTIONS: Generate plain art only — no text, no frames, no reserved space. Portrait orientation. Copy each PROMPT into your image AI. Save each image using the FILENAME (e.g. Cold Wake.png).
+
+PROMPT: Depict "Cargo Drift" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Cargo Drift
+---
+PROMPT: Depict "Hull Scatter" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Hull Scatter
+---
+PROMPT: Depict "Stray Hull" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Stray Hull
+---
+PROMPT: Depict "Debris Field" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Debris Field
+---
+PROMPT: Depict "Void Drift" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Void Drift
+---
+PROMPT: Depict "Abandoned Outpost" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Abandoned Outpost
+---
+PROMPT: Depict "Cargo Cluster" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Cargo Cluster
+---
+PROMPT: Depict "Orphaned Buoy" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Orphaned Buoy
+---
+PROMPT: Depict "Silent Beacon" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Silent Beacon
+---
+PROMPT: Depict "Void Remnant" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Void Remnant
+---
+PROMPT: Depict "Scavenger Mark" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Scavenger Mark
+---
+PROMPT: Depict "Lost Buoy" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Lost Buoy
+---
+PROMPT: Depict "Derelict Probe Field" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Derelict Probe Field
+---
+PROMPT: Depict "Scrap Veil" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Scrap Veil
+---
+PROMPT: Depict "Signal Burst" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Signal Burst
+---
+PROMPT: Depict "Scattered Hulls" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Scattered Hulls
+---
+PROMPT: Depict "Floating Cache" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Floating Cache
+---
+PROMPT: Depict "Wreck Cluster" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Wreck Cluster
+---
+PROMPT: Depict "Cold Wake" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Cold Wake
+---
+PROMPT: Depict "Orphaned Station" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Orphaned Station
+---
+PROMPT: Depict "Ghost Drift" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Ghost Drift
+---
+PROMPT: Depict "Signal Drift" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Signal Drift
+---
+PROMPT: Depict "Scavenger's Mark" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Scavenger's Mark
+---
+PROMPT: Depict "Floating Hull" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Floating Hull
+---
+PROMPT: Depict "Wreckage Cluster" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Wreckage Cluster
+---
+PROMPT: Depict "Micrometeor Swarm" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Micrometeor Swarm
+---
+PROMPT: Depict "Unclaimed Cache" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Unclaimed Cache
+---
+PROMPT: Depict "Scattered Wreck" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Scattered Wreck
+---
+PROMPT: Depict "Floating Debris" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Floating Debris
+---
+PROMPT: Depict "Orphaned Cargo" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Orphaned Cargo
+---
+PROMPT: Depict "Orphaned Relay" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Orphaned Relay
+---
+PROMPT: Depict "Derelict Hull" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Derelict Hull
+---
+PROMPT: Depict "Scattered Remains" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Scattered Remains
+---
+PROMPT: Depict "Drift Remnant" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Drift Remnant
+---
+PROMPT: Depict "Cargo Graveyard" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Cargo Graveyard
+---
+PROMPT: Depict "Signal Ghost" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Signal Ghost
+---
+PROMPT: Depict "Wreckage Field" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Wreckage Field
+---
+PROMPT: Depict "Orphaned Pod" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Orphaned Pod
+---
+PROMPT: Depict "Void Remains" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Void Remains
+---
+PROMPT: Depict "Cargo Scatter" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Cargo Scatter
+---
+PROMPT: Depict "Lost Freighter" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Lost Freighter
+---
+PROMPT: Depict "Signal Static" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Signal Static
+---
+PROMPT: Depict "Dust Field" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Dust Field
+---
+PROMPT: Depict "Floating Debris Field" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Floating Debris Field
+---
+PROMPT: Depict "Debris Scatter" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Debris Scatter
+---
+PROMPT: Depict "Scavenger Haul" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Scavenger Haul
+---
+PROMPT: Depict "Wreck Trail" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Wreck Trail
+---
+PROMPT: Depict "Drift Net" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Drift Net
+---
+PROMPT: Depict "Void Pocket" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Void Pocket
+---
+PROMPT: Depict "Lost Cargo" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Lost Cargo
+---
+PROMPT: Depict "Ghost Cargo" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Ghost Cargo
+---
+PROMPT: Depict "Drift Station" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Drift Station
+---
+PROMPT: Depict "Lost Beacon" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Lost Beacon
+---
+PROMPT: Depict "Debris Ring" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Debris Ring
+---
+PROMPT: Depict "Debris Trail" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Debris Trail
+---
+PROMPT: Depict "Ghost Freighter" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Ghost Freighter
+---
+PROMPT: Depict "Void Anomaly" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Void Anomaly
+---
+PROMPT: Depict "Hull Fragment" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Hull Fragment
+---
+PROMPT: Depict "Dust Ring" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Dust Ring
+---
+PROMPT: Depict "Void Echo" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Void Echo
+---
+PROMPT: Depict "Lost Station" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Lost Station
+---
+PROMPT: Depict "Signal Echo" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Signal Echo
+---
+PROMPT: Depict "Drift Hull" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Drift Hull
+---
+PROMPT: Depict "Derelict Cache" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Derelict Cache
+---
+PROMPT: Depict "Silent Remains" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Silent Remains
+---
+PROMPT: Depict "Scrap Cluster" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Scrap Cluster
+---
+PROMPT: Depict "Lost Pod" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Lost Pod
+---
+PROMPT: Depict "Orbital Scrap" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Orbital Scrap
+---
+PROMPT: Depict "Derelict Convoy" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Derelict Convoy
+---
+PROMPT: Depict "Dust Veil" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Dust Veil
+---
+PROMPT: Depict "Abandoned Probe" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Abandoned Probe
+---
+PROMPT: Depict "Scrap Trail" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Scrap Trail
+---
+PROMPT: Depict "Orbital Wreck" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Orbital Wreck
+---
+PROMPT: Depict "Floating Ruins" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Floating Ruins
+---
+PROMPT: Depict "Silent Buoy" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Silent Buoy
+---
+PROMPT: Depict "Wreck Field" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Wreck Field
+---
+PROMPT: Depict "Silent Wreck" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Silent Wreck
+---
+PROMPT: Depict "Scavenger Trail" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Scavenger Trail
+---
+PROMPT: Depict "Abandoned Mine" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Abandoned Mine
+---
+PROMPT: Depict "Abandoned Station" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Abandoned Station
+---
+PROMPT: Depict "Drift Cache" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Drift Cache
+---
+PROMPT: Depict "Abandoned Freighter" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Abandoned Freighter
+---
+PROMPT: Depict "Scavenger's Haul" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Scavenger's Haul
+---
+PROMPT: Depict "Silent Scatter" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Silent Scatter
+---
+PROMPT: Depict "Cargo Void" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Cargo Void
+---
+PROMPT: Depict "Silent Convoy" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Silent Convoy
+---
+PROMPT: Depict "Void Scatter" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Void Scatter
+---
+PROMPT: Depict "Drift Cargo" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Drift Cargo
+---
+PROMPT: Depict "Silent Drift" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Silent Drift
+---
+PROMPT: Depict "Derelict Station" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Derelict Station
+---
+PROMPT: Depict "Scrap Field" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Scrap Field
+---
+PROMPT: Depict "Scattered Cargo" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Scattered Cargo
+---
+PROMPT: Depict "Lost Convoy" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Lost Convoy
+---
+PROMPT: Depict "Derelict Buoy Field" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Derelict Buoy Field
+---
+PROMPT: Depict "Abandoned Relay" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Abandoned Relay
+---
+PROMPT: Depict "Derelict Probe" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Derelict Probe
+---
+PROMPT: Depict "Abandoned Cargo" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Abandoned Cargo
+---
+PROMPT: Depict "Orbital Cache" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Orbital Cache
+---
+PROMPT: Depict "Void Cache" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Void Cache
+---
+PROMPT: Depict "Rogue Trader" — Deep space void, drifting debris or abandoned structures. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Rogue Trader
+---
+PROMPT: Depict "Research Outpost" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Research Outpost
+---
+PROMPT: Depict "Trade Outpost" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Trade Outpost
+---
+PROMPT: Depict "Dyson Swarm" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Dyson Swarm
+---
+PROMPT: Depict "Magnetic Storm" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Magnetic Storm
+---
+PROMPT: Depict "Lagrange Hub" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Lagrange Hub
+---
+PROMPT: Depict "Military Base" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Military Base
+---
+PROMPT: Depict "Red Dwarf: Cinder Belt" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Red Dwarf: Cinder Belt
+---
+PROMPT: Depict "Storm World" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Storm World
+---
+PROMPT: Depict "Frozen Colony" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Frozen Colony
+---
+PROMPT: Depict "Dwarf Outpost" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Dwarf Outpost
+---
+PROMPT: Depict "Desert Station" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Desert Station
+---
+PROMPT: Depict "Frontier Outpost" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Frontier Outpost
+---
+PROMPT: Depict "Colonial Base" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Colonial Base
+---
+PROMPT: Depict "Trade Nexus" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Trade Nexus
+---
+PROMPT: Depict "Refinery World" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Refinery World
+---
+PROMPT: Depict "Storm Refuge" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Storm Refuge
+---
+PROMPT: Depict "Prison Planet" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Prison Planet
+---
+PROMPT: Depict "Trading Hub" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Trading Hub
+---
+PROMPT: Depict "Volcanic Base" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Volcanic Base
+---
+PROMPT: Depict "Shrine World" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Shrine World
+---
+PROMPT: Depict "Base Quartus" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Base Quartus
+---
+PROMPT: Depict "Ice Moon" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Ice Moon
+---
+PROMPT: Depict "Pilgrim Rest" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Pilgrim Rest
+---
+PROMPT: Depict "Ash Colony" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Ash Colony
+---
+PROMPT: Depict "Science Base" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Science Base
+---
+PROMPT: Depict "Ash World" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Ash World
+---
+PROMPT: Depict "Research Complex" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Research Complex
+---
+PROMPT: Depict "Pulsar Base" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Pulsar Base
+---
+PROMPT: Depict "Station Gamma" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Station Gamma
+---
+PROMPT: Depict "Orbital Haven" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Orbital Haven
+---
+PROMPT: Depict "Death World Outpost" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Death World Outpost
+---
+PROMPT: Depict "Supply Chain" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Supply Chain
+---
+PROMPT: Depict "Military Depot" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Military Depot
+---
+PROMPT: Depict "Gas Harvester" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Gas Harvester
+---
+PROMPT: Depict "Pulsar Station" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Pulsar Station
+---
+PROMPT: Depict "Hive Colony" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Hive Colony
+---
+PROMPT: Depict "Solar Collector" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Solar Collector
+---
+PROMPT: Depict "Rogue Planet" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Rogue Planet
+---
+PROMPT: Depict "Terraformed Outpost" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Terraformed Outpost
+---
+PROMPT: Depict "Binary Outpost" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Binary Outpost
+---
+PROMPT: Depict "Colony Prime" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Colony Prime
+---
+PROMPT: Depict "Prison Station" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Prison Station
+---
+PROMPT: Depict "Lava World" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Lava World
+---
+PROMPT: Depict "Desert Base" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Desert Base
+---
+PROMPT: Depict "Nebula Edge" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Nebula Edge
+---
+PROMPT: Depict "Dwarf System" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Dwarf System
+---
+PROMPT: Depict "Forge Base" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Forge Base
+---
+PROMPT: Depict "Relic Moon" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Relic Moon
+---
+PROMPT: Depict "Military Garrison" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Military Garrison
+---
+PROMPT: Depict "Jungle World" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Jungle World
+---
+PROMPT: Depict "Binary Stars" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Binary Stars
+---
+PROMPT: Depict "Cinder Colony" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Cinder Colony
+---
+PROMPT: Depict "Frozen Wastes" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Frozen Wastes
+---
+PROMPT: Depict "Dust World" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Dust World
+---
+PROMPT: Depict "Frost Planet" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Frost Planet
+---
+PROMPT: Depict "Mining Colony" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Mining Colony
+---
+PROMPT: Depict "Garden Station" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Garden Station
+---
+PROMPT: Depict "Supply Station" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Supply Station
+---
+PROMPT: Depict "Nebula Station" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Nebula Station
+---
+PROMPT: Depict "Garden World" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Garden World
+---
+PROMPT: Depict "Death World" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Death World
+---
+PROMPT: Depict "Belt Mining" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Belt Mining
+---
+PROMPT: Depict "Mining Belt" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Mining Belt
+---
+PROMPT: Depict "Research Haven" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Research Haven
+---
+PROMPT: Depict "Gateway System" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Gateway System
+---
+PROMPT: Depict "Hive World" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Hive World
+---
+PROMPT: Depict "Frontier Colony" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Frontier Colony
+---
+PROMPT: Depict "Orbital Farm" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Orbital Farm
+---
+PROMPT: Depict "Gateway Hub" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Gateway Hub
+---
+PROMPT: Depict "Ocean Haven" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Ocean Haven
+---
+PROMPT: Depict "Crystal Caves" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Crystal Caves
+---
+PROMPT: Depict "Relay Station" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Relay Station
+---
+PROMPT: Depict "Tidal Lock" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Tidal Lock
+---
+PROMPT: Depict "Frontier Haven" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Frontier Haven
+---
+PROMPT: Depict "Orbital Station" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Orbital Station
+---
+PROMPT: Depict "Frost Station" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Frost Station
+---
+PROMPT: Depict "Desert Planet" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Desert Planet
+---
+PROMPT: Depict "Refinery Complex" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Refinery Complex
+---
+PROMPT: Depict "Frost Base" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Frost Base
+---
+PROMPT: Depict "Dust Outpost" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Dust Outpost
+---
+PROMPT: Depict "Giant Moon" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Giant Moon
+---
+PROMPT: Depict "Storm Planet" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Storm Planet
+---
+PROMPT: Depict "Supply Depot" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Supply Depot
+---
+PROMPT: Depict "Mining Base" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Mining Base
+---
+PROMPT: Depict "Outpost Secundus" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Outpost Secundus
+---
+PROMPT: Depict "Volcanic Outpost" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Volcanic Outpost
+---
+PROMPT: Depict "Ash Station" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Ash Station
+---
+PROMPT: Depict "Relay Nexus" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Relay Nexus
+---
+PROMPT: Depict "Science Station" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Science Station
+---
+PROMPT: Depict "Military Station" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Military Station
+---
+PROMPT: Depict "Jungle Outpost" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Jungle Outpost
+---
+PROMPT: Depict "Ocean Station" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Ocean Station
+---
+PROMPT: Depict "Colonial Hub" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Colonial Hub
+---
+PROMPT: Depict "Port Epsilon" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Port Epsilon
+---
+PROMPT: Depict "Agri-Station" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Agri-Station
+---
+PROMPT: Depict "Shipyard System" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Shipyard System
+---
+PROMPT: Depict "Asteroid Haven" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Asteroid Haven
+---
+PROMPT: Depict "Dwarf Colony" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Dwarf Colony
+---
+PROMPT: Depict "Relay Base" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Relay Base
+---
+PROMPT: Depict "Station Tertius" — Star system with planet, station, or colony. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Station Tertius
+---
+PROMPT: Depict "Collapsed Megastructure" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Collapsed Megastructure
+---
+PROMPT: Depict "Phase Gate" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Phase Gate
+---
+PROMPT: Depict "Fragmented Gate" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Fragmented Gate
+---
+PROMPT: Depict "Cosmic Ruins" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Cosmic Ruins
+---
+PROMPT: Depict "Void Maw" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Void Maw
+---
+PROMPT: Depict "Phase Boundary" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Phase Boundary
+---
+PROMPT: Depict "Nebula Void" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Nebula Void
+---
+PROMPT: Depict "Elder Relic" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Elder Relic
+---
+PROMPT: Depict "The Singing Star" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: The Singing Star
+---
+PROMPT: Depict "Dead Civilization" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Dead Civilization
+---
+PROMPT: Depict "Gravitational Lens" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Gravitational Lens
+---
+PROMPT: Depict "Frozen Anomaly" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Frozen Anomaly
+---
+PROMPT: Depict "Gravity Gate" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Gravity Gate
+---
+PROMPT: Depict "Precursor Gate" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Precursor Gate
+---
+PROMPT: Depict "Gate Anomaly" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Gate Anomaly
+---
+PROMPT: Depict "Gate Remnant" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Gate Remnant
+---
+PROMPT: Depict "Magnetic Anomaly" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Magnetic Anomaly
+---
+PROMPT: Depict "Scattered Anomaly" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Scattered Anomaly
+---
+PROMPT: Depict "Rift Ruins" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Rift Ruins
+---
+PROMPT: Depict "Gravity Void" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Gravity Void
+---
+PROMPT: Depict "Megastructure Anomaly" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Megastructure Anomaly
+---
+PROMPT: Depict "Megastructure Debris" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Megastructure Debris
+---
+PROMPT: Depict "Elder Pulse" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Elder Pulse
+---
+PROMPT: Depict "Dimensional Rift" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Dimensional Rift
+---
+PROMPT: Depict "Reality Anomaly" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Reality Anomaly
+---
+PROMPT: Depict "Star Storm" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Star Storm
+---
+PROMPT: Depict "Nebula Ruins" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Nebula Ruins
+---
+PROMPT: Depict "Whispering Rift" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Whispering Rift
+---
+PROMPT: Depict "Screaming Nebula" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Screaming Nebula
+---
+PROMPT: Depict "Scattered Relics" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Scattered Relics
+---
+PROMPT: Depict "Silent Gate" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Silent Gate
+---
+PROMPT: Depict "Screaming Gate" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Screaming Gate
+---
+PROMPT: Depict "Frozen Gate" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Frozen Gate
+---
+PROMPT: Depict "Dead Star Gate" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Dead Star Gate
+---
+PROMPT: Depict "Void Singer" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Void Singer
+---
+PROMPT: Depict "Void Storm" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Void Storm
+---
+PROMPT: Depict "Nebula Anomaly" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Nebula Anomaly
+---
+PROMPT: Depict "Dead Star Remnant" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Dead Star Remnant
+---
+PROMPT: Depict "Supernova Remnant" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Supernova Remnant
+---
+PROMPT: Depict "Black Hole Choir" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Black Hole Choir
+---
+PROMPT: Depict "Phase Storm" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Phase Storm
+---
+PROMPT: Depict "Star Anomaly" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Star Anomaly
+---
+PROMPT: Depict "Screaming Rift" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Screaming Rift
+---
+PROMPT: Depict "Gravity Well" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Gravity Well
+---
+PROMPT: Depict "Phase Ruins" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Phase Ruins
+---
+PROMPT: Depict "Nebula Pulse" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Nebula Pulse
+---
+PROMPT: Depict "Echoing Anomaly" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Echoing Anomaly
+---
+PROMPT: Depict "Spatial Gate" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Spatial Gate
+---
+PROMPT: Depict "Collapsed Gate" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Collapsed Gate
+---
+PROMPT: Depict "Neutron Pulse" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Neutron Pulse
+---
+PROMPT: Depict "Buried Gate" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Buried Gate
+---
+PROMPT: Depict "Buried Storm" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Buried Storm
+---
+PROMPT: Depict "Cosmic Choir" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Cosmic Choir
+---
+PROMPT: Depict "Megastructure Pulse" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Megastructure Pulse
+---
+PROMPT: Depict "Hyperspace Bleed" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Hyperspace Bleed
+---
+PROMPT: Depict "Quantum Echo" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Quantum Echo
+---
+PROMPT: Depict "Gate Storm" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Gate Storm
+---
+PROMPT: Depict "Ancient Ruins" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Ancient Ruins
+---
+PROMPT: Depict "Quantum Void" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Quantum Void
+---
+PROMPT: Depict "Precursor Relic" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Precursor Relic
+---
+PROMPT: Depict "Ancient Storm" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Ancient Storm
+---
+PROMPT: Depict "Nebula Song" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Nebula Song
+---
+PROMPT: Depict "Elder Structure" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Elder Structure
+---
+PROMPT: Depict "Whispering Void" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Whispering Void
+---
+PROMPT: Depict "Quantum Pulse" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Quantum Pulse
+---
+PROMPT: Depict "Lost Technology" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Lost Technology
+---
+PROMPT: Depict "Void Ruins" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Void Ruins
+---
+PROMPT: Depict "Ancient Jump Gate" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Ancient Jump Gate
+---
+PROMPT: Depict "Fragmented Storm" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Fragmented Storm
+---
+PROMPT: Depict "Nebula Gate" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Nebula Gate
+---
+PROMPT: Depict "Burning Ruins" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Burning Ruins
+---
+PROMPT: Depict "Quantum Gate" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Quantum Gate
+---
+PROMPT: Depict "Gate Fragment" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Gate Fragment
+---
+PROMPT: Depict "Whispering Anomaly" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Whispering Anomaly
+---
+PROMPT: Depict "Gate Echo" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Gate Echo
+---
+PROMPT: Depict "Silent Anomaly" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Silent Anomaly
+---
+PROMPT: Depict "Rift Pulse" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Rift Pulse
+---
+PROMPT: Depict "Warp Storm" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Warp Storm
+---
+PROMPT: Depict "Star Tear" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Star Tear
+---
+PROMPT: Depict "Singularity Echo" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Singularity Echo
+---
+PROMPT: Depict "Phase Anomaly" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Phase Anomaly
+---
+PROMPT: Depict "Radiation Burst" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Radiation Burst
+---
+PROMPT: Depict "Rift Harmony" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Rift Harmony
+---
+PROMPT: Depict "Quantum Foam" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Quantum Foam
+---
+PROMPT: Depict "Ancient Dead Star" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Ancient Dead Star
+---
+PROMPT: Depict "Singing Void" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Singing Void
+---
+PROMPT: Depict "Abandoned Megastructure" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Abandoned Megastructure
+---
+PROMPT: Depict "Magnetic Pulse" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Magnetic Pulse
+---
+PROMPT: Depict "Buried Ruins" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Buried Ruins
+---
+PROMPT: Depict "Elder Anomaly" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Elder Anomaly
+---
+PROMPT: Depict "Void Harmony" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Void Harmony
+---
+PROMPT: Depict "Gravity Anomaly" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Gravity Anomaly
+---
+PROMPT: Depict "Phase Shift" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Phase Shift
+---
+PROMPT: Depict "Rift Storm" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Rift Storm
+---
+PROMPT: Depict "Quantum Rift" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Quantum Rift
+---
+PROMPT: Depict "Phase Echo" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Phase Echo
+---
+PROMPT: Depict "Reality Bubble" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Reality Bubble
+---
+PROMPT: Depict "Megastructure Ruins" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Megastructure Ruins
+---
+PROMPT: Depict "Temporal Gate" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Temporal Gate
+---
+PROMPT: Depict "Singing Gate" — Cosmic anomaly, ancient ruins, or alien phenomenon. sci-fi space art, atmospheric lighting, cinematic, digital painting. Plain artwork only, portrait orientation, no text or frames.
+FILENAME: Singing Gate
