@@ -1,4 +1,10 @@
-export function initialState({ seed }) {
+export function initialState({ seed, playerSetup }) {
+  const defaultPlayers = [
+    { id: "p1", factionId: "directorate", credits: 0, energy: 0, isAI: false },
+    { id: "p2", factionId: "choir", credits: 0, energy: 0, isAI: true },
+    { id: "p3", factionId: "bloom", credits: 0, energy: 0, isAI: true }
+  ];
+  const players = playerSetup ?? defaultPlayers;
   return {
     meta: {
       version: "v0.2",
@@ -9,11 +15,7 @@ export function initialState({ seed }) {
     flags: {
       smoke: false
     },
-    players: [
-      { id: "p1", factionId: "directorate", credits: 0, energy: 0 },
-      { id: "p2", factionId: "choir", credits: 0, energy: 0 },
-      { id: "p3", factionId: "bloom", credits: 0, energy: 0 }
-    ],
+    players,
     factions: [],
     actionsByFaction: {},
     capitalsByFaction: {},
@@ -60,7 +62,9 @@ export function initialState({ seed }) {
       combat: null,
       gameOver: null,
       lastResolution: null,
-      pending: null // { deckType, card, hexId }
+      pending: null, // { deckType, card, hexId }
+      tutorialMode: false,
+      tutorialStep: -1
     },
     map: {
       width: 9,

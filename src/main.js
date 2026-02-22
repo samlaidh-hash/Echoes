@@ -23,9 +23,11 @@ import {
   getHexesWithinRange,
   computePolygonStartPositions
 } from "./rules.js";
-import { render, setSmokeBadge } from "./ui.js";
+import { render, setSmokeBadge, showSetupScreen } from "./ui.js";
+import { aiPickAction, aiPickTargetHex, aiPickCardChoice, aiShouldContinueCombat, isCurrentPlayerAI } from "./ai.js";
 
 const SAVE_KEY = "echoes:save:v1";
+const AI_STEP_DELAY = 400;
 
 function getParams() {
   const p = new URLSearchParams(location.search);
@@ -108,10 +110,23 @@ function tryEnterGameOver(state) {
 
 async function boot() {
   const { seed, smoke } = getParams();
-  const rng = makeRng(seed);
+  const p = new URLSearchParams(location.search);
+  const skipSetup = smoke || p.get("skip_setup") === "1";
 
-  const state = initialState({ seed });
+  let playerSetup = null;
+  let tutorialMode = false;
+
+  if (!skipSetup) {
+    const setupResult = await showSetupScreen();
+    playerSetup = setupResult.players;
+    tutorialMode = setupResult.tutorial;
+  }
+
+  const rng = makeRng(seed);
+  const state = initialState({ seed, playerSetup });
   state.flags.smoke = smoke;
+  state.ui.tutorialMode = tutorialMode;
+  state.ui.tutorialStep = tutorialMode ? 0 : -1;
 
   const content = await loadContent();
   if (!content.actionsByFaction || Object.keys(content.actionsByFaction).length === 0) {
@@ -353,6 +368,8 @@ async function boot() {
         const isActivate = (actionDef?.effects ?? []).some(e => e.op === "activateSystem");
         const isRepair = (actionDef?.effects ?? []).some(e => e.op === "repairFleet");
         const isPlaceOutpost = (actionDef?.effects ?? []).some(e => e.op === "placeOutpost");
+        const isPlaceDebris = (actionDef?.effects ?? []).some(e => e.op === "placeDebris");
+        const isPlaceBeacon = (actionDef?.effects ?? []).some(e => e.op === "placeBeacon");
         const isPlaceTradeRoute = (actionDef?.effects ?? []).some(e => e.op === "placeTradeRoute");
         const revealEffect = (actionDef?.effects ?? []).find(e => e.op === "revealHex");
         const revealCount = revealEffect?.count ?? 1;
@@ -411,6 +428,8 @@ async function boot() {
           (isRepair && hasDamagedHere) ||
           (isReconOrigin && hasFleetHere) ||
           (isPlaceOutpost && hasFleetHere) ||
+          (isPlaceDebris && hasFleetHere) ||
+          (isPlaceBeacon && hasFleetHere) ||
           isPlaceTradeRouteValid
         );
         if (!valid) {
@@ -495,6 +514,7 @@ async function boot() {
       if (state.ui.gameOver) return;
       advancePlayer();
       render(state, handlers);
+      scheduleAI();
     },
     onPerformAction() {
       if (state.ui.gameOver) return;
@@ -673,13 +693,104 @@ async function boot() {
     }
   };
 
+  let aiRunning = false;
+  const scheduleAI = () => {
+    if (aiRunning || state.ui.gameOver) return;
+    if (!isCurrentPlayerAI(state)) return;
+    aiRunning = true;
+    runAITurn();
+  };
+
+  function runAITurn() {
+    if (!isCurrentPlayerAI(state) || state.ui.gameOver) { aiRunning = false; return; }
+
+    const step = () => {
+      if (!isCurrentPlayerAI(state) || state.ui.gameOver) { aiRunning = false; renderAll(); return; }
+
+      if (state.ui.combat) {
+        if (state.ui.combat.phase === "prompt") {
+          handlers.onCombatEngage();
+        } else if (state.ui.combat.phase === "roll") {
+          handlers.onCombatRoll();
+        } else if (state.ui.combat.phase === "choice") {
+          if (aiShouldContinueCombat(state)) handlers.onCombatContinue();
+          else handlers.onCombatRetreat();
+        }
+        setTimeout(step, AI_STEP_DELAY);
+        return;
+      }
+
+      if (state.ui.pending) {
+        const idx = aiPickCardChoice(state);
+        handlers.onCardChoice(idx);
+        setTimeout(step, AI_STEP_DELAY);
+        return;
+      }
+
+      if (state.ui.lastResolution) {
+        handlers.onCardContinue();
+        setTimeout(step, AI_STEP_DELAY);
+        return;
+      }
+
+      if (state.turn.dice.a == null) {
+        rollRoundDice();
+        renderAll();
+        setTimeout(step, AI_STEP_DELAY);
+        return;
+      }
+
+      const pick = aiPickAction(state);
+      if (!pick) {
+        advancePlayer();
+        renderAll();
+        setTimeout(() => { aiRunning = false; scheduleAI(); }, AI_STEP_DELAY);
+        return;
+      }
+
+      const factionId = String(getActivePlayer(state)?.factionId ?? "").toLowerCase();
+      const action = pick.actionDef;
+      state.ui.pendingAction = { actionNumber: pick.actionNumber, consume: pick.consume, actionDef: action };
+
+      if (action?.requiresTarget) {
+        const target = aiPickTargetHex(state);
+        if (target?.originHex) {
+          const entry = state.fleetsByHex?.[target.originHex]?.[factionId];
+          const allIds = [...(entry?.undamaged ?? []), ...(entry?.damaged ?? [])];
+          state.ui.fleetSelection = { hexId: target.originHex, factionId, fleetIds: allIds };
+        }
+        if (target?.targetHex) {
+          state.ui.selectedHexId = target.targetHex;
+        } else {
+          state.ui.pendingAction = null;
+          advancePlayer();
+          renderAll();
+          setTimeout(() => { aiRunning = false; scheduleAI(); }, AI_STEP_DELAY);
+          return;
+        }
+      }
+
+      handlers.onPerformAction();
+      setTimeout(step, AI_STEP_DELAY);
+    };
+
+    setTimeout(step, AI_STEP_DELAY);
+  }
+
+  const origAdvance = advancePlayer;
+
   // Startup log
   logLine(state, `BOOT: version=${state.meta.version}`);
   logLine(state, `BOOT: seed=${seed}`);
+  const humanFaction = state.players.find(p => !p.isAI)?.factionId ?? "all";
+  const aiCount = state.players.filter(p => p.isAI).length;
+  logLine(state, aiCount > 0 ? `You are ${humanFaction}. ${aiCount} AI opponent(s).` : "All players are human (hot-seat).");
+  if (tutorialMode) logLine(state, "TUTORIAL: Follow the highlighted hints to learn the game.");
   logLine(state, `Prototype ready. Explore the map.`);
 
   renderAll();
   setReady();
+  scheduleAI();
 
   if (smoke) {
     await runSmoke(state, rng, cardIndex, handlers);

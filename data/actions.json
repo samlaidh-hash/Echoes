@@ -42,7 +42,7 @@
     "12": { "name": "Regenerate", "text": "Repair all damaged fleets in a hex.", "effects": [{ "op": "repairFleet", "amount": 99 }], "requiresTarget": true }
   },
   "salvagers": {
-    "1": { "name": "Scrap", "text": "Place debris in a hex with your fleet.", "effects": [{ "op": "placeDebris" }], "requiresTarget": false },
+    "1": { "name": "Scrap", "text": "Place debris in a hex with your fleet.", "effects": [{ "op": "placeDebris" }], "requiresTarget": true },
     "2": { "name": "Salvage", "text": "Gain 1 credit per debris hex you control or are adjacent to (min 1).", "effects": [{ "op": "salvageFromHex" }], "requiresTarget": false },
     "3": { "name": "Strip", "text": "Gain 1 fleet at capital.", "effects": [{ "op": "recruitFleetCapital" }], "requiresTarget": false },
     "4": { "name": "Junk Heap", "text": "Gain 1 energy.", "effects": [{ "op": "gainResource", "resource": "energy", "amount": 1 }], "requiresTarget": false },
@@ -56,7 +56,7 @@
     "12": { "name": "Field Repair", "text": "Repair all damaged fleets in a hex.", "effects": [{ "op": "repairFleet", "amount": 99 }], "requiresTarget": true }
   },
   "gatekeepers": {
-    "1": { "name": "Activate Beacon", "text": "Place a beacon in a hex with your fleet.", "effects": [{ "op": "placeBeacon" }], "requiresTarget": false },
+    "1": { "name": "Activate Beacon", "text": "Place a beacon in a hex with your fleet.", "effects": [{ "op": "placeBeacon" }], "requiresTarget": true },
     "2": { "name": "Relay", "text": "Gain 1 credit.", "effects": [{ "op": "gainResource", "resource": "credits", "amount": 1 }], "requiresTarget": false },
     "3": { "name": "Resonate", "text": "Gain 1 fleet at capital.", "effects": [{ "op": "recruitFleetCapital" }], "requiresTarget": false },
     "4": { "name": "Beacon Scan", "text": "Reveal 1 adjacent hex.", "effects": [{ "op": "revealHex", "count": 1 }], "requiresTarget": true },

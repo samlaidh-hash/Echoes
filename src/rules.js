@@ -538,7 +538,8 @@ export function applyEffects(state, effects, context) {
       case "placeDebris": {
         if (!player) break;
         const fid = String(player.factionId ?? "").toLowerCase();
-        const hexId = Object.keys(state.fleetsByHex ?? {}).find(h => state.fleetsByHex[h]?.[fid]);
+        const hexId = context.hexId ?? Object.keys(state.fleetsByHex ?? {}).find(h => state.fleetsByHex[h]?.[fid]);
+        if (hexId && !state.fleetsByHex?.[hexId]?.[fid]) break;
         const hex = getHex(state, hexId);
         if (hex && hexId) {
           hex.token = "debris_field";
@@ -568,7 +569,8 @@ export function applyEffects(state, effects, context) {
       case "placeBeacon": {
         if (!player) break;
         const fid = String(player.factionId ?? "").toLowerCase();
-        const hexId = Object.keys(state.fleetsByHex ?? {}).find(h => state.fleetsByHex[h]?.[fid]);
+        const hexId = context.hexId ?? Object.keys(state.fleetsByHex ?? {}).find(h => state.fleetsByHex[h]?.[fid]);
+        if (hexId && !state.fleetsByHex?.[hexId]?.[fid]) break;
         const hex = getHex(state, hexId);
         if (hex && hexId) {
           if (!state.beaconsByHex) state.beaconsByHex = {};
