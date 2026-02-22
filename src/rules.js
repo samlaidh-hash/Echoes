@@ -1268,6 +1268,9 @@ export function resolveChoice(state, cardIndex, choiceIndex) {
   };
   state.ui.pending = null;
 
+  if (hexId && !state.cardByHex) state.cardByHex = {};
+  if (hexId) state.cardByHex[hexId] = { deckType, cardId: card.id, cardTitle: card.title };
+
   return { ok: true, cardId: card.id, deckType, choiceLabel: choice.label, tokenId: hex?.token ?? null, stateChanged: didStateChange(res.before, res.after) };
 }
 
