@@ -5,8 +5,8 @@
     "thresholds": [2, 4, 6, 8, 10],
     "cards": [
       { "id": "T-EL-1", "title": "Border Skirmishes", "effect": "All factions lose 1 resource." },
-      { "id": "T-EL-2", "title": "Supply Disruptions", "effect": "Move costs +1 energy this round." },
-      { "id": "T-EL-3", "title": "Open Hostilities", "effect": "Combat rewards +1 VP." },
+      { "id": "T-EL-2", "title": "Supply Disruptions", "effect": "Move costs +1 Energy this round." },
+      { "id": "T-EL-3", "title": "Open Hostilities", "effect": "Combat rewards +1 Victory Points." },
       { "id": "T-EL-4", "title": "Sector Uprisings", "effect": "All factions lose 1 influence in a controlled system." },
       { "id": "T-EL-5", "title": "Final Conflagration", "effect": "Game ends immediately when tension maxes." }
     ]
@@ -17,9 +17,9 @@
     "thresholds": [3, 5, 7, 9],
     "cards": [
       { "id": "T-FR-1", "title": "Signal Collapse", "effect": "Skip the next draw phase." },
-      { "id": "T-FR-2", "title": "Cascade Refugees", "effect": "Each faction gains 1 fleet but loses 1 credit." },
+      { "id": "T-FR-2", "title": "Cascade Refugees", "effect": "Each faction gains 1 fleet but loses 1 Credit." },
       { "id": "T-FR-3", "title": "Rift Expansion", "effect": "Reveal one hex in each row." },
-      { "id": "T-FR-4", "title": "Galaxy in Flames", "effect": "Score immediate VP for controlled systems." }
+      { "id": "T-FR-4", "title": "Galaxy in Flames", "effect": "Score immediate Victory Points for controlled systems." }
     ]
   },
   {

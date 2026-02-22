@@ -307,8 +307,8 @@ function renderHud(state) {
       title: `${factionName(state, player.factionId)}${isAI ? " (AI)" : " (You)"}\n${desc}\nCredits: ${player.credits ?? 0} | Energy: ${player.energy ?? 0} | Fleets: ${totalFleets}`
     }, [
       el("div", { class: "hud-title" }, [`${factionGlyph(player.factionId)} ${factionName(state, player.factionId)}${isAI ? " 🤖" : ""}`]),
-      renderHudCompact("C", player.credits, 20),
-      renderHudCompact("E", player.energy, 20),
+      renderHudCompact("Credits", player.credits, 20),
+      renderHudCompact("Energy", player.energy, 20),
       el("div", { class: "track-label" }, [`Fleets: ${totalFleets}`])
     ]);
     factionRow.appendChild(panel);
@@ -319,7 +319,7 @@ function renderHud(state) {
     title: "Cosmic Tension rises from combat. At thresholds (5/10/15/20) events trigger. Higher tension = closer to game end."
   }, [
     el("div", { class: "hud-title" }, ["Cosmic Tension"]),
-    renderHudCompact("T", state.cosmicTension ?? 0, 20)
+    renderHudCompact("Tension", state.cosmicTension ?? 0, 20)
   ]);
 
   hud.appendChild(factionRow);
@@ -877,11 +877,11 @@ function renderCombat(state, handlers) {
     const winner = state.ui.gameOver.winnerFactionId ?? "none";
     modal.appendChild(el("div", { class: "combat-section" }, [`Winner: ${factionName(state, winner)}`]));
     const scoreList = el("div", { class: "combat-section" }, [
-      el("div", { class: "combat-title" }, ["Scores"])
+      el("div", { class: "combat-title" }, ["Victory Points"])
     ]);
     for (const row of state.ui.gameOver.scores ?? []) {
       scoreList.appendChild(el("div", {}, [
-        `${factionGlyph(row.factionId)} ${factionName(state, row.factionId)}: ${row.score}`
+        `${factionGlyph(row.factionId)} ${factionName(state, row.factionId)}: ${row.score} Victory Points`
       ]));
     }
     modal.appendChild(scoreList);

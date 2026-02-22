@@ -436,7 +436,7 @@ export function applyEffects(state, effects, context) {
         }
         amount = Math.max(1, amount);
         player.credits = (player.credits ?? 0) + amount;
-        logLine(state, `Gained ${amount} credits.`);
+        logLine(state, `Gained ${amount} Credits.`);
         break;
       }
 
@@ -562,7 +562,7 @@ export function applyEffects(state, effects, context) {
         }
         count = Math.max(1, count);
         player.credits = (player.credits ?? 0) + count;
-        logLine(state, `Salvage: +${count} credits from debris.`);
+        logLine(state, `Salvage: +${count} Credits from debris.`);
         break;
       }
 
@@ -647,7 +647,7 @@ export function applyEffects(state, effects, context) {
         const edges = (state.tradeRouteEdges ?? []).filter(e => e.factionId === fid).length;
         const amount = Math.max(1, edges);
         player.credits = (player.credits ?? 0) + amount;
-        logLine(state, `Caravan: +${amount} credits from trade routes.`);
+        logLine(state, `Caravan: +${amount} Credits from trade routes.`);
         break;
       }
 
@@ -824,12 +824,12 @@ export function applyEffects(state, effects, context) {
           const cost = shipCount;
           const energy = player.energy ?? 0;
           if (energy < cost) {
-            logLine(state, `Entering debris costs ${cost} energy (1 per ship). You have ${energy}.`);
+            logLine(state, `Entering debris costs ${cost} Energy (1 per ship). You have ${energy}.`);
             ok = false;
             break;
           }
           player.energy = energy - cost;
-          logLine(state, `Paid ${cost} energy to enter debris.`);
+          logLine(state, `Paid ${cost} Energy to enter debris.`);
         }
         const enemies = state.players
           .filter(p => String(p.factionId).toLowerCase() !== factionId)
@@ -875,7 +875,7 @@ export function applyEffects(state, effects, context) {
         logLine(state, `Peek: top of ${deckType} is "${title}".`);
         if (eff.gainCreditIfSystem && deckType === "system" && player && topId) {
           player.credits = (player.credits ?? 0) + 1;
-          logLine(state, "Echo Tap: +1 credit (system card).");
+          logLine(state, "Echo Tap: +1 Credit (system card).");
         }
         break;
       }
@@ -943,7 +943,7 @@ export function applyEffects(state, effects, context) {
         }
         count = Math.max(1, count);
         player.credits = (player.credits ?? 0) + count;
-        logLine(state, `Absorb: +${count} credits from biomass.`);
+        logLine(state, `Absorb: +${count} Credits from biomass.`);
         break;
       }
 
