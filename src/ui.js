@@ -798,12 +798,6 @@ function renderActions(state, handlers) {
     return group;
   };
 
-  const actionsArea = el("div", { class: "action-groups" }, [
-    makeGroup("1–6", ["1", "2", "3", "4", "5", "6"]),
-    makeGroup("7–12", ["7", "8", "9", "10", "11", "12"])
-  ]);
-  panel.appendChild(actionsArea);
-
   const freeExploreInput = el("input", { type: "checkbox", checked: !!state.ui.freeExplore });
   freeExploreInput.addEventListener("change", e => handlers.onToggleFreeExplore(e.target.checked));
   const freeExploreLabel = el("label", { class: "action-label" }, [freeExploreInput, " Free Explore"]);
@@ -838,7 +832,7 @@ function renderActions(state, handlers) {
   loadBtn.addEventListener("click", () => handlers.onLoadGame?.());
   newBtn.addEventListener("click", () => handlers.onNewGame?.());
 
-  const bottomRow = el("div", { class: "action-panel-bottom" }, [
+  const topRow = el("div", { class: "action-panel-top" }, [
     rollBtn,
     nextPlayerBtn,
     dicePills,
@@ -856,7 +850,13 @@ function renderActions(state, handlers) {
     loadBtn,
     newBtn
   ]);
-  panel.appendChild(bottomRow);
+  panel.appendChild(topRow);
+
+  const actionsArea = el("div", { class: "action-groups" }, [
+    makeGroup("1–6", ["1", "2", "3", "4", "5", "6"]),
+    makeGroup("7–12", ["7", "8", "9", "10", "11", "12"])
+  ]);
+  panel.appendChild(actionsArea);
 }
 
 export function setSmokeBadge(text, kind = "warn") {
