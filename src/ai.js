@@ -142,13 +142,18 @@ export function aiPickTargetHex(state) {
     return null;
   }
 
-  if (ops.includes("forwardDeploy") || ops.includes("activateSystem")) {
+  if (ops.includes("forwardDeploy") || ops.includes("activateSystem") || ops.includes("recruitFleetCapital")) {
     const controlled = state.map.hexes.filter(h =>
       h.type === "system" &&
       state.controllerByHex?.[h.id] === factionId &&
       !state.contestedByHex?.[h.id] &&
       (!ops.includes("activateSystem") || !state.turn?.systemActivated?.includes(h.id))
     );
+    if (ops.includes("recruitFleetCapital") && controlled.length > 0) {
+      const capital = state.capitalsByFaction?.[factionId];
+      const capHex = controlled.find(h => h.id === capital);
+      if (capHex) return { targetHex: capHex.id };
+    }
     return controlled.length > 0 ? { targetHex: controlled[0].id } : null;
   }
 

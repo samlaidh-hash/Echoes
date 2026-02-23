@@ -16,9 +16,9 @@ export function getActivePlayerIndex(state) {
   return state.turn?.activePlayerIndex ?? 0;
 }
 
-export function computeAvailableActions(state) {
+export function computeAvailableActions(state, consumedOverride = null) {
   const dice = state.turn?.dice;
-  const used = state.turn?.used;
+  const used = consumedOverride ?? state.turn?.used;
   const optionsByNumber = {};
   if (!dice) return optionsByNumber;
 
@@ -1024,20 +1024,35 @@ export function applyEffects(state, effects, context) {
           ok = false;
           break;
         }
-        const capital = getCapitalHex(player.factionId);
-        if (!capital) {
-          logLine(state, "No capital found.");
-          ok = false;
-          break;
-        }
         const factionId = String(player.factionId).toLowerCase();
+        let destinationId = context.selectedHexId ?? state.ui.selectedHexId;
+        if (destinationId) {
+          const hex = getHex(state, destinationId);
+          if (!hex || hex.type !== "system") {
+            logLine(state, "Recruit Fleet requires a system hex.");
+            ok = false;
+            break;
+          }
+          if (state.controllerByHex?.[destinationId] !== factionId || state.contestedByHex?.[destinationId]) {
+            logLine(state, "Recruit Fleet requires a system you control.");
+            ok = false;
+            break;
+          }
+        } else {
+          destinationId = getCapitalHex(player.factionId);
+          if (!destinationId) {
+            logLine(state, "No capital found.");
+            ok = false;
+            break;
+          }
+        }
         const fid = createFleet(state, factionId);
-        addFleetToHex(state, capital, factionId, "undamaged", fid);
+        addFleetToHex(state, destinationId, factionId, "undamaged", fid);
         const visited = ensureVisitedMap(state, player.factionId);
-        visited[capital] = true;
+        visited[destinationId] = true;
         recomputeInfluence(state);
-        logLine(state, `Fleet +1 at ${capital}.`);
-        state.ui.pulseHexId = capital;
+        logLine(state, `Fleet +1 at ${destinationId}.`);
+        state.ui.pulseHexId = destinationId;
         break;
       }
 

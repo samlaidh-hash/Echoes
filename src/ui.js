@@ -313,9 +313,15 @@ function renderHud(state) {
       title: `${factionName(state, player.factionId)}${isAI ? " (AI)" : " (You)"}\n${desc}\nCredits: ${player.credits ?? 0} | Energy: ${player.energy ?? 0} | Fleets: ${totalFleets}`
     }, [
       el("div", { class: "hud-title" }, [`${factionGlyph(player.factionId)} ${factionName(state, player.factionId)}${isAI ? " 🤖" : ""}`]),
-      renderHudCompact("Credits", player.credits, 20),
-      renderHudCompact("Energy", player.energy, 20),
-      el("div", { class: "track-label" }, [`Fleets: ${totalFleets}`])
+      el("div", { class: "hud-panel-stats" }, [
+        el("div", { class: "hud-stats-col" }, [
+          renderHudCompact("Credits", player.credits, 20),
+          renderHudCompact("Energy", player.energy, 20)
+        ]),
+        el("div", { class: "hud-stats-side" }, [
+          el("div", { class: "track-label" }, [`Fleets: ${totalFleets}`])
+        ])
+      ])
     ]);
     factionRow.appendChild(panel);
   });
@@ -361,6 +367,7 @@ function renderMap(state, handlers) {
   const isPlaceDebris = (awaitingAction?.effects ?? []).some(e => e.op === "placeDebris");
   const isPlaceBeacon = (awaitingAction?.effects ?? []).some(e => e.op === "placeBeacon");
   const isPlaceTradeRoute = (awaitingAction?.effects ?? []).some(e => e.op === "placeTradeRoute");
+  const isRecruitFleet = (awaitingAction?.effects ?? []).some(e => e.op === "recruitFleetCapital");
   const isReconOrigin = isScan && revealCount > 1 && revealRange === 1;
 
   for (const hex of state.map.hexes) {
@@ -425,7 +432,7 @@ function renderMap(state, handlers) {
         const controlled = state.controllerByHex?.[hex.id] === activeFaction && !state.contestedByHex?.[hex.id];
         return adj && controlled;
       }
-      if (isForwardDeploy || isActivate) {
+      if (isForwardDeploy || isActivate || isRecruitFleet) {
         const controlled = state.controllerByHex?.[hex.id] === activeFaction;
         const contested = state.contestedByHex?.[hex.id];
         const activated = state.turn?.systemActivated?.includes(hex.id);
@@ -467,8 +474,12 @@ function renderMap(state, handlers) {
       hexChildren.push(cardIcon);
     }
 
+    const capitalFaction = Object.entries(state.capitalsByFaction ?? {}).find(([, h]) => h === hex.id)?.[0];
+    const controlFaction = controller ? String(controller).toLowerCase() : null;
+    const capitalClass = capitalFaction ? `capital-${capitalFaction}` : "";
+    const controlClass = controlFaction ? `controlled-${controlFaction}` : "";
     const btn = el("button", {
-      class: `hex ${fogged ? "fogged" : ""} ${isTargetable ? "targetable" : ""} ${isSelectedOrigin ? "selected-origin" : ""} ${state.ui.pulseHexId === hex.id ? "pulse" : ""}`,
+      class: `hex ${fogged ? "fogged" : ""} ${isTargetable ? "targetable" : ""} ${isSelectedOrigin ? "selected-origin" : ""} ${state.ui.pulseHexId === hex.id ? "pulse" : ""} ${capitalClass} ${controlClass}`.trim(),
       type: "button",
       disabled: false,
       title: [
@@ -677,7 +688,19 @@ function renderActions(state, handlers) {
   const actions = state.actionsByFaction?.[String(factionId).toLowerCase()];
   const dice = state.turn?.dice;
   const used = state.turn?.used;
-  state.ui.availableActionOptions = computeAvailableActions(state);
+  const consumedIfPending = state.ui.pendingAction
+    ? { ...state.turn?.used, ...state.ui.pendingAction?.consume }
+    : null;
+  let availableOptions = computeAvailableActions(state, consumedIfPending);
+  if (state.ui.pendingAction) {
+    const filtered = {};
+    for (const [k, v] of Object.entries(availableOptions ?? {})) {
+      const n = parseInt(k, 10);
+      if (n >= 1 && n <= 6) filtered[k] = v;
+    }
+    availableOptions = filtered;
+  }
+  state.ui.availableActionOptions = availableOptions;
 
   panel.appendChild(el("div", { class: "panel-title" }, ["ACTIONS"]));
 
@@ -752,6 +775,7 @@ function renderActions(state, handlers) {
   if (state.ui.mode === "targeting") {
     const actionDef = state.ui.pendingAction?.actionDef;
     const isForward = (actionDef?.effects ?? []).some(e => e.op === "forwardDeploy");
+    const isRecruitFleet = (actionDef?.effects ?? []).some(e => e.op === "recruitFleetCapital");
     const isMove = (actionDef?.effects ?? []).some(e => e.op === "moveFleet");
     const isScan = (actionDef?.effects ?? []).some(e => e.op === "revealHex");
     const revealEffect = (actionDef?.effects ?? []).find(e => e.op === "revealHex");
@@ -759,6 +783,7 @@ function renderActions(state, handlers) {
     const revealRange = revealEffect?.range ?? 1;
     const isRepair = (actionDef?.effects ?? []).some(e => e.op === "repairFleet");
     if (isForward) hint = "Select a controlled system to deploy to.";
+    else if (isRecruitFleet) hint = "Select a controlled system to place the fleet.";
     else if (isMove) hint = "Select an adjacent hex to move into.";
     else if (isScan) {
       if (revealRange > 1) hint = `Select a hex within ${revealRange} steps of a fleet to scan.`;

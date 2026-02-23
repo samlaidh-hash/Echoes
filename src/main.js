@@ -371,6 +371,7 @@ async function boot() {
         const isPlaceDebris = (actionDef?.effects ?? []).some(e => e.op === "placeDebris");
         const isPlaceBeacon = (actionDef?.effects ?? []).some(e => e.op === "placeBeacon");
         const isPlaceTradeRoute = (actionDef?.effects ?? []).some(e => e.op === "placeTradeRoute");
+        const isRecruitFleet = (actionDef?.effects ?? []).some(e => e.op === "recruitFleetCapital");
         const revealEffect = (actionDef?.effects ?? []).find(e => e.op === "revealHex");
         const revealCount = revealEffect?.count ?? 1;
         const revealRange = revealEffect?.range ?? 1;
@@ -424,7 +425,7 @@ async function boot() {
         const valid = requiresTarget && (
           ((isAdjToken || (isScan && !isReconOrigin && !isScanRange2)) && fleetHexes.some(isAdjacentTo)) ||
           (isScanRange2 && isWithinRange2) ||
-          ((isForward || isActivate) && isControlledSystem) ||
+          ((isForward || isActivate || isRecruitFleet) && isControlledSystem) ||
           (isRepair && hasDamagedHere) ||
           (isReconOrigin && hasFleetHere) ||
           (isPlaceOutpost && hasFleetHere) ||
