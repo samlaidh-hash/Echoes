@@ -6,23 +6,27 @@
     "choices": [
       {
         "label": "Reactivate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension -5.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": 1
+            "amount": -5
           }
         ],
         "placeToken": "gate"
       },
       {
         "label": "Dismantle",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 2 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 2
+          },
+          {
+            "op": "log",
+            "message": "V18781"
           }
         ],
         "placeToken": "ruins"
@@ -40,23 +44,32 @@
     "choices": [
       {
         "label": "Establish trade lane",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 1 Credit, 1 Energy, and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Bypass",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Avoid",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Avoid."
           }
         ],
         "placeToken": "empty"
@@ -74,23 +87,32 @@
     "choices": [
       {
         "label": "Strip for scrap",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 2 Credits, 1 Energy, and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
             "amount": 2
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Leave",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Detour",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Detour."
           }
         ],
         "placeToken": "empty"
@@ -108,23 +130,31 @@
     "choices": [
       {
         "label": "Harvest",
-        "resolveText": "Gain 2 energy.",
+        "resolveText": "Gain 10 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 10
+          },
+          {
+            "op": "log",
+            "message": "V18879"
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Map it",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 2 hexes and gain +2 influence.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 2
+          },
+          {
+            "op": "addInfluence",
+            "amount": 2
           }
         ],
         "placeToken": "anomaly"
@@ -142,23 +172,32 @@
     "choices": [
       {
         "label": "Strip hull",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 2 Credits, 1 Energy, and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
             "amount": 2
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
           }
         ],
         "placeToken": "derelict"
       },
       {
         "label": "Mark hazard",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Detour",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Detour."
           }
         ],
         "placeToken": "hazard"
@@ -176,11 +215,20 @@
     "choices": [
       {
         "label": "Beacon network",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 3 Energy, +1 influence, and 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
+            "amount": 3
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -188,11 +236,12 @@
       },
       {
         "label": "Chart",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 1,
+            "range": 1
           }
         ],
         "placeToken": "empty"
@@ -210,23 +259,32 @@
     "choices": [
       {
         "label": "Strip for scrap",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 3 Credits, 1 Energy, and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 3
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Leave",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Tag it",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Tag it."
           }
         ],
         "placeToken": "empty"
@@ -244,23 +302,32 @@
     "choices": [
       {
         "label": "Strip hull",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 3 Credits, 1 Energy, and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 3
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
           }
         ],
         "placeToken": "derelict"
       },
       {
         "label": "Mark hazard",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Tag it",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Tag it."
           }
         ],
         "placeToken": "hazard"
@@ -278,23 +345,27 @@
     "choices": [
       {
         "label": "Salvage wreck",
-        "resolveText": "Gain 2 energy.",
+        "resolveText": "Gain 5 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 5
+          },
+          {
+            "op": "log",
+            "message": "V19194"
           }
         ],
         "placeToken": "derelict"
       },
       {
         "label": "Avoid",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Mark only",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Mark only."
           }
         ],
         "placeToken": "empty"
@@ -312,7 +383,7 @@
     "choices": [
       {
         "label": "Garrison",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
@@ -320,19 +391,20 @@
             "amount": 1
           },
           {
-            "op": "addInfluence",
-            "amount": 1
+            "op": "log",
+            "message": "V18700"
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Scout",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 1,
+            "range": 1
           }
         ],
         "placeToken": "empty"
@@ -350,11 +422,20 @@
     "choices": [
       {
         "label": "Establish contact",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 4 Energy, +1 influence, and 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
+            "amount": 4
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -362,11 +443,11 @@
       },
       {
         "label": "Avoid",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Mark only",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Mark only."
           }
         ],
         "placeToken": "empty"
@@ -384,28 +465,27 @@
     "choices": [
       {
         "label": "Trade",
-        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "resolveText": "Gain 8 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 8
           },
           {
-            "op": "gainResource",
-            "resource": "energy",
-            "amount": 1
+            "op": "log",
+            "message": "V25277"
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Ignore",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Pass through",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Pass through."
           }
         ],
         "placeToken": "empty"
@@ -423,11 +503,20 @@
     "choices": [
       {
         "label": "Beacon network",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 5 Energy, +1 influence, and 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
+            "amount": 5
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -435,11 +524,12 @@
       },
       {
         "label": "Chart",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 1,
+            "range": 1
           }
         ],
         "placeToken": "empty"
@@ -457,7 +547,7 @@
     "choices": [
       {
         "label": "Push through",
-        "resolveText": "Lose 1 energy.",
+        "resolveText": "Effect.",
         "effects": [
           {
             "op": "loseResource",
@@ -469,10 +559,15 @@
       },
       {
         "label": "Detour",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension -5 and 1 Credit.",
         "effects": [
           {
             "op": "modifyCosmicTension",
+            "amount": -5
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -491,27 +586,28 @@
     "choices": [
       {
         "label": "Establish outpost",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 2 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 2
           },
           {
-            "op": "addInfluence",
-            "amount": 1
+            "op": "log",
+            "message": "V18701"
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Survey only",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 1,
+            "range": 1
           }
         ],
         "placeToken": "empty"
@@ -529,11 +625,20 @@
     "choices": [
       {
         "label": "Establish contact",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 6 Energy, +1 influence, and 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
+            "amount": 6
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -541,11 +646,11 @@
       },
       {
         "label": "Avoid",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Pass through",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Pass through."
           }
         ],
         "placeToken": "empty"
@@ -563,11 +668,20 @@
     "choices": [
       {
         "label": "Deploy relay beacon",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 7 Energy, +1 influence, and 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
+            "amount": 7
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -575,11 +689,11 @@
       },
       {
         "label": "Mark only",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Move along",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Move along."
           }
         ],
         "placeToken": "anomaly"
@@ -597,10 +711,15 @@
     "choices": [
       {
         "label": "Reactivate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension +4 and 1 Credit.",
         "effects": [
           {
             "op": "modifyCosmicTension",
+            "amount": 4
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -608,12 +727,16 @@
       },
       {
         "label": "Dismantle",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 3 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 3
+          },
+          {
+            "op": "log",
+            "message": "V18782"
           }
         ],
         "placeToken": "ruins"
@@ -631,23 +754,27 @@
     "choices": [
       {
         "label": "Seed biomass",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 5 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 5
+          },
+          {
+            "op": "log",
+            "message": "V19754"
           }
         ],
         "placeToken": "biomass"
       },
       {
         "label": "Contain",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Move along",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Move along."
           }
         ],
         "placeToken": "empty"
@@ -665,27 +792,28 @@
     "choices": [
       {
         "label": "Establish outpost",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 3 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 3
           },
           {
-            "op": "addInfluence",
-            "amount": 1
+            "op": "log",
+            "message": "V18702"
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Survey only",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 1,
+            "range": 1
           }
         ],
         "placeToken": "empty"
@@ -703,27 +831,28 @@
     "choices": [
       {
         "label": "Garrison",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 4 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 4
           },
           {
-            "op": "addInfluence",
-            "amount": 1
+            "op": "log",
+            "message": "V18703"
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Scout",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 1,
+            "range": 1
           }
         ],
         "placeToken": "empty"
@@ -741,23 +870,32 @@
     "choices": [
       {
         "label": "Strip hull",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 4 Credits, 1 Energy, and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 4
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
           }
         ],
         "placeToken": "derelict"
       },
       {
         "label": "Mark hazard",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Nothing here",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Nothing here."
           }
         ],
         "placeToken": "hazard"
@@ -775,28 +913,27 @@
     "choices": [
       {
         "label": "Set up route",
-        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "resolveText": "Gain 9 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 9
           },
           {
-            "op": "gainResource",
-            "resource": "energy",
-            "amount": 1
+            "op": "log",
+            "message": "V25598"
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Pass",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Nothing here",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Nothing here."
           }
         ],
         "placeToken": "empty"
@@ -814,23 +951,28 @@
     "choices": [
       {
         "label": "Harvest",
-        "resolveText": "Gain 2 energy.",
+        "resolveText": "Gain 7 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 7
+          },
+          {
+            "op": "log",
+            "message": "V19196"
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Map it",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 1,
+            "range": 1
           }
         ],
         "placeToken": "anomaly"
@@ -848,11 +990,20 @@
     "choices": [
       {
         "label": "Establish contact",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 8 Energy, +1 influence, and 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
+            "amount": 8
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -860,11 +1011,11 @@
       },
       {
         "label": "Avoid",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Clear",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Clear."
           }
         ],
         "placeToken": "empty"
@@ -882,23 +1033,27 @@
     "choices": [
       {
         "label": "Reactivate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension -5.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": 1
+            "amount": -5
           }
         ],
         "placeToken": "gate"
       },
       {
         "label": "Dismantle",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 4 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
             "amount": 4
+          },
+          {
+            "op": "log",
+            "message": "V18783"
           }
         ],
         "placeToken": "ruins"
@@ -916,23 +1071,28 @@
     "choices": [
       {
         "label": "Harvest",
-        "resolveText": "Gain 2 energy.",
+        "resolveText": "Gain 9 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 9
+          },
+          {
+            "op": "log",
+            "message": "V19198"
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Map it",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 1,
+            "range": 1
           }
         ],
         "placeToken": "anomaly"
@@ -950,23 +1110,32 @@
     "choices": [
       {
         "label": "Strip hull",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 4 Credits, 1 Energy, and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 4
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
           }
         ],
         "placeToken": "derelict"
       },
       {
         "label": "Mark hazard",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Clear",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Clear."
           }
         ],
         "placeToken": "hazard"
@@ -984,27 +1153,28 @@
     "choices": [
       {
         "label": "Establish outpost",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 5 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 5
           },
           {
-            "op": "addInfluence",
-            "amount": 1
+            "op": "log",
+            "message": "V18704"
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Survey only",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 1,
+            "range": 1
           }
         ],
         "placeToken": "empty"
@@ -1022,23 +1192,27 @@
     "choices": [
       {
         "label": "Seed biomass",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 9 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 9
+          },
+          {
+            "op": "log",
+            "message": "V19758"
           }
         ],
         "placeToken": "biomass"
       },
       {
         "label": "Contain",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Sterilize",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Sterilize."
           }
         ],
         "placeToken": "empty"
@@ -1056,23 +1230,27 @@
     "choices": [
       {
         "label": "Seed biomass",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 7 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 7
+          },
+          {
+            "op": "log",
+            "message": "V20076"
           }
         ],
         "placeToken": "biomass"
       },
       {
         "label": "Contain",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Sterilize",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Sterilize."
           }
         ],
         "placeToken": "empty"
@@ -1090,7 +1268,7 @@
     "choices": [
       {
         "label": "Push through",
-        "resolveText": "Lose 1 energy.",
+        "resolveText": "Effect.",
         "effects": [
           {
             "op": "loseResource",
@@ -1102,11 +1280,11 @@
       },
       {
         "label": "Detour",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension -5.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": 1
+            "amount": -5
           }
         ],
         "placeToken": "anomaly"
@@ -1124,12 +1302,12 @@
     "choices": [
       {
         "label": "Trade",
-        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "resolveText": "Gain 7 Credits and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 7
           },
           {
             "op": "gainResource",
@@ -1141,11 +1319,11 @@
       },
       {
         "label": "Ignore",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Contain",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Contain."
           }
         ],
         "placeToken": "empty"
@@ -1163,11 +1341,20 @@
     "choices": [
       {
         "label": "Beacon network",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 9 Energy, +1 influence, and 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
+            "amount": 9
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -1175,11 +1362,12 @@
       },
       {
         "label": "Chart",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 1,
+            "range": 1
           }
         ],
         "placeToken": "empty"
@@ -1197,11 +1385,15 @@
     "choices": [
       {
         "label": "Spread spores",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 10 Credits and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 10
+          },
+          {
+            "op": "addInfluence",
             "amount": 1
           }
         ],
@@ -1209,11 +1401,11 @@
       },
       {
         "label": "Sterilize",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Contain",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Contain."
           }
         ],
         "placeToken": "empty"
@@ -1231,28 +1423,27 @@
     "choices": [
       {
         "label": "Set up route",
-        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "resolveText": "Gain 8 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 8
           },
           {
-            "op": "gainResource",
-            "resource": "energy",
-            "amount": 1
+            "op": "log",
+            "message": "V26237"
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Pass",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Seal it",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Seal it."
           }
         ],
         "placeToken": "empty"
@@ -1270,23 +1461,27 @@
     "choices": [
       {
         "label": "Salvage",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 7 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 7
+          },
+          {
+            "op": "log",
+            "message": "V956"
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Move on",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Seal it",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Seal it."
           }
         ],
         "placeToken": "empty"
@@ -1304,23 +1499,23 @@
     "choices": [
       {
         "label": "Salvage tech",
-        "resolveText": "Gain 2 energy.",
+        "resolveText": "Gain 7 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 7
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Leave it",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Mark hazard",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Mark hazard."
           }
         ],
         "placeToken": "empty"
@@ -1338,11 +1533,20 @@
     "choices": [
       {
         "label": "Beacon network",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 10 Energy, +1 influence, and 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
+            "amount": 10
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -1350,11 +1554,12 @@
       },
       {
         "label": "Chart",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 1,
+            "range": 1
           }
         ],
         "placeToken": "empty"
@@ -1372,23 +1577,23 @@
     "choices": [
       {
         "label": "Salvage tech",
-        "resolveText": "Gain 2 energy.",
+        "resolveText": "Gain 8 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 8
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Leave it",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Mark hazard",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Mark hazard."
           }
         ],
         "placeToken": "empty"
@@ -1406,27 +1611,28 @@
     "choices": [
       {
         "label": "Establish outpost",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 6 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 6
           },
           {
-            "op": "addInfluence",
-            "amount": 1
+            "op": "log",
+            "message": "V18705"
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Survey only",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 1,
+            "range": 1
           }
         ],
         "placeToken": "empty"
@@ -1444,23 +1650,27 @@
     "choices": [
       {
         "label": "Salvage",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 9 Credits and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 9
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Move on",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Salvage scan",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Salvage scan."
           }
         ],
         "placeToken": "empty"
@@ -1478,28 +1688,27 @@
     "choices": [
       {
         "label": "Set up route",
-        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "resolveText": "Gain 2 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 2
           },
           {
-            "op": "gainResource",
-            "resource": "energy",
-            "amount": 1
+            "op": "log",
+            "message": "V23421"
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Pass",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Salvage scan",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Salvage scan."
           }
         ],
         "placeToken": "empty"
@@ -1517,23 +1726,24 @@
     "choices": [
       {
         "label": "Harvest",
-        "resolveText": "Gain 2 energy.",
+        "resolveText": "Gain 9 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 9
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Map it",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 1,
+            "range": 1
           }
         ],
         "placeToken": "anomaly"
@@ -1551,23 +1761,27 @@
     "choices": [
       {
         "label": "Place beacon",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
             "amount": 1
+          },
+          {
+            "op": "log",
+            "message": "V60"
           }
         ],
         "placeToken": "beacon"
       },
       {
         "label": "Skip",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Scout report",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Scout report."
           }
         ],
         "placeToken": "empty"
@@ -1585,27 +1799,28 @@
     "choices": [
       {
         "label": "Establish outpost",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 7 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 7
           },
           {
-            "op": "addInfluence",
-            "amount": 1
+            "op": "log",
+            "message": "V18706"
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Survey only",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 1,
+            "range": 1
           }
         ],
         "placeToken": "empty"
@@ -1623,28 +1838,27 @@
     "choices": [
       {
         "label": "Set up route",
-        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "resolveText": "Gain 3 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 3
           },
           {
-            "op": "gainResource",
-            "resource": "energy",
-            "amount": 1
+            "op": "log",
+            "message": "V23422"
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Pass",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Scout report",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Scout report."
           }
         ],
         "placeToken": "empty"
@@ -1662,23 +1876,27 @@
     "choices": [
       {
         "label": "Salvage",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 10 Credits and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 10
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Move on",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Data logged",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Data logged."
           }
         ],
         "placeToken": "empty"
@@ -1696,23 +1914,27 @@
     "choices": [
       {
         "label": "Place beacon",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 2 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 2
+          },
+          {
+            "op": "log",
+            "message": "V61"
           }
         ],
         "placeToken": "beacon"
       },
       {
         "label": "Skip",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Data logged",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Data logged."
           }
         ],
         "placeToken": "empty"
@@ -1730,23 +1952,28 @@
     "choices": [
       {
         "label": "Beacon network",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 3 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 3
+          },
+          {
+            "op": "log",
+            "message": "V62"
           }
         ],
         "placeToken": "beacon"
       },
       {
         "label": "Chart",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 1,
+            "range": 1
           }
         ],
         "placeToken": "empty"
@@ -1764,23 +1991,27 @@
     "choices": [
       {
         "label": "Seed biomass",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 8 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 8
+          },
+          {
+            "op": "log",
+            "message": "V20397"
           }
         ],
         "placeToken": "biomass"
       },
       {
         "label": "Contain",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "No contact",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "No contact."
           }
         ],
         "placeToken": "empty"
@@ -1798,28 +2029,27 @@
     "choices": [
       {
         "label": "Caravan stop",
-        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "resolveText": "Gain 4 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 4
           },
           {
-            "op": "gainResource",
-            "resource": "energy",
-            "amount": 1
+            "op": "log",
+            "message": "V23423"
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Pass",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "No contact",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "No contact."
           }
         ],
         "placeToken": "empty"
@@ -1837,23 +2067,27 @@
     "choices": [
       {
         "label": "Seed biomass",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 8 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 8
+          },
+          {
+            "op": "log",
+            "message": "V20717"
           }
         ],
         "placeToken": "biomass"
       },
       {
         "label": "Contain",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Void",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Void."
           }
         ],
         "placeToken": "empty"
@@ -1871,23 +2105,27 @@
     "choices": [
       {
         "label": "Push through",
-        "resolveText": "Lose 1 energy.",
+        "resolveText": "Effect.",
         "effects": [
           {
             "op": "loseResource",
             "resource": "energy",
             "amount": 1
+          },
+          {
+            "op": "log",
+            "message": "V23578"
           }
         ],
         "placeToken": "anomaly"
       },
       {
         "label": "Detour",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension -5.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": 1
+            "amount": -5
           }
         ],
         "placeToken": "anomaly"
@@ -1905,11 +2143,15 @@
     "choices": [
       {
         "label": "Strip for scrap",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 1 Credit and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
             "amount": 2
           }
         ],
@@ -1917,11 +2159,11 @@
       },
       {
         "label": "Leave",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Void",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Void."
           }
         ],
         "placeToken": "empty"
@@ -1939,23 +2181,27 @@
     "choices": [
       {
         "label": "Deploy relay beacon",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 4 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 4
+          },
+          {
+            "op": "log",
+            "message": "V63"
           }
         ],
         "placeToken": "beacon"
       },
       {
         "label": "Mark only",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Empty",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Empty."
           }
         ],
         "placeToken": "anomaly"
@@ -1973,27 +2219,28 @@
     "choices": [
       {
         "label": "Garrison",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 8 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 8
           },
           {
-            "op": "addInfluence",
-            "amount": 1
+            "op": "log",
+            "message": "V18707"
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Scout",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 1,
+            "range": 1
           }
         ],
         "placeToken": "empty"
@@ -2011,23 +2258,27 @@
     "choices": [
       {
         "label": "Push through",
-        "resolveText": "Lose 1 energy.",
+        "resolveText": "Effect.",
         "effects": [
           {
             "op": "loseResource",
             "resource": "energy",
             "amount": 1
+          },
+          {
+            "op": "log",
+            "message": "V23579"
           }
         ],
         "placeToken": "anomaly"
       },
       {
         "label": "Detour",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension -5.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": 1
+            "amount": -5
           }
         ],
         "placeToken": "anomaly"
@@ -2045,28 +2296,27 @@
     "choices": [
       {
         "label": "Trade",
-        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "resolveText": "Gain 5 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 5
           },
           {
-            "op": "gainResource",
-            "resource": "energy",
-            "amount": 1
+            "op": "log",
+            "message": "V23424"
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Ignore",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Empty",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Empty."
           }
         ],
         "placeToken": "empty"
@@ -2084,28 +2334,32 @@
     "choices": [
       {
         "label": "Plunder",
-        "resolveText": "Gain 2 credits. Cosmic tension +1.",
+        "resolveText": "Gain 10 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 10
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "log",
+            "message": "V30159"
           }
         ],
         "placeToken": "pirate_den"
       },
       {
         "label": "Report",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 9 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 9
+          },
+          {
+            "op": "log",
+            "message": "V21038"
           }
         ],
         "placeToken": "empty"
@@ -2123,23 +2377,27 @@
     "choices": [
       {
         "label": "Reactivate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension -5.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": 1
+            "amount": -5
           }
         ],
         "placeToken": "gate"
       },
       {
         "label": "Dismantle",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 5 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 5
+          },
+          {
+            "op": "log",
+            "message": "V18784"
           }
         ],
         "placeToken": "ruins"
@@ -2157,23 +2415,27 @@
     "choices": [
       {
         "label": "Push through",
-        "resolveText": "Lose 1 energy.",
+        "resolveText": "Effect.",
         "effects": [
           {
             "op": "loseResource",
             "resource": "energy",
             "amount": 1
+          },
+          {
+            "op": "log",
+            "message": "V23580"
           }
         ],
         "placeToken": "anomaly"
       },
       {
         "label": "Detour",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension -5.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": 1
+            "amount": -5
           }
         ],
         "placeToken": "anomaly"
@@ -2191,23 +2453,28 @@
     "choices": [
       {
         "label": "Harvest debris",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 8 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 8
+          },
+          {
+            "op": "log",
+            "message": "V1277"
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Chart",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 1,
+            "range": 1
           }
         ],
         "placeToken": "anomaly"
@@ -2225,11 +2492,15 @@
     "choices": [
       {
         "label": "Salvage",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 7 Credits and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 7
+          },
+          {
+            "op": "addInfluence",
             "amount": 2
           }
         ],
@@ -2237,11 +2508,11 @@
       },
       {
         "label": "Move on",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Silent",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Silent."
           }
         ],
         "placeToken": "empty"
@@ -2259,28 +2530,27 @@
     "choices": [
       {
         "label": "Caravan stop",
-        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "resolveText": "Gain 6 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 6
           },
           {
-            "op": "gainResource",
-            "resource": "energy",
-            "amount": 1
+            "op": "log",
+            "message": "V23425"
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Pass",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Silent",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Silent."
           }
         ],
         "placeToken": "empty"
@@ -2298,27 +2568,28 @@
     "choices": [
       {
         "label": "Establish outpost",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 9 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 9
           },
           {
-            "op": "addInfluence",
-            "amount": 1
+            "op": "log",
+            "message": "V18708"
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Survey only",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 1,
+            "range": 1
           }
         ],
         "placeToken": "empty"
@@ -2336,11 +2607,15 @@
     "choices": [
       {
         "label": "Harvest debris",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 8 Credits and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 8
+          },
+          {
+            "op": "addInfluence",
             "amount": 2
           }
         ],
@@ -2348,11 +2623,12 @@
       },
       {
         "label": "Chart",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 1,
+            "range": 1
           }
         ],
         "placeToken": "anomaly"
@@ -2370,11 +2646,15 @@
     "choices": [
       {
         "label": "Strip hull",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 9 Credits and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 9
+          },
+          {
+            "op": "addInfluence",
             "amount": 2
           }
         ],
@@ -2382,11 +2662,11 @@
       },
       {
         "label": "Mark hazard",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Quiet",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Quiet."
           }
         ],
         "placeToken": "hazard"
@@ -2404,23 +2684,27 @@
     "choices": [
       {
         "label": "Push through",
-        "resolveText": "Lose 1 energy.",
+        "resolveText": "Effect.",
         "effects": [
           {
             "op": "loseResource",
             "resource": "energy",
             "amount": 1
+          },
+          {
+            "op": "log",
+            "message": "V23581"
           }
         ],
         "placeToken": "anomaly"
       },
       {
         "label": "Detour",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension -5.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": 1
+            "amount": -5
           }
         ],
         "placeToken": "anomaly"
@@ -2438,23 +2722,28 @@
     "choices": [
       {
         "label": "Beacon network",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 5 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 5
+          },
+          {
+            "op": "log",
+            "message": "V64"
           }
         ],
         "placeToken": "beacon"
       },
       {
         "label": "Chart",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 1,
+            "range": 1
           }
         ],
         "placeToken": "empty"
@@ -2472,11 +2761,15 @@
     "choices": [
       {
         "label": "Strip hull",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 10 Credits and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 10
+          },
+          {
+            "op": "addInfluence",
             "amount": 2
           }
         ],
@@ -2484,11 +2777,11 @@
       },
       {
         "label": "Mark hazard",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Quiet",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Quiet."
           }
         ],
         "placeToken": "hazard"
@@ -2506,23 +2799,27 @@
     "choices": [
       {
         "label": "Establish contact",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 6 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 6
+          },
+          {
+            "op": "log",
+            "message": "V65"
           }
         ],
         "placeToken": "neutral_enclave"
       },
       {
         "label": "Avoid",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Still",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Still."
           }
         ],
         "placeToken": "empty"
@@ -2540,23 +2837,23 @@
     "choices": [
       {
         "label": "Salvage wreck",
-        "resolveText": "Gain 2 energy.",
+        "resolveText": "Gain 10 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 10
           }
         ],
         "placeToken": "derelict"
       },
       {
         "label": "Avoid",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Still",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Still."
           }
         ],
         "placeToken": "empty"
@@ -2574,28 +2871,28 @@
     "choices": [
       {
         "label": "Trade",
-        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "resolveText": "Gain 7 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 7
           },
           {
-            "op": "gainResource",
-            "resource": "energy",
-            "amount": 1
+            "op": "log",
+            "message": "V23426"
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Ignore",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Salvage 1 Credit from the void.",
         "effects": [
           {
-            "op": "log",
-            "message": "Logged."
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
           }
         ],
         "placeToken": "empty"
@@ -2613,23 +2910,28 @@
     "choices": [
       {
         "label": "Deploy relay beacon",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 7 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 7
+          },
+          {
+            "op": "log",
+            "message": "V66"
           }
         ],
         "placeToken": "beacon"
       },
       {
         "label": "Mark only",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Salvage 1 Credit from the void.",
         "effects": [
           {
-            "op": "log",
-            "message": "Logged."
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
           }
         ],
         "placeToken": "anomaly"
@@ -2647,23 +2949,28 @@
     "choices": [
       {
         "label": "Strip hull",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 9 Credits and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 9
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "derelict"
       },
       {
         "label": "Mark hazard",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Salvage 2 Credits from the void.",
         "effects": [
           {
-            "op": "log",
-            "message": "Logged."
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
           }
         ],
         "placeToken": "hazard"
@@ -2681,28 +2988,28 @@
     "choices": [
       {
         "label": "Caravan stop",
-        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "resolveText": "Gain 8 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 8
           },
           {
-            "op": "gainResource",
-            "resource": "energy",
-            "amount": 1
+            "op": "log",
+            "message": "V23427"
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Pass",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Salvage 2 Credits from the void.",
         "effects": [
           {
-            "op": "log",
-            "message": "Logged."
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
           }
         ],
         "placeToken": "empty"
@@ -2720,11 +3027,15 @@
     "choices": [
       {
         "label": "Salvage",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 8 Credits and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 8
+          },
+          {
+            "op": "addInfluence",
             "amount": 2
           }
         ],
@@ -2732,11 +3043,12 @@
       },
       {
         "label": "Move on",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Salvage 3 Credits from the void.",
         "effects": [
           {
-            "op": "log",
-            "message": "Logged."
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
           }
         ],
         "placeToken": "empty"
@@ -2754,27 +3066,28 @@
     "choices": [
       {
         "label": "Crack it",
-        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "resolveText": "Gain 2 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 2
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "log",
+            "message": "V23511"
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Tag it",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Salvage 3 Credits from the void.",
         "effects": [
           {
-            "op": "log",
-            "message": "Logged."
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 3
           }
         ],
         "placeToken": "empty"
@@ -2792,11 +3105,15 @@
     "choices": [
       {
         "label": "Strip hull",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 10 Credits and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 10
+          },
+          {
+            "op": "addInfluence",
             "amount": 2
           }
         ],
@@ -2804,11 +3121,11 @@
       },
       {
         "label": "Mark hazard",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Scout: +1 influence.",
         "effects": [
           {
-            "op": "log",
-            "message": "Logged."
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "hazard"
@@ -2826,23 +3143,27 @@
     "choices": [
       {
         "label": "Establish contact",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 8 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 8
+          },
+          {
+            "op": "log",
+            "message": "V67"
           }
         ],
         "placeToken": "neutral_enclave"
       },
       {
         "label": "Avoid",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Scout: +1 influence.",
         "effects": [
           {
-            "op": "log",
-            "message": "Logged."
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "empty"
@@ -2860,7 +3181,7 @@
     "choices": [
       {
         "label": "Crack it",
-        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "resolveText": "Gain 3 Credits.",
         "effects": [
           {
             "op": "gainResource",
@@ -2868,19 +3189,19 @@
             "amount": 3
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "log",
+            "message": "V23512"
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Tag it",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Scout: +2 influence.",
         "effects": [
           {
-            "op": "log",
-            "message": "Logged."
+            "op": "addInfluence",
+            "amount": 2
           }
         ],
         "placeToken": "empty"
@@ -2898,28 +3219,27 @@
     "choices": [
       {
         "label": "Trade",
-        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "resolveText": "Gain 9 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 9
           },
           {
-            "op": "gainResource",
-            "resource": "energy",
-            "amount": 1
+            "op": "log",
+            "message": "V23428"
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Ignore",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Scout: +2 influence.",
         "effects": [
           {
-            "op": "log",
-            "message": "Logged."
+            "op": "addInfluence",
+            "amount": 2
           }
         ],
         "placeToken": "empty"
@@ -2937,23 +3257,28 @@
     "choices": [
       {
         "label": "Salvage",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 8 Credits and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 8
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Move on",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Pass.",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Pass 1."
           }
         ],
         "placeToken": "empty"
@@ -2971,28 +3296,27 @@
     "choices": [
       {
         "label": "Trade",
-        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "resolveText": "Gain 10 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 10
           },
           {
-            "op": "gainResource",
-            "resource": "energy",
-            "amount": 1
+            "op": "log",
+            "message": "V23429"
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Ignore",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Pass.",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Pass 2."
           }
         ],
         "placeToken": "empty"
@@ -3010,27 +3334,27 @@
     "choices": [
       {
         "label": "Crack it",
-        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "resolveText": "Gain 4 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 4
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "log",
+            "message": "V23513"
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Tag it",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Pass.",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Pass 3."
           }
         ],
         "placeToken": "empty"
@@ -3048,27 +3372,32 @@
     "choices": [
       {
         "label": "Plunder",
-        "resolveText": "Gain 2 credits. Cosmic tension +1.",
+        "resolveText": "Gain 10 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 10
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "log",
+            "message": "V30479"
           }
         ],
         "placeToken": "pirate_den"
       },
       {
         "label": "Report",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 7 Credits and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 7
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
             "amount": 1
           }
         ],
@@ -3087,23 +3416,27 @@
     "choices": [
       {
         "label": "Place beacon",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 9 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 9
+          },
+          {
+            "op": "log",
+            "message": "V68"
           }
         ],
         "placeToken": "beacon"
       },
       {
         "label": "Skip",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Pass.",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Pass 4."
           }
         ],
         "placeToken": "empty"
@@ -3121,23 +3454,28 @@
     "choices": [
       {
         "label": "Strip for scrap",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 9 Credits and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 9
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Leave",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Pass.",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Pass 5."
           }
         ],
         "placeToken": "empty"
@@ -3155,23 +3493,28 @@
     "choices": [
       {
         "label": "Strip for scrap",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 10 Credits and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 10
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Leave",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Pass.",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Pass 6."
           }
         ],
         "placeToken": "empty"
@@ -3189,28 +3532,33 @@
     "choices": [
       {
         "label": "Plunder",
-        "resolveText": "Gain 2 credits. Cosmic tension +1.",
+        "resolveText": "Gain 5 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 5
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "log",
+            "message": "V31114"
           }
         ],
         "placeToken": "pirate_den"
       },
       {
         "label": "Report",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 6 Credits and 2 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 6
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
           }
         ],
         "placeToken": "empty"
@@ -3228,23 +3576,27 @@
     "choices": [
       {
         "label": "Spread spores",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 10 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 10
+          },
+          {
+            "op": "log",
+            "message": "V21679"
           }
         ],
         "placeToken": "biomass"
       },
       {
         "label": "Sterilize",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Pass.",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Pass 7."
           }
         ],
         "placeToken": "empty"
@@ -3262,7 +3614,7 @@
     "choices": [
       {
         "label": "Set up route",
-        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "resolveText": "Gain 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
@@ -3270,20 +3622,19 @@
             "amount": 1
           },
           {
-            "op": "gainResource",
-            "resource": "energy",
-            "amount": 1
+            "op": "log",
+            "message": "V23430"
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Pass",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Pass.",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Pass 8."
           }
         ],
         "placeToken": "empty"
@@ -3301,28 +3652,27 @@
     "choices": [
       {
         "label": "Trade",
-        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "resolveText": "Gain 2 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 2
           },
           {
-            "op": "gainResource",
-            "resource": "energy",
-            "amount": 1
+            "op": "log",
+            "message": "V23431"
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Ignore",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Pass.",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Pass 9."
           }
         ],
         "placeToken": "empty"
@@ -3340,23 +3690,27 @@
     "choices": [
       {
         "label": "Place beacon",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 10 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 10
+          },
+          {
+            "op": "log",
+            "message": "V69"
           }
         ],
         "placeToken": "beacon"
       },
       {
         "label": "Skip",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Pass.",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Pass 10."
           }
         ],
         "placeToken": "empty"
@@ -3374,23 +3728,27 @@
     "choices": [
       {
         "label": "Salvage wreck",
-        "resolveText": "Gain 2 energy.",
+        "resolveText": "Gain 9 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 9
+          },
+          {
+            "op": "log",
+            "message": "V19518"
           }
         ],
         "placeToken": "derelict"
       },
       {
         "label": "Avoid",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Pass.",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Pass 11."
           }
         ],
         "placeToken": "empty"
@@ -3408,27 +3766,28 @@
     "choices": [
       {
         "label": "Garrison",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 10 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 10
           },
           {
-            "op": "addInfluence",
-            "amount": 1
+            "op": "log",
+            "message": "V18709"
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Scout",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 1,
+            "range": 1
           }
         ],
         "placeToken": "empty"
@@ -3446,28 +3805,27 @@
     "choices": [
       {
         "label": "Trade",
-        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "resolveText": "Gain 3 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 3
           },
           {
-            "op": "gainResource",
-            "resource": "energy",
-            "amount": 1
+            "op": "log",
+            "message": "V23432"
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Ignore",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Pass.",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Pass 12."
           }
         ],
         "placeToken": "empty"
@@ -3485,28 +3843,27 @@
     "choices": [
       {
         "label": "Set up route",
-        "resolveText": "Gain 1 credits. Gain 1 energy.",
+        "resolveText": "Gain 4 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 4
           },
           {
-            "op": "gainResource",
-            "resource": "energy",
-            "amount": 1
+            "op": "log",
+            "message": "V23433"
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Pass",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Pass.",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Pass 13."
           }
         ],
         "placeToken": "empty"
@@ -3524,11 +3881,16 @@
     "choices": [
       {
         "label": "Harvest debris",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 1 Credit and 2 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
             "amount": 2
           }
         ],
@@ -3536,11 +3898,12 @@
       },
       {
         "label": "Chart",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 1,
+            "range": 1
           }
         ],
         "placeToken": "anomaly"

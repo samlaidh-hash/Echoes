@@ -6,23 +6,28 @@
     "choices": [
       {
         "label": "Excavate",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 3 Credits and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 3
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
           }
         ],
         "placeToken": "ruins"
       },
       {
         "label": "Seal",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension +4.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": 4
           }
         ],
         "placeToken": "ruins"
@@ -40,11 +45,16 @@
     "choices": [
       {
         "label": "Place beacon",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 4 Energy and 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
+            "amount": 4
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -52,12 +62,17 @@
       },
       {
         "label": "Study",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 4 Credits and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 4
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
           }
         ],
         "placeToken": "ruins"
@@ -75,23 +90,28 @@
     "choices": [
       {
         "label": "Excavate",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 4 Credits and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 4
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
           }
         ],
         "placeToken": "ruins"
       },
       {
         "label": "Seal",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension +5.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": 5
           }
         ],
         "placeToken": "ruins"
@@ -109,23 +129,28 @@
     "choices": [
       {
         "label": "Excavate",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 5 Credits and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 5
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
           }
         ],
         "placeToken": "ruins"
       },
       {
         "label": "Seal",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension +5.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": 5
           }
         ],
         "placeToken": "ruins"
@@ -143,10 +168,14 @@
     "choices": [
       {
         "label": "Activate gate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension -3 and +1 influence.",
         "effects": [
           {
             "op": "modifyCosmicTension",
+            "amount": -3
+          },
+          {
+            "op": "addInfluence",
             "amount": 1
           }
         ],
@@ -154,12 +183,16 @@
       },
       {
         "label": "Scrap",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 9 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 9
+          },
+          {
+            "op": "log",
+            "message": "V18718"
           }
         ],
         "placeToken": "ruins"
@@ -177,32 +210,32 @@
     "choices": [
       {
         "label": "Study",
-        "resolveText": "Gain 1 energy. Reveal 1 adjacent hex.",
+        "resolveText": "Gain 9 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 9
           },
           {
-            "op": "revealHex",
-            "count": 1
+            "op": "log",
+            "message": "V23518"
           }
         ],
         "placeToken": "ruins"
       },
       {
         "label": "Harvest",
-        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "resolveText": "Gain 8 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 8
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "log",
+            "message": "V23507"
           }
         ],
         "placeToken": "ruins"
@@ -220,24 +253,33 @@
     "choices": [
       {
         "label": "Place beacon",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 2 Energy and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 2
+          },
+          {
+            "op": "addInfluence",
+            "amount": 2
           }
         ],
         "placeToken": "beacon"
       },
       {
         "label": "Study",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 5 Credits and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 5
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
           }
         ],
         "placeToken": "ruins"
@@ -255,24 +297,33 @@
     "choices": [
       {
         "label": "Place beacon",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 2 Energy and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 2
+          },
+          {
+            "op": "addInfluence",
+            "amount": 2
           }
         ],
         "placeToken": "beacon"
       },
       {
         "label": "Study",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 6 Credits and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 6
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
           }
         ],
         "placeToken": "ruins"
@@ -290,23 +341,27 @@
     "choices": [
       {
         "label": "Salvage",
-        "resolveText": "Gain 3 credits.",
+        "resolveText": "Gain 10 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 10
+          },
+          {
+            "op": "log",
+            "message": "V23439"
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Mark",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Move on",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Move on."
           }
         ],
         "placeToken": "derelict"
@@ -324,24 +379,33 @@
     "choices": [
       {
         "label": "Place beacon",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 3 Energy and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 3
+          },
+          {
+            "op": "addInfluence",
+            "amount": 2
           }
         ],
         "placeToken": "beacon"
       },
       {
         "label": "Harvest",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 6 Credits and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 6
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
           }
         ],
         "placeToken": "anomaly"
@@ -359,32 +423,32 @@
     "choices": [
       {
         "label": "Study",
-        "resolveText": "Gain 1 energy. Reveal 1 adjacent hex.",
+        "resolveText": "Gain 10 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 10
           },
           {
-            "op": "revealHex",
-            "count": 1
+            "op": "log",
+            "message": "V23519"
           }
         ],
         "placeToken": "ruins"
       },
       {
         "label": "Harvest",
-        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "resolveText": "Gain 9 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 9
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "log",
+            "message": "V23508"
           }
         ],
         "placeToken": "ruins"
@@ -402,32 +466,32 @@
     "choices": [
       {
         "label": "Study",
-        "resolveText": "Gain 1 energy. Reveal 1 adjacent hex.",
+        "resolveText": "Gain 5 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 5
           },
           {
-            "op": "revealHex",
-            "count": 1
+            "op": "log",
+            "message": "V23834"
           }
         ],
         "placeToken": "ruins"
       },
       {
         "label": "Harvest",
-        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "resolveText": "Gain 10 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 10
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "log",
+            "message": "V23509"
           }
         ],
         "placeToken": "ruins"
@@ -445,23 +509,31 @@
     "choices": [
       {
         "label": "Place beacon",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 3 Energy and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 3
+          },
+          {
+            "op": "addInfluence",
+            "amount": 2
           }
         ],
         "placeToken": "beacon"
       },
       {
         "label": "Harvest",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 2 Credits and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 2
+          },
+          {
+            "op": "addInfluence",
             "amount": 2
           }
         ],
@@ -480,11 +552,15 @@
     "choices": [
       {
         "label": "Trade route",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 2 Credits and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 2
+          },
+          {
+            "op": "addInfluence",
             "amount": 2
           }
         ],
@@ -492,11 +568,11 @@
       },
       {
         "label": "Avoid",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Leave it",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Leave it."
           }
         ],
         "placeToken": "empty"
@@ -514,15 +590,16 @@
     "choices": [
       {
         "label": "Study horizon",
-        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "resolveText": "Gain 7 Energy and 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 7
           },
           {
-            "op": "modifyCosmicTension",
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -530,16 +607,16 @@
       },
       {
         "label": "Harvest matter",
-        "resolveText": "Gain 5 credits. Lose 1 fleet.",
+        "resolveText": "Gain 9 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 5
+            "amount": 9
           },
           {
-            "op": "loseFleet",
-            "amount": 1
+            "op": "log",
+            "message": "V23838"
           }
         ],
         "placeToken": "anomaly"
@@ -557,23 +634,31 @@
     "choices": [
       {
         "label": "Place beacon",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 4 Energy and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 4
+          },
+          {
+            "op": "addInfluence",
+            "amount": 2
           }
         ],
         "placeToken": "beacon"
       },
       {
         "label": "Harvest",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 3 Credits and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "addInfluence",
             "amount": 2
           }
         ],
@@ -592,10 +677,15 @@
     "choices": [
       {
         "label": "Reactivate gate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension +5 and 1 Credit.",
         "effects": [
           {
             "op": "modifyCosmicTension",
+            "amount": 5
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -603,12 +693,16 @@
       },
       {
         "label": "Scrap",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 10 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 10
+          },
+          {
+            "op": "log",
+            "message": "V18719"
           }
         ],
         "placeToken": "ruins"
@@ -626,23 +720,28 @@
     "choices": [
       {
         "label": "Map rift",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 3 hexes.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 3,
+            "range": 1
           }
         ],
         "placeToken": "anomaly"
       },
       {
         "label": "Harvest",
-        "resolveText": "Gain 3 credits.",
+        "resolveText": "Gain 5 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 5
+          },
+          {
+            "op": "log",
+            "message": "V23754"
           }
         ],
         "placeToken": "anomaly"
@@ -660,23 +759,31 @@
     "choices": [
       {
         "label": "Stabilize",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension -2 and +1 influence.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": -2
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "gate"
       },
       {
         "label": "Drain",
-        "resolveText": "Gain 2 energy.",
+        "resolveText": "Gain 10 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 10
+          },
+          {
+            "op": "log",
+            "message": "V18869"
           }
         ],
         "placeToken": "gate"
@@ -694,32 +801,32 @@
     "choices": [
       {
         "label": "Study",
-        "resolveText": "Gain 1 energy. Reveal 1 adjacent hex.",
+        "resolveText": "Gain 7 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 7
           },
           {
-            "op": "revealHex",
-            "count": 1
+            "op": "log",
+            "message": "V23836"
           }
         ],
         "placeToken": "ruins"
       },
       {
         "label": "Harvest",
-        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "resolveText": "Gain 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 1
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "log",
+            "message": "V23510"
           }
         ],
         "placeToken": "ruins"
@@ -737,23 +844,28 @@
     "choices": [
       {
         "label": "Map rift",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 4 hexes.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 4,
+            "range": 1
           }
         ],
         "placeToken": "anomaly"
       },
       {
         "label": "Harvest",
-        "resolveText": "Gain 3 credits.",
+        "resolveText": "Gain 7 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 7
+          },
+          {
+            "op": "log",
+            "message": "V23756"
           }
         ],
         "placeToken": "anomaly"
@@ -771,23 +883,28 @@
     "choices": [
       {
         "label": "Harvest",
-        "resolveText": "Gain 2 energy.",
+        "resolveText": "Gain 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 1
+          },
+          {
+            "op": "log",
+            "message": "V18870"
           }
         ],
         "placeToken": "anomaly"
       },
       {
         "label": "Study",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 4 hexes.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 4,
+            "range": 1
           }
         ],
         "placeToken": "anomaly"
@@ -805,23 +922,31 @@
     "choices": [
       {
         "label": "Stabilize",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension -2 and +1 influence.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": -2
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "gate"
       },
       {
         "label": "Drain",
-        "resolveText": "Gain 2 energy.",
+        "resolveText": "Gain 2 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
             "amount": 2
+          },
+          {
+            "op": "log",
+            "message": "V18871"
           }
         ],
         "placeToken": "gate"
@@ -839,11 +964,15 @@
     "choices": [
       {
         "label": "Establish route",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 3 Credits and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "addInfluence",
             "amount": 2
           }
         ],
@@ -851,11 +980,11 @@
       },
       {
         "label": "Avoid",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Leave it",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Leave it."
           }
         ],
         "placeToken": "empty"
@@ -873,10 +1002,14 @@
     "choices": [
       {
         "label": "Reactivate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension +3 and +1 influence.",
         "effects": [
           {
             "op": "modifyCosmicTension",
+            "amount": 3
+          },
+          {
+            "op": "addInfluence",
             "amount": 1
           }
         ],
@@ -884,12 +1017,16 @@
       },
       {
         "label": "Dismantle",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 5 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 5
+          },
+          {
+            "op": "log",
+            "message": "V19034"
           }
         ],
         "placeToken": "ruins"
@@ -907,11 +1044,15 @@
     "choices": [
       {
         "label": "Establish route",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 4 Credits and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 4
+          },
+          {
+            "op": "addInfluence",
             "amount": 2
           }
         ],
@@ -919,11 +1060,11 @@
       },
       {
         "label": "Avoid",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Ignore",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Ignore."
           }
         ],
         "placeToken": "empty"
@@ -941,10 +1082,14 @@
     "choices": [
       {
         "label": "Reactivate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension +3 and +1 influence.",
         "effects": [
           {
             "op": "modifyCosmicTension",
+            "amount": 3
+          },
+          {
+            "op": "addInfluence",
             "amount": 1
           }
         ],
@@ -952,12 +1097,16 @@
       },
       {
         "label": "Dismantle",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 7 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 7
+          },
+          {
+            "op": "log",
+            "message": "V19036"
           }
         ],
         "placeToken": "ruins"
@@ -975,11 +1124,15 @@
     "choices": [
       {
         "label": "Excavate",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 4 Credits and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 4
+          },
+          {
+            "op": "addInfluence",
             "amount": 2
           }
         ],
@@ -987,11 +1140,15 @@
       },
       {
         "label": "Seal",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension -1 and +1 influence.",
         "effects": [
           {
             "op": "modifyCosmicTension",
             "amount": -1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "ruins"
@@ -1009,23 +1166,28 @@
     "choices": [
       {
         "label": "Harvest",
-        "resolveText": "Gain 2 energy.",
+        "resolveText": "Gain 3 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 3
+          },
+          {
+            "op": "log",
+            "message": "V18872"
           }
         ],
         "placeToken": "anomaly"
       },
       {
         "label": "Study",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex within 2 steps.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 1,
+            "range": 2
           }
         ],
         "placeToken": "anomaly"
@@ -1043,10 +1205,14 @@
     "choices": [
       {
         "label": "Reactivate gate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension +4 and +1 influence.",
         "effects": [
           {
             "op": "modifyCosmicTension",
+            "amount": 4
+          },
+          {
+            "op": "addInfluence",
             "amount": 1
           }
         ],
@@ -1054,12 +1220,16 @@
       },
       {
         "label": "Scrap",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 9 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 9
+          },
+          {
+            "op": "log",
+            "message": "V19038"
           }
         ],
         "placeToken": "ruins"
@@ -1077,23 +1247,31 @@
     "choices": [
       {
         "label": "Stabilize",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension -1 and +1 influence.",
         "effects": [
           {
             "op": "modifyCosmicTension",
             "amount": -1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "gate"
       },
       {
         "label": "Drain",
-        "resolveText": "Gain 2 energy.",
+        "resolveText": "Gain 4 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 4
+          },
+          {
+            "op": "log",
+            "message": "V18873"
           }
         ],
         "placeToken": "gate"
@@ -1111,27 +1289,27 @@
     "choices": [
       {
         "label": "Harvest energy",
-        "resolveText": "Gain 3 energy. Lose 1 fleet.",
+        "resolveText": "Gain 7 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 3
+            "amount": 7
           },
           {
-            "op": "loseFleet",
-            "amount": 1
+            "op": "log",
+            "message": "V26396"
           }
         ],
         "placeToken": "hazard"
       },
       {
         "label": "Silence",
-        "resolveText": "Cosmic tension +2.",
+        "resolveText": "Cosmic tension -5.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": 2
+            "amount": -5
           }
         ],
         "placeToken": "hazard"
@@ -1149,23 +1327,31 @@
     "choices": [
       {
         "label": "Place beacon",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 4 Energy and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 4
+          },
+          {
+            "op": "addInfluence",
+            "amount": 2
           }
         ],
         "placeToken": "beacon"
       },
       {
         "label": "Harvest",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 5 Credits and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 5
+          },
+          {
+            "op": "addInfluence",
             "amount": 2
           }
         ],
@@ -1184,23 +1370,28 @@
     "choices": [
       {
         "label": "Harvest",
-        "resolveText": "Gain 2 energy.",
+        "resolveText": "Gain 5 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 5
+          },
+          {
+            "op": "log",
+            "message": "V18874"
           }
         ],
         "placeToken": "anomaly"
       },
       {
         "label": "Study",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex within 2 steps.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 1,
+            "range": 2
           }
         ],
         "placeToken": "anomaly"
@@ -1218,11 +1409,15 @@
     "choices": [
       {
         "label": "Trade route",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 5 Credits and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 5
+          },
+          {
+            "op": "addInfluence",
             "amount": 2
           }
         ],
@@ -1230,11 +1425,11 @@
       },
       {
         "label": "Avoid",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Ignore",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Ignore."
           }
         ],
         "placeToken": "empty"
@@ -1252,23 +1447,28 @@
     "choices": [
       {
         "label": "Harvest",
-        "resolveText": "Gain 2 energy.",
+        "resolveText": "Gain 6 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 6
+          },
+          {
+            "op": "log",
+            "message": "V18875"
           }
         ],
         "placeToken": "anomaly"
       },
       {
         "label": "Study",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 2 hexes within 2 steps.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 2,
+            "range": 2
           }
         ],
         "placeToken": "anomaly"
@@ -1286,23 +1486,24 @@
     "choices": [
       {
         "label": "Study horizon",
-        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "resolveText": "Gain 5 Energy and 2 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 5
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
           }
         ],
         "placeToken": "anomaly"
       },
       {
         "label": "Harvest matter",
-        "resolveText": "Gain 5 credits. Lose 1 fleet.",
+        "resolveText": "Gain 5 Credits.",
         "effects": [
           {
             "op": "gainResource",
@@ -1310,8 +1511,8 @@
             "amount": 5
           },
           {
-            "op": "loseFleet",
-            "amount": 1
+            "op": "log",
+            "message": "V24154"
           }
         ],
         "placeToken": "anomaly"
@@ -1329,11 +1530,15 @@
     "choices": [
       {
         "label": "Establish route",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 6 Credits and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 6
+          },
+          {
+            "op": "addInfluence",
             "amount": 2
           }
         ],
@@ -1341,11 +1546,11 @@
       },
       {
         "label": "Avoid",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Continue",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Continue."
           }
         ],
         "placeToken": "empty"
@@ -1363,11 +1568,15 @@
     "choices": [
       {
         "label": "Trade route",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 6 Credits and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 6
+          },
+          {
+            "op": "addInfluence",
             "amount": 2
           }
         ],
@@ -1375,11 +1584,11 @@
       },
       {
         "label": "Avoid",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Continue",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Continue."
           }
         ],
         "placeToken": "empty"
@@ -1397,10 +1606,15 @@
     "choices": [
       {
         "label": "Reactivate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension +3 and 1 Credit.",
         "effects": [
           {
             "op": "modifyCosmicTension",
+            "amount": 3
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -1408,12 +1622,16 @@
       },
       {
         "label": "Dismantle",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 5 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 5
+          },
+          {
+            "op": "log",
+            "message": "V19354"
           }
         ],
         "placeToken": "ruins"
@@ -1431,10 +1649,14 @@
     "choices": [
       {
         "label": "Activate gate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension -3 and +1 influence.",
         "effects": [
           {
             "op": "modifyCosmicTension",
+            "amount": -3
+          },
+          {
+            "op": "addInfluence",
             "amount": 1
           }
         ],
@@ -1442,12 +1664,16 @@
       },
       {
         "label": "Scrap",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 8 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 8
+          },
+          {
+            "op": "log",
+            "message": "V19357"
           }
         ],
         "placeToken": "ruins"
@@ -1465,23 +1691,27 @@
     "choices": [
       {
         "label": "Reactivate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension -5.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": 1
+            "amount": -5
           }
         ],
         "placeToken": "gate"
       },
       {
         "label": "Dismantle",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 5 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 5
+          },
+          {
+            "op": "log",
+            "message": "V19674"
           }
         ],
         "placeToken": "ruins"
@@ -1499,27 +1729,29 @@
     "choices": [
       {
         "label": "Outpost",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 10 Credits and 2 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 10
           },
           {
-            "op": "addInfluence",
-            "amount": 1
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Reveal",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 2 hexes within 2 steps.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 2,
+            "range": 2
           }
         ],
         "placeToken": "empty"
@@ -1537,15 +1769,16 @@
     "choices": [
       {
         "label": "Outpost",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 9 Credits and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 9
           },
           {
-            "op": "addInfluence",
+            "op": "gainResource",
+            "resource": "energy",
             "amount": 1
           }
         ],
@@ -1553,11 +1786,12 @@
       },
       {
         "label": "Reveal",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 3 hexes within 2 steps.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 3,
+            "range": 2
           }
         ],
         "placeToken": "empty"
@@ -1575,32 +1809,33 @@
     "choices": [
       {
         "label": "Study horizon",
-        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "resolveText": "Gain 6 Energy and 2 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 6
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
           }
         ],
         "placeToken": "anomaly"
       },
       {
         "label": "Harvest matter",
-        "resolveText": "Gain 5 credits. Lose 1 fleet.",
+        "resolveText": "Gain 8 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 5
+            "amount": 8
           },
           {
-            "op": "loseFleet",
-            "amount": 1
+            "op": "log",
+            "message": "V24157"
           }
         ],
         "placeToken": "anomaly"
@@ -1618,23 +1853,33 @@
     "choices": [
       {
         "label": "Place beacon",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 3 Energy and 2 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 3
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
           }
         ],
         "placeToken": "beacon"
       },
       {
         "label": "Harvest",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 2 Credits and 2 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 2
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
             "amount": 2
           }
         ],
@@ -1653,23 +1898,31 @@
     "choices": [
       {
         "label": "Stabilize",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension +1 and +1 influence.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "gate"
       },
       {
         "label": "Drain",
-        "resolveText": "Gain 2 energy.",
+        "resolveText": "Gain 7 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 7
+          },
+          {
+            "op": "log",
+            "message": "V18876"
           }
         ],
         "placeToken": "gate"
@@ -1687,10 +1940,15 @@
     "choices": [
       {
         "label": "Reactivate gate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension -4 and 1 Credit.",
         "effects": [
           {
             "op": "modifyCosmicTension",
+            "amount": -4
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -1698,12 +1956,16 @@
       },
       {
         "label": "Scrap",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 9 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 9
+          },
+          {
+            "op": "log",
+            "message": "V19678"
           }
         ],
         "placeToken": "ruins"
@@ -1721,11 +1983,16 @@
     "choices": [
       {
         "label": "Excavate",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 2 Credits and 2 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 2
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
             "amount": 2
           }
         ],
@@ -1733,11 +2000,15 @@
       },
       {
         "label": "Seal",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension +1 and +1 influence.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "ruins"
@@ -1755,27 +2026,29 @@
     "choices": [
       {
         "label": "Outpost",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 8 Credits and 2 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 8
           },
           {
-            "op": "addInfluence",
-            "amount": 1
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Reveal",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 3 hexes within 2 steps.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 3,
+            "range": 2
           }
         ],
         "placeToken": "empty"
@@ -1793,27 +2066,27 @@
     "choices": [
       {
         "label": "Harvest energy",
-        "resolveText": "Gain 3 energy. Lose 1 fleet.",
+        "resolveText": "Gain 9 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 3
+            "amount": 9
           },
           {
-            "op": "loseFleet",
-            "amount": 1
+            "op": "log",
+            "message": "V26398"
           }
         ],
         "placeToken": "hazard"
       },
       {
         "label": "Silence",
-        "resolveText": "Cosmic tension +2.",
+        "resolveText": "Cosmic tension -5.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": 2
+            "amount": -5
           }
         ],
         "placeToken": "hazard"
@@ -1831,23 +2104,27 @@
     "choices": [
       {
         "label": "Activate gate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension -5.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": 1
+            "amount": -5
           }
         ],
         "placeToken": "gate"
       },
       {
         "label": "Scrap",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 1 Credit and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 2
           }
         ],
         "placeToken": "ruins"
@@ -1865,23 +2142,31 @@
     "choices": [
       {
         "label": "Map rift",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex and gain +1 influence.",
         "effects": [
           {
             "op": "revealHex",
             "count": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "anomaly"
       },
       {
         "label": "Harvest",
-        "resolveText": "Gain 3 credits.",
+        "resolveText": "Gain 9 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 9
+          },
+          {
+            "op": "log",
+            "message": "V23758"
           }
         ],
         "placeToken": "anomaly"
@@ -1899,23 +2184,33 @@
     "choices": [
       {
         "label": "Place beacon",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 3 Energy and 2 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 3
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
           }
         ],
         "placeToken": "beacon"
       },
       {
         "label": "Study",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 3 Credits and 2 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
             "amount": 2
           }
         ],
@@ -1934,11 +2229,16 @@
     "choices": [
       {
         "label": "Trade route",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 3 Credits and 2 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 3
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
             "amount": 2
           }
         ],
@@ -1946,11 +2246,11 @@
       },
       {
         "label": "Avoid",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "No effect",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "No effect."
           }
         ],
         "placeToken": "empty"
@@ -1968,23 +2268,33 @@
     "choices": [
       {
         "label": "Place beacon",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 4 Energy and 2 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 4
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
           }
         ],
         "placeToken": "beacon"
       },
       {
         "label": "Harvest",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 4 Credits and 2 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 4
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
             "amount": 2
           }
         ],
@@ -2003,10 +2313,14 @@
     "choices": [
       {
         "label": "Reactivate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension -5 and +1 influence.",
         "effects": [
           {
             "op": "modifyCosmicTension",
+            "amount": -5
+          },
+          {
+            "op": "addInfluence",
             "amount": 1
           }
         ],
@@ -2014,12 +2328,16 @@
       },
       {
         "label": "Dismantle",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 8 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 8
+          },
+          {
+            "op": "log",
+            "message": "V19997"
           }
         ],
         "placeToken": "ruins"
@@ -2037,23 +2355,33 @@
     "choices": [
       {
         "label": "Place beacon",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 4 Energy and 2 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 4
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
           }
         ],
         "placeToken": "beacon"
       },
       {
         "label": "Study",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 4 Credits and 2 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 4
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
             "amount": 2
           }
         ],
@@ -2072,23 +2400,32 @@
     "choices": [
       {
         "label": "Salvage ruins",
-        "resolveText": "Gain 3 credits.",
+        "resolveText": "Gain 5 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 5
+          },
+          {
+            "op": "log",
+            "message": "V24074"
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Study",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 6 Energy and 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
+            "amount": 6
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -2107,23 +2444,27 @@
     "choices": [
       {
         "label": "Activate gate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension -5.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": 1
+            "amount": -5
           }
         ],
         "placeToken": "gate"
       },
       {
         "label": "Scrap",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 7 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 7
+          },
+          {
+            "op": "log",
+            "message": "V20316"
           }
         ],
         "placeToken": "ruins"
@@ -2141,10 +2482,15 @@
     "choices": [
       {
         "label": "Activate gate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension -1 and 1 Credit.",
         "effects": [
           {
             "op": "modifyCosmicTension",
+            "amount": -1
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -2152,12 +2498,16 @@
       },
       {
         "label": "Scrap",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 7 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 7
+          },
+          {
+            "op": "log",
+            "message": "V20636"
           }
         ],
         "placeToken": "ruins"
@@ -2175,23 +2525,31 @@
     "choices": [
       {
         "label": "Map rift",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex and gain +1 influence.",
         "effects": [
           {
             "op": "revealHex",
             "count": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "anomaly"
       },
       {
         "label": "Harvest",
-        "resolveText": "Gain 3 credits.",
+        "resolveText": "Gain 8 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 8
+          },
+          {
+            "op": "log",
+            "message": "V24077"
           }
         ],
         "placeToken": "anomaly"
@@ -2209,23 +2567,28 @@
     "choices": [
       {
         "label": "Reactivate gate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension -5.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": 1
+            "amount": -5
           }
         ],
         "placeToken": "gate"
       },
       {
         "label": "Scrap",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 10 Credits and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 10
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
           }
         ],
         "placeToken": "ruins"
@@ -2243,15 +2606,20 @@
     "choices": [
       {
         "label": "Outpost",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 6 Credits, +1 influence, and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 6
           },
           {
             "op": "addInfluence",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
             "amount": 1
           }
         ],
@@ -2259,11 +2627,15 @@
       },
       {
         "label": "Reveal",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 2 hexes and gain +1 influence.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 2
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "empty"
@@ -2281,15 +2653,20 @@
     "choices": [
       {
         "label": "Outpost",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 7 Credits, +1 influence, and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 7
           },
           {
             "op": "addInfluence",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
             "amount": 1
           }
         ],
@@ -2297,11 +2674,15 @@
       },
       {
         "label": "Reveal",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 2 hexes and gain +1 influence.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 2
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "empty"
@@ -2319,15 +2700,20 @@
     "choices": [
       {
         "label": "Outpost",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 8 Credits, +1 influence, and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 8
           },
           {
             "op": "addInfluence",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
             "amount": 1
           }
         ],
@@ -2335,11 +2721,15 @@
       },
       {
         "label": "Reveal",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 3 hexes and gain +1 influence.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 3
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "empty"
@@ -2357,27 +2747,23 @@
     "choices": [
       {
         "label": "Harvest energy",
-        "resolveText": "Gain 3 energy. Lose 1 fleet.",
+        "resolveText": "Gain 7 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 3
-          },
-          {
-            "op": "loseFleet",
-            "amount": 1
+            "amount": 7
           }
         ],
         "placeToken": "hazard"
       },
       {
         "label": "Silence",
-        "resolveText": "Cosmic tension +2.",
+        "resolveText": "Cosmic tension -5.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": 2
+            "amount": -5
           }
         ],
         "placeToken": "hazard"
@@ -2395,10 +2781,15 @@
     "choices": [
       {
         "label": "Reactivate gate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension +2 and 1 Credit.",
         "effects": [
           {
             "op": "modifyCosmicTension",
+            "amount": 2
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -2406,12 +2797,16 @@
       },
       {
         "label": "Scrap",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 9 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 9
+          },
+          {
+            "op": "log",
+            "message": "V20958"
           }
         ],
         "placeToken": "ruins"
@@ -2429,23 +2824,31 @@
     "choices": [
       {
         "label": "Stabilize",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension +2 and +1 influence.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": 2
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "gate"
       },
       {
         "label": "Drain",
-        "resolveText": "Gain 2 energy.",
+        "resolveText": "Gain 8 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 8
+          },
+          {
+            "op": "log",
+            "message": "V18877"
           }
         ],
         "placeToken": "gate"
@@ -2480,11 +2883,15 @@
       },
       {
         "label": "Quarantine",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension +2 and +1 influence.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": 2
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "ruins"
@@ -2502,23 +2909,31 @@
     "choices": [
       {
         "label": "Biomass node",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 9 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 9
+          },
+          {
+            "op": "log",
+            "message": "V18798"
           }
         ],
         "placeToken": "biomass"
       },
       {
         "label": "Contain",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension +5 and +1 influence.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": 5
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "empty"
@@ -2536,11 +2951,16 @@
     "choices": [
       {
         "label": "Beacon",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 8 Energy and 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
+            "amount": 8
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -2548,11 +2968,11 @@
       },
       {
         "label": "Leave",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "No effect",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "No effect."
           }
         ],
         "placeToken": "empty"
@@ -2570,23 +2990,28 @@
     "choices": [
       {
         "label": "Activate gate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension -5.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": 1
+            "amount": -5
           }
         ],
         "placeToken": "gate"
       },
       {
         "label": "Scrap",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 9 Credits and 2 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 9
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
           }
         ],
         "placeToken": "ruins"
@@ -2604,19 +3029,23 @@
     "choices": [
       {
         "label": "Salvage",
-        "resolveText": "Gain 3 credits.",
+        "resolveText": "Gain 5 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 5
+          },
+          {
+            "op": "log",
+            "message": "V24394"
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Mark",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Logged",
         "effects": [
           {
             "op": "log",
@@ -2638,19 +3067,24 @@
     "choices": [
       {
         "label": "Beacon",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 6 Energy and 2 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 6
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
           }
         ],
         "placeToken": "beacon"
       },
       {
         "label": "Leave",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Logged",
         "effects": [
           {
             "op": "log",
@@ -2672,11 +3106,16 @@
     "choices": [
       {
         "label": "Excavate",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 5 Credits and 2 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 5
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
             "amount": 2
           }
         ],
@@ -2684,11 +3123,15 @@
       },
       {
         "label": "Seal",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension +4 and +1 influence.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": 4
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "ruins"
@@ -2706,23 +3149,28 @@
     "choices": [
       {
         "label": "Activate gate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension -5.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": 1
+            "amount": -5
           }
         ],
         "placeToken": "gate"
       },
       {
         "label": "Scrap",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 10 Credits and 2 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 10
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
           }
         ],
         "placeToken": "ruins"
@@ -2740,23 +3188,24 @@
     "choices": [
       {
         "label": "Study horizon",
-        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "resolveText": "Gain 7 Energy and 2 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 7
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
           }
         ],
         "placeToken": "anomaly"
       },
       {
         "label": "Harvest matter",
-        "resolveText": "Gain 5 credits. Lose 1 fleet.",
+        "resolveText": "Gain 5 Credits.",
         "effects": [
           {
             "op": "gainResource",
@@ -2764,8 +3213,8 @@
             "amount": 5
           },
           {
-            "op": "loseFleet",
-            "amount": 1
+            "op": "log",
+            "message": "V24474"
           }
         ],
         "placeToken": "anomaly"
@@ -2783,23 +3232,33 @@
     "choices": [
       {
         "label": "Place beacon",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 7 Energy and 2 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 7
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
           }
         ],
         "placeToken": "beacon"
       },
       {
         "label": "Harvest",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 5 Credits and 2 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
+            "amount": 5
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
             "amount": 2
           }
         ],
@@ -2818,23 +3277,31 @@
     "choices": [
       {
         "label": "Stabilize",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension +5 and +1 influence.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": 5
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "gate"
       },
       {
         "label": "Drain",
-        "resolveText": "Gain 2 energy.",
+        "resolveText": "Gain 9 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 9
+          },
+          {
+            "op": "log",
+            "message": "V18878"
           }
         ],
         "placeToken": "gate"
@@ -2852,23 +3319,32 @@
     "choices": [
       {
         "label": "Seed",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 10 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 10
+          },
+          {
+            "op": "log",
+            "message": "V18799"
           }
         ],
         "placeToken": "biomass"
       },
       {
         "label": "Purge",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension -5 and 1 Credit.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": -5
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
           }
         ],
         "placeToken": "empty"
@@ -2886,23 +3362,32 @@
     "choices": [
       {
         "label": "Biomass node",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 5 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 5
+          },
+          {
+            "op": "log",
+            "message": "V19114"
           }
         ],
         "placeToken": "biomass"
       },
       {
         "label": "Contain",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension -4 and 1 Credit.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": -4
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
           }
         ],
         "placeToken": "empty"
@@ -2920,23 +3405,37 @@
     "choices": [
       {
         "label": "Excavate",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 1 Credit, 1 Energy, and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
           }
         ],
         "placeToken": "ruins"
       },
       {
         "label": "Seal",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension -3 and 1 Credit.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": -3
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
           }
         ],
         "placeToken": "ruins"
@@ -2954,24 +3453,33 @@
     "choices": [
       {
         "label": "Salvage ruins",
-        "resolveText": "Gain 3 credits.",
+        "resolveText": "Gain 9 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 9
+          },
+          {
+            "op": "log",
+            "message": "V24398"
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Study",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 8 Energy and 2 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 8
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
           }
         ],
         "placeToken": "ruins"
@@ -2989,27 +3497,23 @@
     "choices": [
       {
         "label": "Harvest energy",
-        "resolveText": "Gain 3 energy. Lose 1 fleet.",
+        "resolveText": "Gain 8 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 3
-          },
-          {
-            "op": "loseFleet",
-            "amount": 1
+            "amount": 8
           }
         ],
         "placeToken": "hazard"
       },
       {
         "label": "Silence",
-        "resolveText": "Cosmic tension +2.",
+        "resolveText": "Cosmic tension -5.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": 2
+            "amount": -5
           }
         ],
         "placeToken": "hazard"
@@ -3027,24 +3531,33 @@
     "choices": [
       {
         "label": "Salvage ruins",
-        "resolveText": "Gain 3 credits.",
+        "resolveText": "Gain 7 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 7
+          },
+          {
+            "op": "log",
+            "message": "V24716"
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Study",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 9 Energy and 2 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 9
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
           }
         ],
         "placeToken": "ruins"
@@ -3062,10 +3575,15 @@
     "choices": [
       {
         "label": "Reactivate gate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension -2 and 1 Credit.",
         "effects": [
           {
             "op": "modifyCosmicTension",
+            "amount": -2
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -3073,12 +3591,16 @@
       },
       {
         "label": "Scrap",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 7 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 7
+          },
+          {
+            "op": "log",
+            "message": "V21596"
           }
         ],
         "placeToken": "ruins"
@@ -3096,23 +3618,27 @@
     "choices": [
       {
         "label": "Activate gate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension -5.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": 1
+            "amount": -5
           }
         ],
         "placeToken": "gate"
       },
       {
         "label": "Scrap",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 1
+          },
+          {
+            "op": "log",
+            "message": "V18780"
           }
         ],
         "placeToken": "ruins"
@@ -3130,23 +3656,32 @@
     "choices": [
       {
         "label": "Biomass node",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 7 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 7
+          },
+          {
+            "op": "log",
+            "message": "V19116"
           }
         ],
         "placeToken": "biomass"
       },
       {
         "label": "Contain",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension -2 and 1 Credit.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": -2
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
           }
         ],
         "placeToken": "empty"
@@ -3164,27 +3699,23 @@
     "choices": [
       {
         "label": "Harvest energy",
-        "resolveText": "Gain 3 energy. Lose 1 fleet.",
+        "resolveText": "Gain 9 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 3
-          },
-          {
-            "op": "loseFleet",
-            "amount": 1
+            "amount": 9
           }
         ],
         "placeToken": "hazard"
       },
       {
         "label": "Silence",
-        "resolveText": "Cosmic tension +2.",
+        "resolveText": "Cosmic tension -5.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": 2
+            "amount": -5
           }
         ],
         "placeToken": "hazard"
@@ -3202,23 +3733,32 @@
     "choices": [
       {
         "label": "Biomass node",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 9 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 9
+          },
+          {
+            "op": "log",
+            "message": "V19118"
           }
         ],
         "placeToken": "biomass"
       },
       {
         "label": "Contain",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension -1 and 1 Credit.",
         "effects": [
           {
             "op": "modifyCosmicTension",
             "amount": -1
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
           }
         ],
         "placeToken": "empty"
@@ -3236,32 +3776,33 @@
     "choices": [
       {
         "label": "Study horizon",
-        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "resolveText": "Gain 8 Energy and 2 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 8
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
           }
         ],
         "placeToken": "anomaly"
       },
       {
         "label": "Harvest matter",
-        "resolveText": "Gain 5 credits. Lose 1 fleet.",
+        "resolveText": "Gain 9 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 5
+            "amount": 9
           },
           {
-            "op": "loseFleet",
-            "amount": 1
+            "op": "log",
+            "message": "V24478"
           }
         ],
         "placeToken": "anomaly"
@@ -3279,24 +3820,33 @@
     "choices": [
       {
         "label": "Salvage ruins",
-        "resolveText": "Gain 3 credits.",
+        "resolveText": "Gain 6 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 6
+          },
+          {
+            "op": "log",
+            "message": "V25035"
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Study",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 10 Energy and 2 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 10
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
           }
         ],
         "placeToken": "ruins"
@@ -3314,15 +3864,20 @@
     "choices": [
       {
         "label": "Outpost",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 9 Credits, +1 influence, and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 9
           },
           {
             "op": "addInfluence",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
             "amount": 1
           }
         ],
@@ -3330,11 +3885,15 @@
       },
       {
         "label": "Reveal",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 3 hexes and gain +1 influence.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 3
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "empty"
@@ -3352,32 +3911,33 @@
     "choices": [
       {
         "label": "Study horizon",
-        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "resolveText": "Gain 9 Energy and 2 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 9
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
           }
         ],
         "placeToken": "anomaly"
       },
       {
         "label": "Harvest matter",
-        "resolveText": "Gain 5 credits. Lose 1 fleet.",
+        "resolveText": "Gain 7 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 5
+            "amount": 7
           },
           {
-            "op": "loseFleet",
-            "amount": 1
+            "op": "log",
+            "message": "V24796"
           }
         ],
         "placeToken": "anomaly"
@@ -3395,15 +3955,20 @@
     "choices": [
       {
         "label": "Outpost",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 10 Credits, +1 influence, and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 10
           },
           {
             "op": "addInfluence",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
             "amount": 1
           }
         ],
@@ -3411,11 +3976,15 @@
       },
       {
         "label": "Reveal",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 2 hexes and gain +2 influence.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 2
+          },
+          {
+            "op": "addInfluence",
+            "amount": 2
           }
         ],
         "placeToken": "empty"
@@ -3433,32 +4002,33 @@
     "choices": [
       {
         "label": "Study horizon",
-        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "resolveText": "Gain 10 Energy and 2 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 10
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
           }
         ],
         "placeToken": "anomaly"
       },
       {
         "label": "Harvest matter",
-        "resolveText": "Gain 5 credits. Lose 1 fleet.",
+        "resolveText": "Gain 6 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 5
+            "amount": 6
           },
           {
-            "op": "loseFleet",
-            "amount": 1
+            "op": "log",
+            "message": "V25115"
           }
         ],
         "placeToken": "anomaly"
@@ -3476,23 +4046,28 @@
     "choices": [
       {
         "label": "Beacon",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 5 Energy and 2 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 5
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 2
           }
         ],
         "placeToken": "beacon"
       },
       {
         "label": "Leave",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Avoid",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Avoid."
           }
         ],
         "placeToken": "empty"
@@ -3510,23 +4085,32 @@
     "choices": [
       {
         "label": "Seed",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 5 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 5
+          },
+          {
+            "op": "log",
+            "message": "V19434"
           }
         ],
         "placeToken": "biomass"
       },
       {
         "label": "Purge",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension +1 and 1 Credit.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
           }
         ],
         "placeToken": "empty"
@@ -3544,23 +4128,32 @@
     "choices": [
       {
         "label": "Seed",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 8 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 8
+          },
+          {
+            "op": "log",
+            "message": "V19437"
           }
         ],
         "placeToken": "biomass"
       },
       {
         "label": "Purge",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension +1 and 1 Credit.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
           }
         ],
         "placeToken": "empty"

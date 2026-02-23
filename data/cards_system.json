@@ -6,23 +6,28 @@
     "choices": [
       {
         "label": "Mine",
-        "resolveText": "Gain 3 credits.",
+        "resolveText": "Gain 5 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 5
+          },
+          {
+            "op": "log",
+            "message": "V23434"
           }
         ],
         "placeToken": "mining_outpost"
       },
       {
         "label": "Chart",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 1,
+            "range": 1
           }
         ],
         "placeToken": "outpost"
@@ -40,24 +45,28 @@
     "choices": [
       {
         "label": "Trade hub",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 4 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 4
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Refinery",
-        "resolveText": "Gain 2 energy.",
+        "resolveText": "Gain 4 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 4
+          },
+          {
+            "op": "log",
+            "message": "V18863"
           }
         ],
         "placeToken": "mining_outpost"
@@ -75,16 +84,16 @@
     "choices": [
       {
         "label": "Directorate garrison",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 8 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 8
           },
           {
-            "op": "addInfluence",
-            "amount": 1
+            "op": "log",
+            "message": "V18957"
           }
         ],
         "placeToken": "outpost"
@@ -113,19 +122,19 @@
     "choices": [
       {
         "label": "Trade nexus",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 4 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 4
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Research",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
@@ -148,23 +157,23 @@
     "choices": [
       {
         "label": "Excavate",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 5 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 5
           }
         ],
         "placeToken": "research_array"
       },
       {
         "label": "Quarantine",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension -5.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": -5
           }
         ],
         "placeToken": "research_array"
@@ -182,16 +191,16 @@
     "choices": [
       {
         "label": "Directorate garrison",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 10 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 10
           },
           {
-            "op": "addInfluence",
-            "amount": 1
+            "op": "log",
+            "message": "V18959"
           }
         ],
         "placeToken": "outpost"
@@ -220,23 +229,28 @@
     "choices": [
       {
         "label": "Mine",
-        "resolveText": "Gain 3 credits.",
+        "resolveText": "Gain 6 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 6
+          },
+          {
+            "op": "log",
+            "message": "V23435"
           }
         ],
         "placeToken": "mining_outpost"
       },
       {
         "label": "Chart",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 1 hex.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 1,
+            "range": 1
           }
         ],
         "placeToken": "outpost"
@@ -254,23 +268,23 @@
     "choices": [
       {
         "label": "Debris processing",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 5 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 5
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Clear",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Nothing else happens",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Nothing else happens."
           }
         ],
         "placeToken": "empty"
@@ -288,10 +302,15 @@
     "choices": [
       {
         "label": "Activate gate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension +2 and 1 Credit.",
         "effects": [
           {
             "op": "modifyCosmicTension",
+            "amount": 2
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -299,12 +318,16 @@
       },
       {
         "label": "Salvage",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 1
+          },
+          {
+            "op": "log",
+            "message": "V18710"
           }
         ],
         "placeToken": "ruins"
@@ -322,7 +345,7 @@
     "choices": [
       {
         "label": "Station",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
@@ -334,16 +357,16 @@
       },
       {
         "label": "Extract",
-        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "resolveText": "Gain 6 Energy and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 6
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "addInfluence",
+            "amount": 2
           }
         ],
         "placeToken": "outpost"
@@ -361,27 +384,27 @@
     "choices": [
       {
         "label": "Directorate garrison",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 6 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 6
           },
           {
-            "op": "addInfluence",
-            "amount": 1
+            "op": "log",
+            "message": "V19275"
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Forward base",
-        "resolveText": "Gain 1 fleet.",
+        "resolveText": "Gain 2 fleets.",
         "effects": [
           {
             "op": "gainFleet",
-            "amount": 1
+            "amount": 2
           }
         ],
         "placeToken": "outpost"
@@ -399,27 +422,27 @@
     "choices": [
       {
         "label": "Blessing",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension -5.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": -5
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Loot",
-        "resolveText": "Gain 3 credits. Cosmic tension +2.",
+        "resolveText": "Gain 6 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 6
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 2
+            "op": "log",
+            "message": "V25435"
           }
         ],
         "placeToken": "ruins"
@@ -437,24 +460,24 @@
     "choices": [
       {
         "label": "Trade nexus",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 6 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 6
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Research",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 2 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 2
           }
         ],
         "placeToken": "research_array"
@@ -472,25 +495,21 @@
     "choices": [
       {
         "label": "Protection",
-        "resolveText": "Gain 1 fleet.",
+        "resolveText": "Gain 2 fleets.",
         "effects": [
           {
             "op": "gainFleet",
-            "amount": 1
+            "amount": 2
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Conscript",
-        "resolveText": "Gain 2 fleet. Cosmic tension +1.",
+        "resolveText": "Gain 1 fleet.",
         "effects": [
           {
             "op": "gainFleet",
-            "amount": 2
-          },
-          {
-            "op": "modifyCosmicTension",
             "amount": 1
           }
         ],
@@ -509,27 +528,27 @@
     "choices": [
       {
         "label": "Blessing",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension -4.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": -4
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Loot",
-        "resolveText": "Gain 3 credits. Cosmic tension +2.",
+        "resolveText": "Gain 7 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 7
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 2
+            "op": "log",
+            "message": "V25756"
           }
         ],
         "placeToken": "ruins"
@@ -547,23 +566,27 @@
     "choices": [
       {
         "label": "Spread biomass",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 6 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 6
+          },
+          {
+            "op": "log",
+            "message": "V18785"
           }
         ],
         "placeToken": "biomass"
       },
       {
         "label": "Purge",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Nothing else happens",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Nothing else happens."
           }
         ],
         "placeToken": "empty"
@@ -581,24 +604,24 @@
     "choices": [
       {
         "label": "Trade nexus",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 6 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 6
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Research",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 2 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 2
           }
         ],
         "placeToken": "research_array"
@@ -616,28 +639,28 @@
     "choices": [
       {
         "label": "Station",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 3 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 3
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Extract",
-        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "resolveText": "Gain 8 Energy and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 8
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "addInfluence",
+            "amount": 2
           }
         ],
         "placeToken": "outpost"
@@ -655,10 +678,15 @@
     "choices": [
       {
         "label": "Activate gate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension +3 and 1 Credit.",
         "effects": [
           {
             "op": "modifyCosmicTension",
+            "amount": 3
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -666,12 +694,16 @@
       },
       {
         "label": "Salvage",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 2 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 2
+          },
+          {
+            "op": "log",
+            "message": "V18711"
           }
         ],
         "placeToken": "ruins"
@@ -689,23 +721,23 @@
     "choices": [
       {
         "label": "Excavate",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 7 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 7
           }
         ],
         "placeToken": "research_array"
       },
       {
         "label": "Quarantine",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension -4.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": -4
           }
         ],
         "placeToken": "research_array"
@@ -723,24 +755,24 @@
     "choices": [
       {
         "label": "Trade nexus",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 7 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 7
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Research",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 3 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 3
           }
         ],
         "placeToken": "research_array"
@@ -758,24 +790,32 @@
     "choices": [
       {
         "label": "Establish route",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 7 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 7
+          },
+          {
+            "op": "log",
+            "message": "V18786"
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Extract",
-        "resolveText": "Gain 2 energy.",
+        "resolveText": "Gain 5 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 5
+          },
+          {
+            "op": "log",
+            "message": "V18864"
           }
         ],
         "placeToken": "mining_outpost"
@@ -793,24 +833,24 @@
     "choices": [
       {
         "label": "Place beacon",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 4 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 4
           }
         ],
         "placeToken": "beacon"
       },
       {
         "label": "Mine",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 8 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 8
           }
         ],
         "placeToken": "mining_outpost"
@@ -828,25 +868,21 @@
     "choices": [
       {
         "label": "Protection",
-        "resolveText": "Gain 1 fleet.",
+        "resolveText": "Gain 3 fleets.",
         "effects": [
           {
             "op": "gainFleet",
-            "amount": 1
+            "amount": 3
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Conscript",
-        "resolveText": "Gain 2 fleet. Cosmic tension +1.",
+        "resolveText": "Gain 1 fleet.",
         "effects": [
           {
             "op": "gainFleet",
-            "amount": 2
-          },
-          {
-            "op": "modifyCosmicTension",
             "amount": 1
           }
         ],
@@ -865,27 +901,28 @@
     "choices": [
       {
         "label": "Station",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 4 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 4
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Extract",
-        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "resolveText": "Gain 6 Energy and 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 6
           },
           {
-            "op": "modifyCosmicTension",
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -904,27 +941,27 @@
     "choices": [
       {
         "label": "Outpost",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 9 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 9
           },
           {
-            "op": "addInfluence",
-            "amount": 1
+            "op": "log",
+            "message": "V19278"
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Forward base",
-        "resolveText": "Gain 1 fleet.",
+        "resolveText": "Gain 3 fleets.",
         "effects": [
           {
             "op": "gainFleet",
-            "amount": 1
+            "amount": 3
           }
         ],
         "placeToken": "outpost"
@@ -942,26 +979,30 @@
     "choices": [
       {
         "label": "Directorate garrison",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 6 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 6
           },
           {
-            "op": "addInfluence",
-            "amount": 1
+            "op": "log",
+            "message": "V19595"
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Forward base",
-        "resolveText": "Gain 1 fleet.",
+        "resolveText": "Gain 1 fleet and +1 influence.",
         "effects": [
           {
             "op": "gainFleet",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
             "amount": 1
           }
         ],
@@ -980,24 +1021,24 @@
     "choices": [
       {
         "label": "Place beacon",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 5 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 5
           }
         ],
         "placeToken": "beacon"
       },
       {
         "label": "Mine",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 8 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 8
           }
         ],
         "placeToken": "mining_outpost"
@@ -1015,27 +1056,28 @@
     "choices": [
       {
         "label": "Station",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 5 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 5
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Extract",
-        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "resolveText": "Gain 7 Energy and 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 7
           },
           {
-            "op": "modifyCosmicTension",
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -1054,26 +1096,30 @@
     "choices": [
       {
         "label": "Directorate garrison",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 10 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 10
           },
           {
-            "op": "addInfluence",
-            "amount": 1
+            "op": "log",
+            "message": "V19599"
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Forward base",
-        "resolveText": "Gain 1 fleet.",
+        "resolveText": "Gain 1 fleet and +1 influence.",
         "effects": [
           {
             "op": "gainFleet",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
             "amount": 1
           }
         ],
@@ -1092,24 +1138,24 @@
     "choices": [
       {
         "label": "Relay station",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 6 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 6
           }
         ],
         "placeToken": "beacon"
       },
       {
         "label": "Mine",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 9 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 9
           }
         ],
         "placeToken": "mining_outpost"
@@ -1127,10 +1173,15 @@
     "choices": [
       {
         "label": "Activate gate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension +4 and 1 Credit.",
         "effects": [
           {
             "op": "modifyCosmicTension",
+            "amount": 4
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -1138,12 +1189,16 @@
       },
       {
         "label": "Salvage",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 3 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 3
+          },
+          {
+            "op": "log",
+            "message": "V18712"
           }
         ],
         "placeToken": "ruins"
@@ -1161,24 +1216,24 @@
     "choices": [
       {
         "label": "Mine belt",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 9 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 9
           }
         ],
         "placeToken": "mining_outpost"
       },
       {
         "label": "Research",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 6 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 6
           }
         ],
         "placeToken": "research_array"
@@ -1196,23 +1251,27 @@
     "choices": [
       {
         "label": "Spread biomass",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 8 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 8
+          },
+          {
+            "op": "log",
+            "message": "V18787"
           }
         ],
         "placeToken": "biomass"
       },
       {
         "label": "Purge",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Pass",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Pass."
           }
         ],
         "placeToken": "empty"
@@ -1230,32 +1289,32 @@
     "choices": [
       {
         "label": "Study",
-        "resolveText": "Gain 1 energy. Reveal 1 adjacent hex.",
+        "resolveText": "Gain 5 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 5
           },
           {
-            "op": "revealHex",
-            "count": 1
+            "op": "log",
+            "message": "V23514"
           }
         ],
         "placeToken": "research_array"
       },
       {
         "label": "Harvest",
-        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "resolveText": "Gain 7 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 7
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "log",
+            "message": "V26316"
           }
         ],
         "placeToken": "ruins"
@@ -1273,32 +1332,32 @@
     "choices": [
       {
         "label": "Study",
-        "resolveText": "Gain 1 energy. Reveal 1 adjacent hex.",
+        "resolveText": "Gain 6 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 6
           },
           {
-            "op": "revealHex",
-            "count": 1
+            "op": "log",
+            "message": "V23515"
           }
         ],
         "placeToken": "research_array"
       },
       {
         "label": "Harvest",
-        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "resolveText": "Gain 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 1
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "log",
+            "message": "V23500"
           }
         ],
         "placeToken": "ruins"
@@ -1316,10 +1375,14 @@
     "choices": [
       {
         "label": "Colonize",
-        "resolveText": "Gain 1 fleet.",
+        "resolveText": "Gain 2 fleets and +1 influence.",
         "effects": [
           {
             "op": "gainFleet",
+            "amount": 2
+          },
+          {
+            "op": "addInfluence",
             "amount": 1
           }
         ],
@@ -1327,16 +1390,16 @@
       },
       {
         "label": "Exploit",
-        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "resolveText": "Gain 2 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 2
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "log",
+            "message": "V23501"
           }
         ],
         "placeToken": "outpost"
@@ -1354,23 +1417,23 @@
     "choices": [
       {
         "label": "Study",
-        "resolveText": "Gain 1 energy. Reveal 1 adjacent hex.",
+        "resolveText": "Gain 7 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 7
           },
           {
-            "op": "revealHex",
-            "count": 1
+            "op": "log",
+            "message": "V23516"
           }
         ],
         "placeToken": "research_array"
       },
       {
         "label": "Harvest",
-        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "resolveText": "Gain 3 Credits.",
         "effects": [
           {
             "op": "gainResource",
@@ -1378,8 +1441,8 @@
             "amount": 3
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "log",
+            "message": "V23502"
           }
         ],
         "placeToken": "ruins"
@@ -1397,26 +1460,27 @@
     "choices": [
       {
         "label": "Blessing",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension -3.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": -3
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Loot",
-        "resolveText": "Gain 3 credits. Cosmic tension +2.",
+        "resolveText": "Gain 7 Credits and 2 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 7
           },
           {
-            "op": "modifyCosmicTension",
+            "op": "gainResource",
+            "resource": "energy",
             "amount": 2
           }
         ],
@@ -1435,10 +1499,14 @@
     "choices": [
       {
         "label": "Protection",
-        "resolveText": "Gain 1 fleet.",
+        "resolveText": "Gain 2 fleets and +1 influence.",
         "effects": [
           {
             "op": "gainFleet",
+            "amount": 2
+          },
+          {
+            "op": "addInfluence",
             "amount": 1
           }
         ],
@@ -1446,14 +1514,10 @@
       },
       {
         "label": "Conscript",
-        "resolveText": "Gain 2 fleet. Cosmic tension +1.",
+        "resolveText": "Gain 1 fleet.",
         "effects": [
           {
             "op": "gainFleet",
-            "amount": 2
-          },
-          {
-            "op": "modifyCosmicTension",
             "amount": 1
           }
         ],
@@ -1472,11 +1536,15 @@
     "choices": [
       {
         "label": "Place beacon",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 1 Energy and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
             "amount": 1
           }
         ],
@@ -1484,12 +1552,12 @@
       },
       {
         "label": "Mine",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 10 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 10
           }
         ],
         "placeToken": "mining_outpost"
@@ -1507,27 +1575,27 @@
     "choices": [
       {
         "label": "Blessing",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension -3.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": -3
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Loot",
-        "resolveText": "Gain 3 credits. Cosmic tension +2.",
+        "resolveText": "Gain 10 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 10
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 2
+            "op": "log",
+            "message": "V26079"
           }
         ],
         "placeToken": "ruins"
@@ -1545,11 +1613,15 @@
     "choices": [
       {
         "label": "Station",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 1 Energy and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
+            "amount": 1
+          },
+          {
+            "op": "addInfluence",
             "amount": 1
           }
         ],
@@ -1557,15 +1629,16 @@
       },
       {
         "label": "Extract",
-        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "resolveText": "Gain 8 Energy and 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 8
           },
           {
-            "op": "modifyCosmicTension",
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -1584,28 +1657,28 @@
     "choices": [
       {
         "label": "Garrison",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 8 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 8
           },
           {
-            "op": "addInfluence",
-            "amount": 1
+            "op": "log",
+            "message": "V19917"
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Trade post",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 10 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 10
           }
         ],
         "placeToken": "trade_route"
@@ -1623,23 +1696,28 @@
     "choices": [
       {
         "label": "Mine",
-        "resolveText": "Gain 3 credits.",
+        "resolveText": "Gain 7 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 7
+          },
+          {
+            "op": "log",
+            "message": "V23436"
           }
         ],
         "placeToken": "mining_outpost"
       },
       {
         "label": "Chart",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 2 hexes.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 2,
+            "range": 1
           }
         ],
         "placeToken": "outpost"
@@ -1657,10 +1735,15 @@
     "choices": [
       {
         "label": "Activate gate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension +5 and 1 Credit.",
         "effects": [
           {
             "op": "modifyCosmicTension",
+            "amount": 5
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -1668,12 +1751,16 @@
       },
       {
         "label": "Salvage",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 4 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
             "amount": 4
+          },
+          {
+            "op": "log",
+            "message": "V18713"
           }
         ],
         "placeToken": "ruins"
@@ -1691,25 +1778,25 @@
     "choices": [
       {
         "label": "Protection",
-        "resolveText": "Gain 1 fleet.",
+        "resolveText": "Gain 1 fleet and +2 influence.",
         "effects": [
           {
             "op": "gainFleet",
             "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 2
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Conscript",
-        "resolveText": "Gain 2 fleet. Cosmic tension +1.",
+        "resolveText": "Gain 1 fleet.",
         "effects": [
           {
             "op": "gainFleet",
-            "amount": 2
-          },
-          {
-            "op": "modifyCosmicTension",
             "amount": 1
           }
         ],
@@ -1728,19 +1815,7 @@
     "choices": [
       {
         "label": "Station",
-        "resolveText": "Gain 1 energy.",
-        "effects": [
-          {
-            "op": "gainResource",
-            "resource": "energy",
-            "amount": 1
-          }
-        ],
-        "placeToken": "outpost"
-      },
-      {
-        "label": "Extract",
-        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "resolveText": "Gain 2 Energy and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
@@ -1748,7 +1823,24 @@
             "amount": 2
           },
           {
-            "op": "modifyCosmicTension",
+            "op": "addInfluence",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Extract",
+        "resolveText": "Gain 9 Energy and 1 Credit.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 9
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -1767,10 +1859,15 @@
     "choices": [
       {
         "label": "Activate gate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension -3 and 1 Credit.",
         "effects": [
           {
             "op": "modifyCosmicTension",
+            "amount": -3
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -1778,12 +1875,16 @@
       },
       {
         "label": "Salvage",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 5 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 5
+          },
+          {
+            "op": "log",
+            "message": "V18714"
           }
         ],
         "placeToken": "ruins"
@@ -1801,7 +1902,23 @@
     "choices": [
       {
         "label": "Garrison",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 7 Credits and +2 influence.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 7
+          },
+          {
+            "op": "addInfluence",
+            "amount": 2
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Trade post",
+        "resolveText": "Gain 1 Credit and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
@@ -1811,18 +1928,6 @@
           {
             "op": "addInfluence",
             "amount": 1
-          }
-        ],
-        "placeToken": "outpost"
-      },
-      {
-        "label": "Trade post",
-        "resolveText": "Gain 2 credits.",
-        "effects": [
-          {
-            "op": "gainResource",
-            "resource": "credits",
-            "amount": 2
           }
         ],
         "placeToken": "trade_route"
@@ -1840,23 +1945,27 @@
     "choices": [
       {
         "label": "Biomass outpost",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 9 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 9
+          },
+          {
+            "op": "log",
+            "message": "V18788"
           }
         ],
         "placeToken": "biomass"
       },
       {
         "label": "Purge",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension -2.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": -2
           }
         ],
         "placeToken": "empty"
@@ -1874,27 +1983,31 @@
     "choices": [
       {
         "label": "Outpost",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 8 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 8
           },
           {
-            "op": "addInfluence",
-            "amount": 1
+            "op": "log",
+            "message": "V20237"
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Forward base",
-        "resolveText": "Gain 1 fleet.",
+        "resolveText": "Gain 1 fleet and +2 influence.",
         "effects": [
           {
             "op": "gainFleet",
             "amount": 1
+          },
+          {
+            "op": "addInfluence",
+            "amount": 2
           }
         ],
         "placeToken": "outpost"
@@ -1912,7 +2025,23 @@
     "choices": [
       {
         "label": "Garrison",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 8 Credits.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 8
+          },
+          {
+            "op": "log",
+            "message": "V20557"
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Trade post",
+        "resolveText": "Gain 1 Credit and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
@@ -1922,18 +2051,6 @@
           {
             "op": "addInfluence",
             "amount": 1
-          }
-        ],
-        "placeToken": "outpost"
-      },
-      {
-        "label": "Trade post",
-        "resolveText": "Gain 2 credits.",
-        "effects": [
-          {
-            "op": "gainResource",
-            "resource": "credits",
-            "amount": 2
           }
         ],
         "placeToken": "trade_route"
@@ -1951,16 +2068,16 @@
     "choices": [
       {
         "label": "Directorate garrison",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 9 Credits and +2 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 9
           },
           {
             "op": "addInfluence",
-            "amount": 1
+            "amount": 2
           }
         ],
         "placeToken": "outpost"
@@ -2000,14 +2117,10 @@
       },
       {
         "label": "Conscript",
-        "resolveText": "Gain 2 fleet. Cosmic tension +1.",
+        "resolveText": "Gain 1 fleet.",
         "effects": [
           {
             "op": "gainFleet",
-            "amount": 2
-          },
-          {
-            "op": "modifyCosmicTension",
             "amount": 1
           }
         ],
@@ -2026,10 +2139,14 @@
     "choices": [
       {
         "label": "Activate gate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension -4 and +1 influence.",
         "effects": [
           {
             "op": "modifyCosmicTension",
+            "amount": -4
+          },
+          {
+            "op": "addInfluence",
             "amount": 1
           }
         ],
@@ -2037,12 +2154,16 @@
       },
       {
         "label": "Salvage",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 6 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 6
+          },
+          {
+            "op": "log",
+            "message": "V18715"
           }
         ],
         "placeToken": "ruins"
@@ -2060,10 +2181,14 @@
     "choices": [
       {
         "label": "Activate gate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension -5 and +1 influence.",
         "effects": [
           {
             "op": "modifyCosmicTension",
+            "amount": -5
+          },
+          {
+            "op": "addInfluence",
             "amount": 1
           }
         ],
@@ -2071,12 +2196,16 @@
       },
       {
         "label": "Salvage",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 7 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 7
+          },
+          {
+            "op": "log",
+            "message": "V18716"
           }
         ],
         "placeToken": "ruins"
@@ -2094,23 +2223,28 @@
     "choices": [
       {
         "label": "Mine",
-        "resolveText": "Gain 3 credits.",
+        "resolveText": "Gain 8 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 8
+          },
+          {
+            "op": "log",
+            "message": "V23437"
           }
         ],
         "placeToken": "mining_outpost"
       },
       {
         "label": "Chart",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 2 hexes.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 2,
+            "range": 1
           }
         ],
         "placeToken": "outpost"
@@ -2139,16 +2273,16 @@
       },
       {
         "label": "Exploit",
-        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "resolveText": "Gain 4 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 4
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "log",
+            "message": "V23503"
           }
         ],
         "placeToken": "outpost"
@@ -2166,10 +2300,14 @@
     "choices": [
       {
         "label": "Activate gate",
-        "resolveText": "Cosmic tension +1.",
+        "resolveText": "Cosmic tension -4 and +1 influence.",
         "effects": [
           {
             "op": "modifyCosmicTension",
+            "amount": -4
+          },
+          {
+            "op": "addInfluence",
             "amount": 1
           }
         ],
@@ -2177,12 +2315,16 @@
       },
       {
         "label": "Salvage",
-        "resolveText": "Gain 4 credits.",
+        "resolveText": "Gain 8 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 4
+            "amount": 8
+          },
+          {
+            "op": "log",
+            "message": "V18717"
           }
         ],
         "placeToken": "ruins"
@@ -2200,23 +2342,27 @@
     "choices": [
       {
         "label": "Spread biomass",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 10 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 10
+          },
+          {
+            "op": "log",
+            "message": "V18789"
           }
         ],
         "placeToken": "biomass"
       },
       {
         "label": "Purge",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Pass",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Pass."
           }
         ],
         "placeToken": "empty"
@@ -2234,23 +2380,27 @@
     "choices": [
       {
         "label": "Biomass outpost",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
             "amount": 1
+          },
+          {
+            "op": "log",
+            "message": "V18790"
           }
         ],
         "placeToken": "biomass"
       },
       {
         "label": "Purge",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension -2.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": -2
           }
         ],
         "placeToken": "empty"
@@ -2268,32 +2418,32 @@
     "choices": [
       {
         "label": "Study",
-        "resolveText": "Gain 1 energy. Reveal 1 adjacent hex.",
+        "resolveText": "Gain 8 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 1
+            "amount": 8
           },
           {
-            "op": "revealHex",
-            "count": 1
+            "op": "log",
+            "message": "V23517"
           }
         ],
         "placeToken": "research_array"
       },
       {
         "label": "Harvest",
-        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "resolveText": "Gain 5 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 5
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "log",
+            "message": "V23504"
           }
         ],
         "placeToken": "ruins"
@@ -2311,23 +2461,27 @@
     "choices": [
       {
         "label": "Debris processing",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 2 Credits and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
             "amount": 2
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Clear",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Bypass",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Bypass."
           }
         ],
         "placeToken": "empty"
@@ -2345,23 +2499,31 @@
     "choices": [
       {
         "label": "Mine belt",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 2 Credits and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
             "amount": 2
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "mining_outpost"
       },
       {
         "label": "Research",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 2 Energy and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
+            "amount": 2
+          },
+          {
+            "op": "addInfluence",
             "amount": 1
           }
         ],
@@ -2380,12 +2542,16 @@
     "choices": [
       {
         "label": "Excavate",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 3 Credits and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 3
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "research_array"
@@ -2414,23 +2580,31 @@
     "choices": [
       {
         "label": "Mine belt",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 3 Credits and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 3
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "mining_outpost"
       },
       {
         "label": "Research",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 3 Energy and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
+            "amount": 3
+          },
+          {
+            "op": "addInfluence",
             "amount": 1
           }
         ],
@@ -2449,15 +2623,16 @@
     "choices": [
       {
         "label": "Directorate garrison",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 8 Credits and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 8
           },
           {
-            "op": "addInfluence",
+            "op": "gainResource",
+            "resource": "energy",
             "amount": 1
           }
         ],
@@ -2487,12 +2662,16 @@
     "choices": [
       {
         "label": "Biomass outpost",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 2 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 2
+          },
+          {
+            "op": "log",
+            "message": "V18791"
           }
         ],
         "placeToken": "biomass"
@@ -2521,27 +2700,32 @@
     "choices": [
       {
         "label": "Blessing",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension +1.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": 1
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Loot",
-        "resolveText": "Gain 3 credits. Cosmic tension +2.",
+        "resolveText": "Gain 7 Credits, +1 influence, and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 7
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 2
+            "op": "addInfluence",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
           }
         ],
         "placeToken": "ruins"
@@ -2559,24 +2743,32 @@
     "choices": [
       {
         "label": "Trade hub",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 4 Credits and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 4
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Refinery",
-        "resolveText": "Gain 2 energy.",
+        "resolveText": "Gain 6 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 6
+          },
+          {
+            "op": "log",
+            "message": "V18865"
           }
         ],
         "placeToken": "mining_outpost"
@@ -2594,23 +2786,27 @@
     "choices": [
       {
         "label": "Spread biomass",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 3 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 3
+          },
+          {
+            "op": "log",
+            "message": "V18792"
           }
         ],
         "placeToken": "biomass"
       },
       {
         "label": "Purge",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Bypass",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Bypass."
           }
         ],
         "placeToken": "empty"
@@ -2628,28 +2824,33 @@
     "choices": [
       {
         "label": "Garrison",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 6 Credits and 2 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 6
           },
           {
-            "op": "addInfluence",
-            "amount": 1
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Trade post",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 4 Credits and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 4
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "trade_route"
@@ -2667,23 +2868,28 @@
     "choices": [
       {
         "label": "Mine",
-        "resolveText": "Gain 3 credits.",
+        "resolveText": "Gain 9 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 9
+          },
+          {
+            "op": "log",
+            "message": "V23438"
           }
         ],
         "placeToken": "mining_outpost"
       },
       {
         "label": "Chart",
-        "resolveText": "Reveal 1 adjacent hex.",
+        "resolveText": "Reveal 3 hexes.",
         "effects": [
           {
             "op": "revealHex",
-            "count": 1
+            "count": 3,
+            "range": 1
           }
         ],
         "placeToken": "outpost"
@@ -2701,23 +2907,27 @@
     "choices": [
       {
         "label": "Biomass outpost",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 4 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 4
+          },
+          {
+            "op": "log",
+            "message": "V18793"
           }
         ],
         "placeToken": "biomass"
       },
       {
         "label": "Purge",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension +1.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": 1
           }
         ],
         "placeToken": "empty"
@@ -2735,23 +2945,31 @@
     "choices": [
       {
         "label": "Mine belt",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 5 Credits and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 5
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "mining_outpost"
       },
       {
         "label": "Research",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 3 Energy and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
+            "amount": 3
+          },
+          {
+            "op": "addInfluence",
             "amount": 1
           }
         ],
@@ -2770,23 +2988,31 @@
     "choices": [
       {
         "label": "Trade nexus",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 5 Credits and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 5
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Research",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 4 Energy and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
+            "amount": 4
+          },
+          {
+            "op": "addInfluence",
             "amount": 1
           }
         ],
@@ -2816,16 +3042,16 @@
       },
       {
         "label": "Exploit",
-        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "resolveText": "Gain 6 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 6
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "log",
+            "message": "V23505"
           }
         ],
         "placeToken": "outpost"
@@ -2854,16 +3080,16 @@
       },
       {
         "label": "Exploit",
-        "resolveText": "Gain 3 credits. Cosmic tension +1.",
+        "resolveText": "Gain 7 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 7
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 1
+            "op": "log",
+            "message": "V23506"
           }
         ],
         "placeToken": "outpost"
@@ -2881,11 +3107,15 @@
     "choices": [
       {
         "label": "Relay station",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 4 Energy and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
+            "amount": 4
+          },
+          {
+            "op": "addInfluence",
             "amount": 1
           }
         ],
@@ -2893,12 +3123,16 @@
       },
       {
         "label": "Mine",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 6 Credits and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 6
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "mining_outpost"
@@ -2916,16 +3150,17 @@
     "choices": [
       {
         "label": "Outpost",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 7 Credits and 2 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 7
           },
           {
-            "op": "addInfluence",
-            "amount": 1
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
           }
         ],
         "placeToken": "outpost"
@@ -2954,23 +3189,27 @@
     "choices": [
       {
         "label": "Biomass outpost",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 5 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 5
+          },
+          {
+            "op": "log",
+            "message": "V18794"
           }
         ],
         "placeToken": "biomass"
       },
       {
         "label": "Purge",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension +2.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": 2
           }
         ],
         "placeToken": "empty"
@@ -2988,23 +3227,31 @@
     "choices": [
       {
         "label": "Mine belt",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 6 Credits and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 6
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "mining_outpost"
       },
       {
         "label": "Research",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 5 Energy and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
+            "amount": 5
+          },
+          {
+            "op": "addInfluence",
             "amount": 1
           }
         ],
@@ -3023,23 +3270,27 @@
     "choices": [
       {
         "label": "Spread biomass",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 6 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 6
+          },
+          {
+            "op": "log",
+            "message": "V18795"
           }
         ],
         "placeToken": "biomass"
       },
       {
         "label": "Purge",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Skip",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Skip."
           }
         ],
         "placeToken": "empty"
@@ -3057,24 +3308,32 @@
     "choices": [
       {
         "label": "Trade hub",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 7 Credits and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 7
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Refinery",
-        "resolveText": "Gain 2 energy.",
+        "resolveText": "Gain 7 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 7
+          },
+          {
+            "op": "log",
+            "message": "V18866"
           }
         ],
         "placeToken": "mining_outpost"
@@ -3092,23 +3351,27 @@
     "choices": [
       {
         "label": "Debris processing",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 7 Credits and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 7
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Clear",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Skip",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Skip."
           }
         ],
         "placeToken": "empty"
@@ -3126,23 +3389,27 @@
     "choices": [
       {
         "label": "Excavate",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 8 Credits and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 8
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "research_array"
       },
       {
         "label": "Quarantine",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension +2.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": 2
           }
         ],
         "placeToken": "research_array"
@@ -3160,16 +3427,17 @@
     "choices": [
       {
         "label": "Directorate garrison",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 8 Credits and 2 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 8
           },
           {
-            "op": "addInfluence",
-            "amount": 1
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
           }
         ],
         "placeToken": "outpost"
@@ -3198,23 +3466,27 @@
     "choices": [
       {
         "label": "Excavate",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 8 Credits and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 8
+          },
+          {
+            "op": "addInfluence",
+            "amount": 1
           }
         ],
         "placeToken": "research_array"
       },
       {
         "label": "Quarantine",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension +3.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": 3
           }
         ],
         "placeToken": "research_array"
@@ -3232,23 +3504,32 @@
     "choices": [
       {
         "label": "Trade nexus",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 1 Credit and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Research",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 5 Energy and +1 influence.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
+            "amount": 5
+          },
+          {
+            "op": "addInfluence",
             "amount": 1
           }
         ],
@@ -3267,19 +3548,7 @@
     "choices": [
       {
         "label": "Station",
-        "resolveText": "Gain 1 energy.",
-        "effects": [
-          {
-            "op": "gainResource",
-            "resource": "energy",
-            "amount": 1
-          }
-        ],
-        "placeToken": "outpost"
-      },
-      {
-        "label": "Extract",
-        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "resolveText": "Gain 2 Energy and 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
@@ -3287,7 +3556,25 @@
             "amount": 2
           },
           {
-            "op": "modifyCosmicTension",
+            "op": "gainResource",
+            "resource": "credits",
+            "amount": 1
+          }
+        ],
+        "placeToken": "outpost"
+      },
+      {
+        "label": "Extract",
+        "resolveText": "Gain 10 Energy and 1 Credit.",
+        "effects": [
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 10
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -3306,23 +3593,28 @@
     "choices": [
       {
         "label": "Excavate",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 1 Credit and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
           }
         ],
         "placeToken": "research_array"
       },
       {
         "label": "Quarantine",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension +3.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": 3
           }
         ],
         "placeToken": "research_array"
@@ -3340,16 +3632,17 @@
     "choices": [
       {
         "label": "Outpost",
-        "resolveText": "Gain 1 credits. Gain +1 influence.",
+        "resolveText": "Gain 9 Credits and 2 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 9
           },
           {
-            "op": "addInfluence",
-            "amount": 1
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 2
           }
         ],
         "placeToken": "outpost"
@@ -3378,11 +3671,16 @@
     "choices": [
       {
         "label": "Station",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 3 Energy and 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
+            "amount": 3
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -3390,15 +3688,16 @@
       },
       {
         "label": "Extract",
-        "resolveText": "Gain 2 energy. Cosmic tension +1.",
+        "resolveText": "Gain 5 Energy and 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 5
           },
           {
-            "op": "modifyCosmicTension",
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -3417,27 +3716,32 @@
     "choices": [
       {
         "label": "Blessing",
-        "resolveText": "Cosmic tension -1.",
+        "resolveText": "Cosmic tension +4.",
         "effects": [
           {
             "op": "modifyCosmicTension",
-            "amount": -1
+            "amount": 4
           }
         ],
         "placeToken": "outpost"
       },
       {
         "label": "Loot",
-        "resolveText": "Gain 3 credits. Cosmic tension +2.",
+        "resolveText": "Gain 8 Credits, +1 influence, and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 3
+            "amount": 8
           },
           {
-            "op": "modifyCosmicTension",
-            "amount": 2
+            "op": "addInfluence",
+            "amount": 1
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
           }
         ],
         "placeToken": "ruins"
@@ -3455,23 +3759,33 @@
     "choices": [
       {
         "label": "Mine belt",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 2 Credits and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
             "amount": 2
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
           }
         ],
         "placeToken": "mining_outpost"
       },
       {
         "label": "Research",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 3 Energy and 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
+            "amount": 3
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -3490,24 +3804,32 @@
     "choices": [
       {
         "label": "Establish route",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 7 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 7
+          },
+          {
+            "op": "log",
+            "message": "V18796"
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Extract",
-        "resolveText": "Gain 2 energy.",
+        "resolveText": "Gain 8 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 8
+          },
+          {
+            "op": "log",
+            "message": "V18867"
           }
         ],
         "placeToken": "mining_outpost"
@@ -3525,23 +3847,28 @@
     "choices": [
       {
         "label": "Debris processing",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 2 Credits and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
             "amount": 2
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
           }
         ],
         "placeToken": "debris_field"
       },
       {
         "label": "Clear",
-        "resolveText": "Nothing else happens.",
+        "resolveText": "Move on",
         "effects": [
           {
             "op": "log",
-            "message": "Logged."
+            "message": "Move on."
           }
         ],
         "placeToken": "empty"
@@ -3559,24 +3886,32 @@
     "choices": [
       {
         "label": "Establish route",
-        "resolveText": "Gain 1 credits.",
+        "resolveText": "Gain 8 Credits.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 1
+            "amount": 8
+          },
+          {
+            "op": "log",
+            "message": "V18797"
           }
         ],
         "placeToken": "trade_route"
       },
       {
         "label": "Extract",
-        "resolveText": "Gain 2 energy.",
+        "resolveText": "Gain 9 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
-            "amount": 2
+            "amount": 9
+          },
+          {
+            "op": "log",
+            "message": "V18868"
           }
         ],
         "placeToken": "mining_outpost"
@@ -3594,11 +3929,16 @@
     "choices": [
       {
         "label": "Relay station",
-        "resolveText": "Gain 1 energy.",
+        "resolveText": "Gain 4 Energy and 1 Credit.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "energy",
+            "amount": 4
+          },
+          {
+            "op": "gainResource",
+            "resource": "credits",
             "amount": 1
           }
         ],
@@ -3606,12 +3946,17 @@
       },
       {
         "label": "Mine",
-        "resolveText": "Gain 2 credits.",
+        "resolveText": "Gain 3 Credits and 1 Energy.",
         "effects": [
           {
             "op": "gainResource",
             "resource": "credits",
-            "amount": 2
+            "amount": 3
+          },
+          {
+            "op": "gainResource",
+            "resource": "energy",
+            "amount": 1
           }
         ],
         "placeToken": "mining_outpost"
