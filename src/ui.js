@@ -758,8 +758,9 @@ function renderActions(state, handlers) {
     ([, opts]) => Array.isArray(opts) && opts.length > 0
   );
   const canEndTurn = noDiceYet || allDiceUsed || !hasAvailableActions;
+  const nextPlayerReady = state.ui.mode === "idle" && canEndTurn;
   const nextPlayerBtn = el("button", {
-    class: "btn",
+    class: `btn ${nextPlayerReady ? "next-player-ready" : ""}`.trim(),
     type: "button",
     disabled: state.ui.mode !== "idle" || !canEndTurn,
     title: "End your turn and pass to the next player. Available when all dice are used or no actions remain.",

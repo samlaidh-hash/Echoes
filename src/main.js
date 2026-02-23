@@ -275,6 +275,26 @@ async function boot() {
     logLine(state, `DICE: used A=${state.turn.used.a} B=${state.turn.used.b} Bonus=${state.turn.used.bonus}`);
   };
 
+  const tryAutoAdvancePlayer = () => {
+    if (state.ui.gameOver || state.ui.pending || state.ui.lastResolution) return;
+    if (isCurrentPlayerAI(state)) return;
+    const dice = state.turn?.dice;
+    const used = state.turn?.used;
+    const noDiceYet = dice?.a == null && dice?.b == null;
+    if (noDiceYet) return;
+    const allDiceUsed = (dice?.a != null && used?.a) && (dice?.b != null && used?.b) &&
+      (!dice?.bonus || used?.bonus);
+    const available = computeAvailableActions(state);
+    const hasAvailableActions = Object.entries(available ?? {}).some(
+      ([, opts]) => Array.isArray(opts) && opts.length > 0
+    );
+    if (allDiceUsed || !hasAvailableActions) {
+      advancePlayer();
+      renderAll();
+      scheduleAI();
+    }
+  };
+
   let pulseTimer = null;
   const renderAll = () => {
     render(state, handlers);
@@ -513,17 +533,19 @@ async function boot() {
       setMode("idle");
       state.ui.modalType = null;
       renderAll();
+      tryAutoAdvancePlayer();
     },
     onRollRoundDice() {
       if (state.ui.gameOver) return;
       if (state.ui.mode !== "idle") return;
       rollRoundDice();
-      render(state, handlers);
+      renderAll();
+      tryAutoAdvancePlayer();
     },
     onNextPlayer() {
       if (state.ui.gameOver) return;
       advancePlayer();
-      render(state, handlers);
+      renderAll();
       scheduleAI();
     },
     onPerformAction() {
@@ -552,6 +574,7 @@ async function boot() {
         setMode("idle");
       }
       renderAll();
+      tryAutoAdvancePlayer();
     },
     onActionSelect(actionNumber) {
       if (state.ui.gameOver) return;

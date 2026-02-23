@@ -340,6 +340,10 @@ body {
   cursor: pointer;
 }
 .btn:hover { outline: 2px solid rgba(122, 162, 255, 0.25); }
+.btn.next-player-ready {
+  outline: 2px solid rgba(103, 232, 165, 0.7);
+  box-shadow: 0 0 12px rgba(103, 232, 165, 0.3);
+}
 
 .dice { border: 1px solid rgba(36, 50, 77, 0.7); border-radius: 12px; padding: 10px; background: rgba(12, 18, 32, 0.9); }
 .dice-row { display: flex; gap: 8px; margin-top: 8px; }
