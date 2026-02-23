@@ -1101,15 +1101,34 @@ export function applyEffects(state, effects, context) {
           ok = false;
           break;
         }
-        const entries = Object.entries(influence)
-          .filter(([f]) => f !== controller)
-          .sort((a, b) => b[1] - a[1]);
-        const secondary = entries[0]?.[0] ?? null;
-        const controllerPlayer = state.players.find(p => String(p.factionId).toLowerCase() === controller);
-        if (controllerPlayer) controllerPlayer.credits += 3;
-        if (secondary) {
-          const secondaryPlayer = state.players.find(p => String(p.factionId).toLowerCase() === secondary);
-          if (secondaryPlayer) secondaryPlayer.credits += 1;
+        const cardInfo = state.cardByHex?.[destinationId];
+        if (cardInfo) {
+          const entries = Object.entries(influence)
+            .filter(([f]) => f !== controller)
+            .sort((a, b) => b[1] - a[1]);
+          const secondary = entries[0]?.[0] ?? null;
+          const controllerPlayer = state.players.find(p => String(p.factionId).toLowerCase() === controller);
+          if (controllerPlayer) controllerPlayer.credits += 3;
+          if (secondary) {
+            const secondaryPlayer = state.players.find(p => String(p.factionId).toLowerCase() === secondary);
+            if (secondaryPlayer) secondaryPlayer.credits += 1;
+          }
+        } else {
+          const controllerPlayer = state.players.find(p => String(p.factionId).toLowerCase() === controller);
+          if (controllerPlayer) {
+            const fid = String(controller).toLowerCase();
+            const defaults = {
+              directorate: { credits: 2, energy: 0 },
+              choir: { credits: 1, energy: 0 },
+              bloom: { credits: 1, energy: 0 },
+              salvagers: { credits: 1, energy: 0 },
+              gatekeepers: { credits: 1, energy: 0 },
+              syndicate: { credits: 2, energy: 0 }
+            };
+            const d = defaults[fid] ?? { credits: 1, energy: 0 };
+            controllerPlayer.credits = (controllerPlayer.credits ?? 0) + (d.credits ?? 0);
+            controllerPlayer.energy = (controllerPlayer.energy ?? 0) + (d.energy ?? 0);
+          }
         }
         state.turn.systemActivated.push(destinationId);
         logLine(state, `System activated at ${destinationId}.`);

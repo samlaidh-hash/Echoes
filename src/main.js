@@ -31,9 +31,12 @@ const AI_STEP_DELAY = 400;
 
 function getParams() {
   const p = new URLSearchParams(location.search);
-  const seed = Number(p.get("seed") ?? "1");
+  const seedParam = p.get("seed");
+  const seed = seedParam != null && seedParam !== ""
+    ? Number(seedParam)
+    : (Date.now() ^ (Math.random() * 0xFFFFFFFF)) >>> 0;
   const smoke = p.get("smoke") === "1";
-  return { seed: Number.isFinite(seed) ? seed : 1, smoke };
+  return { seed: Number.isFinite(seed) ? seed : ((Date.now() ^ 0) >>> 0), smoke };
 }
 
 function setReady() {

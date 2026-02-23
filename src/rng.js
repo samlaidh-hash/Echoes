@@ -19,7 +19,12 @@ export function makeRng(seed) {
       return Math.floor(nextFloat() * n);
     },
     rollDie(sides = 6) {
-      return 1 + this.nextInt(sides);
+      const max = 0xFFFFFFFF - (0xFFFFFFFF % sides);
+      let r;
+      do {
+        r = Math.floor(this.nextFloat() * 0x100000000);
+      } while (r >= max);
+      return 1 + (r % sides);
     }
   };
 }
