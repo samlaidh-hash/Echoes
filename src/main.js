@@ -261,7 +261,13 @@ async function boot() {
     if (!pending) return;
     if (pending.consume?.a) state.turn.used.a = true;
     if (pending.consume?.b) state.turn.used.b = true;
-    if (pending.consume?.bonus) state.turn.used.bonus = true;
+    if (pending.consume?.bonus) {
+      state.turn.used.bonus = true;
+      const player = state.players?.[state.turn?.activePlayerIndex ?? 0];
+      if (player && (player.bonusTokens ?? 0) > 0) {
+        player.bonusTokens = Math.max(0, (player.bonusTokens ?? 0) - 1);
+      }
+    }
     state.ui.pendingAction = null;
     logLine(state, `DICE: used A=${state.turn.used.a} B=${state.turn.used.b} Bonus=${state.turn.used.bonus}`);
   };
@@ -555,6 +561,13 @@ async function boot() {
       }
       if (state.ui.mode !== "idle") {
         logLine(state, "Finish current resolution first.");
+        render(state, handlers);
+        return;
+      }
+      if (state.ui.pendingAction?.actionNumber === String(actionNumber)) {
+        state.ui.pendingAction = null;
+        setMode("idle");
+        logLine(state, "Action deselected.");
         render(state, handlers);
         return;
       }

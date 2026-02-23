@@ -228,14 +228,24 @@ body {
 .hex .fleet-tokens{
   position:absolute;
   left:4px;
-  bottom:4px;
+  top:4px;
   display:flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  flex-direction: row;
   gap:2px;
+  max-width: calc(100% - 8px);
+}
+.hex .fleet-icon {
+  font-size: 10px;
+  line-height: 1;
+  display: inline-block;
+}
+.hex .fleet-icon.damaged {
+  opacity: 0.55;
 }
 .hex .fleet-selected {
   position: absolute;
-  left: 4px;
+  right: 4px;
   top: 4px;
   font-size: 9px;
   padding: 1px 4px;
@@ -256,6 +266,12 @@ body {
 .fleet-directorate { color: #cfe0ff; border-color: rgba(122, 162, 255, 0.8); }
 .fleet-choir { color: #e7fbff; border-color: rgba(183, 246, 255, 0.8); }
 .fleet-bloom { color: #d9ffe9; border-color: rgba(103, 232, 165, 0.8); }
+.hex .fleet-icon.fleet-directorate { color: #cfe0ff; }
+.hex .fleet-icon.fleet-choir { color: #e7fbff; }
+.hex .fleet-icon.fleet-bloom { color: #d9ffe9; }
+.hex .fleet-icon.fleet-salvagers { color: #ffe0b2; }
+.hex .fleet-icon.fleet-gatekeepers { color: #ead5ff; }
+.hex .fleet-icon.fleet-syndicate { color: #ffc8d3; }
 
 .fogged {
   background: linear-gradient(180deg, rgba(12, 18, 32, 0.4), rgba(6, 10, 18, 0.95));

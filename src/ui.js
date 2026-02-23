@@ -92,9 +92,9 @@ export function showSetupScreen() {
         resolve({
           tutorial,
           players: [
-            { id: "p1", factionId: selectedFaction, credits: 0, energy: 0, isAI: false },
-            { id: "p2", factionId: selectedAI1, credits: 0, energy: 0, isAI: true },
-            { id: "p3", factionId: selectedAI2, credits: 0, energy: 0, isAI: true }
+            { id: "p1", factionId: selectedFaction, credits: 0, energy: 0, bonusTokens: 0, isAI: false },
+            { id: "p2", factionId: selectedAI1, credits: 0, energy: 0, bonusTokens: 0, isAI: true },
+            { id: "p3", factionId: selectedAI2, credits: 0, energy: 0, bonusTokens: 0, isAI: true }
           ]
         });
       };
@@ -260,12 +260,12 @@ function factionClass(factionId) {
 
 function fleetGlyph(factionId) {
   switch (String(factionId).toLowerCase()) {
-    case "directorate": return "■";
-    case "choir": return "◆";
-    case "bloom": return "●";
-    case "salvagers": return "⚙";
-    case "gatekeepers": return "✶";
-    case "syndicate": return "◇";
+    case "directorate": return "▣";  // fortress
+    case "choir": return "◆";        // crystal
+    case "bloom": return "●";        // spore
+    case "salvagers": return "⚙";    // gear
+    case "gatekeepers": return "✶";  // beacon
+    case "syndicate": return "◇";    // trade
     default: return "■";
   }
 }
@@ -316,7 +316,8 @@ function renderHud(state) {
       el("div", { class: "hud-panel-stats" }, [
         el("div", { class: "hud-stats-col" }, [
           renderHudCompact("Credits", player.credits, 20),
-          renderHudCompact("Energy", player.energy, 20)
+          renderHudCompact("Energy", player.energy, 20),
+          el("div", { class: "hud-compact", title: "Bonus tokens: spend to use Bonus die" }, [`★ ${player.bonusTokens ?? 0}`])
         ]),
         el("div", { class: "hud-stats-side" }, [
           el("div", { class: "track-label" }, [`Fleets: ${totalFleets}`])
@@ -374,12 +375,20 @@ function renderMap(state, handlers) {
     const fogged = !hex.revealed;
     const labelType = fogged ? "fog" : (hex.type ?? "unknown");
     const glyph = hex.revealed ? tokenGlyph(state, hex.token) : "";
-    const occContainer = el("div", { class: "fleet-tokens" }, Object.entries(state.fleetsByHex?.[hex.id] ?? {})
-      .map(([factionId, entry]) => (
-        el("div", { class: `fleet-token fleet-${String(factionId).toLowerCase()}` }, [
-          `${fleetGlyph(factionId)} ${(entry?.undamaged?.length ?? 0) + (entry?.damaged?.length ?? 0)}${(entry?.damaged?.length ?? 0) > 0 ? ` (${entry?.damaged?.length}✕)` : ""}`
-        ])
-      )));
+    const fleetIcons = [];
+    for (const [factionId, entry] of Object.entries(state.fleetsByHex?.[hex.id] ?? {})) {
+      const undamaged = entry?.undamaged ?? [];
+      const damaged = entry?.damaged ?? [];
+      const glyph = fleetGlyph(factionId);
+      const fid = String(factionId).toLowerCase();
+      undamaged.forEach(() => {
+        fleetIcons.push(el("span", { class: `fleet-icon fleet-${fid}` }, [glyph]));
+      });
+      damaged.forEach(() => {
+        fleetIcons.push(el("span", { class: `fleet-icon fleet-${fid} damaged` }, [glyph]));
+      });
+    }
+    const occContainer = el("div", { class: "fleet-tokens" }, fleetIcons);
 
     const isTargetable = needsTarget && (() => {
       if (isMove) {

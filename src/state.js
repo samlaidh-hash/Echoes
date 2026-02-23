@@ -1,10 +1,13 @@
 export function initialState({ seed, playerSetup }) {
   const defaultPlayers = [
-    { id: "p1", factionId: "directorate", credits: 0, energy: 0, isAI: false },
-    { id: "p2", factionId: "choir", credits: 0, energy: 0, isAI: true },
-    { id: "p3", factionId: "bloom", credits: 0, energy: 0, isAI: true }
+    { id: "p1", factionId: "directorate", credits: 0, energy: 0, bonusTokens: 0, isAI: false },
+    { id: "p2", factionId: "choir", credits: 0, energy: 0, bonusTokens: 0, isAI: true },
+    { id: "p3", factionId: "bloom", credits: 0, energy: 0, bonusTokens: 0, isAI: true }
   ];
-  const players = playerSetup ?? defaultPlayers;
+  const players = (playerSetup ?? defaultPlayers).map(p => ({
+    ...p,
+    bonusTokens: p.bonusTokens ?? 0
+  }));
   return {
     meta: {
       version: "v0.2",

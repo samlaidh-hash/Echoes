@@ -30,7 +30,9 @@ export function computeAvailableActions(state, consumedOverride = null) {
 
   const aAvailable = dice.a != null && !used?.a;
   const bAvailable = dice.b != null && !used?.b;
-  const bonusAvailable = dice.bonus != null && !used?.bonus;
+  const player = state.players?.[state.turn?.activePlayerIndex ?? 0];
+  const hasBonusTokens = (player?.bonusTokens ?? 0) >= 1;
+  const bonusAvailable = dice.bonus != null && !used?.bonus && hasBonusTokens;
 
   // Roll 2d6: combinations are A, B, A+B, A & Bonus, B & Bonus, A+Bonus, B+Bonus.
   if (aAvailable) addOption(dice.a, { label: "A", consume: { a: true } });
@@ -412,6 +414,14 @@ export function applyEffects(state, effects, context) {
 
       case "gainResource":
         if (player) player[eff.resource] = (player[eff.resource] ?? 0) + (eff.amount ?? 0);
+        break;
+
+      case "gainBonusToken":
+        if (player) {
+          player.bonusTokens = (player.bonusTokens ?? 0) + (eff.amount ?? 1);
+          const fname = state.factions?.find(f => f.id === String(player.factionId).toLowerCase())?.name ?? String(player.factionId);
+          logLine(state, `${fname} gains ${eff.amount ?? 1} bonus token(s).`);
+        }
         break;
 
       case "gainCreditsFromControlled": {
