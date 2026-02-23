@@ -743,9 +743,10 @@ function renderActions(state, handlers) {
     }, [`Bonus ${dice?.bonus ?? "-"}`]) : null
   ]);
 
+  const noDiceYet = dice?.a == null && dice?.b == null;
   const rollBtn = el("button", {
     class: "btn", type: "button",
-    disabled: state.ui.mode !== "idle",
+    disabled: state.ui.mode !== "idle" || !noDiceYet,
     title: "Roll your action dice for this turn. You get Die A and Die B; first player also gets a Bonus die.",
     "data-testid": "roll-btn"
   }, ["Roll"]);
@@ -753,7 +754,6 @@ function renderActions(state, handlers) {
 
   const allDiceUsed = (dice?.a != null && used?.a) && (dice?.b != null && used?.b) &&
     (!dice?.bonus || used?.bonus);
-  const noDiceYet = dice?.a == null && dice?.b == null;
   const hasAvailableActions = Object.entries(state.ui.availableActionOptions ?? {}).some(
     ([, opts]) => Array.isArray(opts) && opts.length > 0
   );
