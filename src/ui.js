@@ -176,6 +176,8 @@ function renderTutorial(state) {
   const hint = getTutorialHint(state);
   if (!hint) {
     if (bar) bar.classList.add("hidden");
+    const slot = document.getElementById("tutorialSlot");
+    if (slot) slot.classList.add("hidden");
     return;
   }
   if (!bar) {
@@ -194,9 +196,13 @@ function renderTutorial(state) {
     const text = document.createElement("div");
     text.className = "tutorial-text";
     bar.appendChild(text);
-    document.getElementById("app").appendChild(bar);
+    const slot = document.getElementById("tutorialSlot");
+    if (slot) slot.appendChild(bar);
+    else document.getElementById("app").appendChild(bar);
   }
   bar.classList.remove("hidden");
+  const slot = document.getElementById("tutorialSlot");
+  if (slot) slot.classList.remove("hidden");
   const textEl = bar.querySelector(".tutorial-text");
   textEl.innerHTML = hint.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
 }
