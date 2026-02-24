@@ -104,7 +104,9 @@ export function showSetupScreen() {
     }
 
     buildUI();
-    document.getElementById("app").appendChild(overlay);
+    const app = document.getElementById("app");
+    if (!app) throw new Error("Setup: #app element not found");
+    app.appendChild(overlay);
   });
 }
 

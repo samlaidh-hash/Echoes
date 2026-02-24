@@ -1,6 +1,9 @@
-async function loadJson(path) {
-  const res = await fetch(path, { cache: "no-store" });
-  if (!res.ok) throw new Error(`Failed to load ${path}: ${res.status}`);
+const DATA_BASE = new URL("../data/", import.meta.url).href;
+
+async function loadJson(relativePath) {
+  const url = new URL(relativePath, DATA_BASE).href;
+  const res = await fetch(url, { cache: "no-store" });
+  if (!res.ok) throw new Error(`Failed to load ${relativePath}: ${res.status}`);
   return await res.json();
 }
 
@@ -108,24 +111,24 @@ export async function loadContent() {
     cardsSystem,
     cardsPhenomena
   ] = await Promise.all([
-    loadJson("./data/hex_map.json"),
-    loadJson("./data/tokens.json"),
-    loadJson("./data/factions.json"),
-    loadJson("./data/cards_empty.json"),
-    loadJson("./data/cards_system.json"),
-    loadJson("./data/cards_phenomena.json")
+    loadJson("hex_map.json"),
+    loadJson("tokens.json"),
+    loadJson("factions.json"),
+    loadJson("cards_empty.json"),
+    loadJson("cards_system.json"),
+    loadJson("cards_phenomena.json")
   ]);
 
   let actionsRaw = {};
   let cardTextAll = null;
   try {
-    actionsRaw = await loadJson("./data/actions.json");
+    actionsRaw = await loadJson("actions.json");
   } catch (err) {
     console.error("FAILED TO LOAD actions.json", err);
     actionsRaw = {};
   }
   try {
-    cardTextAll = await loadJson("./data/card-text-all.json");
+    cardTextAll = await loadJson("card-text-all.json");
   } catch (err) {
     // Optional authored text payload; gameplay falls back to base cards if missing.
     cardTextAll = null;

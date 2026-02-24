@@ -146,9 +146,12 @@ async function boot() {
   window.__ECHOES_VERSION__ = state.meta.version;
 
   // map
-  state.map.width = content.hexMap.width;
-  state.map.height = content.hexMap.height;
-  state.map.hexes = content.hexMap.hexes;
+  state.map.width = content.hexMap?.width ?? 9;
+  state.map.height = content.hexMap?.height ?? 9;
+  state.map.hexes = Array.isArray(content.hexMap?.hexes) ? content.hexMap.hexes : [];
+  if (state.map.hexes.length === 0) {
+    logLine(state, "BOOT WARN: No hexes loaded. Map will be empty.");
+  }
 
   const startHexIds = computePolygonStartPositions(state.map, state.players.length);
   const capitalTokens = ["capital_directorate", "capital_choir", "capital_bloom", "capital_neutral", "capital_salvagers", "capital_gatekeepers", "capital_syndicate"];
@@ -1033,9 +1036,17 @@ async function runSmoke(state, rng, cardIndex, handlers) {
   }
 }
 
-boot().catch(err => {
-  console.error(err);
-  const badge = document.getElementById("smokeStatus");
-  badge.textContent = `BOOT FAIL: ${err.message ?? err}`;
-  badge.classList.add("bad");
-});
+function start() {
+  boot().catch(err => {
+    console.error(err);
+    const badge = document.getElementById("smokeStatus");
+    badge.textContent = `BOOT FAIL: ${err.message ?? err}`;
+    badge.classList.add("bad");
+  });
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", start);
+} else {
+  start();
+}
