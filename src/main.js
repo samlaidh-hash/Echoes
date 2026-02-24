@@ -783,6 +783,7 @@ async function boot() {
         return;
       }
       replaceStateInPlace(state, res.state);
+      state.actionsByFaction = content.actionsByFaction;
       state.cardTextByKey = content.cardTextByKey ?? {};
       if (!state.cardByHex) state.cardByHex = {};
       state.ui.pendingAction = null;
