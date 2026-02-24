@@ -384,8 +384,11 @@ function renderHud(state) {
 function renderMap(state, handlers) {
   const map = document.getElementById("map");
   map.classList.toggle("targeting", state.ui.mode === "targeting");
-  map.style.setProperty("--map-cols", String(state.map.width ?? 7));
-  map.style.setProperty("--map-rows", String(state.map.height ?? 7));
+  const cols = state.map.width ?? 7;
+  const rows = state.map.height ?? 7;
+  map.style.setProperty("--map-cols", String(cols));
+  map.style.setProperty("--map-cols-doubled", String(cols * 2 + 1));
+  map.style.setProperty("--map-rows", String(rows));
   map.innerHTML = "";
 
   const activeFaction = String(state.players?.[state.turn?.activePlayerIndex ?? 0]?.factionId ?? "").toLowerCase();
@@ -544,8 +547,11 @@ function renderMap(state, handlers) {
       el("div", { class: "token" }, [glyph])
     ];
     if (cardInfo && hex.revealed) {
-      const cardIcon = el("div", { class: "hex-card-icon", title: "Hover to read card" }, ["📄"]);
-      hexChildren.push(cardIcon);
+      const isFaceUp = cardInfo.resolved === false;
+      const cardEl = isFaceUp
+        ? el("div", { class: "hex-card-faceup", title: "Card face up — enter hex to resolve" }, [cardInfo.cardTitle ?? "?"])
+        : el("div", { class: "hex-card-icon", title: "Hover to read card" }, ["📄"]);
+      hexChildren.push(cardEl);
     }
 
     const capitalFaction = Object.entries(state.capitalsByFaction ?? {}).find(([, h]) => h === hex.id)?.[0];
@@ -570,6 +576,11 @@ function renderMap(state, handlers) {
       "data-hexid": hex.id
     }, hexChildren);
 
+    const r = hex.row ?? 0;
+    const c = hex.col ?? 0;
+    const colOffset = r % 2;
+    btn.style.gridRow = String(r + 1);
+    btn.style.gridColumn = `${c * 2 + colOffset + 1} / span 2`;
     btn.addEventListener("click", (e) => handlers.onHexClick(hex.id, e));
     btn.addEventListener("contextmenu", (e) => {
       e.preventDefault();

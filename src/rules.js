@@ -680,6 +680,17 @@ export function applyEffects(state, effects, context) {
             if (isFleetHex && count > 1 && !isWithinRangeOfFleet) {
               context.hexId = targetId;
               revealAdjacentHexes(state, context, count);
+            } else if (context.rng && context.cardIndex) {
+              drawCardForHex(state, context.rng, context.cardIndex, targetId, null);
+              context.revealedHexId = targetId;
+              if (eff.peekDeck && hex.type && hex.type !== "unknown") {
+                const deck = state.decks[hex.type];
+                const topId = deck?.draw?.[0];
+                if (topId && context.cardIndex) {
+                  const card = context.cardIndex[topId];
+                  logLine(state, `Oracle Scan: top of ${hex.type} deck is "${card?.title ?? topId}".`);
+                }
+              }
             } else {
               hex.revealed = true;
               if (hex.type === "unknown" && context.rng) {
@@ -696,14 +707,6 @@ export function applyEffects(state, effects, context) {
               }
               logLine(state, `Scan revealed ${targetId}.`);
               recomputeInfluence(state);
-              if (eff.peekDeck && hex.type && hex.type !== "unknown") {
-                const deck = state.decks[hex.type];
-                const topId = deck?.draw?.[0];
-                if (topId && context.cardIndex) {
-                  const card = context.cardIndex[topId];
-                  logLine(state, `Oracle Scan: top of ${hex.type} deck is "${card?.title ?? topId}".`);
-                }
-              }
             }
           }
         } else {
@@ -767,6 +770,7 @@ export function applyEffects(state, effects, context) {
         visited[destinationId] = true;
         recomputeInfluence(state);
         state.ui.fleetSelection = { hexId: null, factionId: null, fleetIds: [] };
+        ensureCardPendingForHex(state, context?.cardIndex, destinationId);
         if (eff.canEngage !== false) {
           const enemies = state.players
             .filter(p => String(p.factionId).toLowerCase() !== factionId)
@@ -864,6 +868,7 @@ export function applyEffects(state, effects, context) {
         visited[destinationId] = true;
         recomputeInfluence(state);
         state.ui.fleetSelection = { hexId: null, factionId: null, fleetIds: [] };
+        ensureCardPendingForHex(state, context?.cardIndex, destinationId);
         break;
       }
 
@@ -952,6 +957,7 @@ export function applyEffects(state, effects, context) {
         visited[destinationId] = true;
         recomputeInfluence(state);
         state.ui.fleetSelection = { hexId: null, factionId: null, fleetIds: [] };
+        ensureCardPendingForHex(state, context?.cardIndex, destinationId);
         break;
       }
 
@@ -1027,6 +1033,7 @@ export function applyEffects(state, effects, context) {
         visited[destinationId] = true;
         recomputeInfluence(state);
         state.ui.fleetSelection = { hexId: null, factionId: null, fleetIds: [] };
+        ensureCardPendingForHex(state, context?.cardIndex, destinationId);
         break;
       }
 
@@ -1075,6 +1082,9 @@ export function applyEffects(state, effects, context) {
           }
         }
         if (!ok) break;
+        if (destHex && !destHex.revealed && context?.rng && context?.cardIndex) {
+          revealHex(state, context.rng, context.cardIndex, destId, null);
+        }
         for (const { hexId, fleetId } of picks) {
           moveFleetStack(state, hexId, destId, factionId, [fleetId]);
         }
@@ -1082,6 +1092,7 @@ export function applyEffects(state, effects, context) {
         visited[destId] = true;
         recomputeInfluence(state);
         state.ui.fleetSelection = { hexId: null, factionId: null, fleetIds: [], destinationHexId: null, mobilisePicks: [] };
+        ensureCardPendingForHex(state, context?.cardIndex, destId);
         logLine(state, `Mobilised ${picks.length} fleet(s) to ${destId}.`);
         break;
       }
@@ -1137,6 +1148,10 @@ export function applyEffects(state, effects, context) {
           player.energy = energy - 1;
           logLine(state, "Paid 1 Energy to enter debris.");
         }
+        const destHex = getHex(state, destinationId);
+        if (destHex && !destHex.revealed && context?.rng && context?.cardIndex) {
+          revealHex(state, context.rng, context.cardIndex, destinationId, null);
+        }
         moveFleetStack(state, originId, destinationId, factionId, [toMove]);
         const remaining = fleetIds.slice(1);
         state.ui.fleetSelection = remaining.length > 0
@@ -1145,6 +1160,7 @@ export function applyEffects(state, effects, context) {
         const visited = ensureVisitedMap(state, player.factionId);
         visited[destinationId] = true;
         recomputeInfluence(state);
+        ensureCardPendingForHex(state, context?.cardIndex, destinationId);
         if (remaining.length > 0) {
           state.ui.disperseContinue = true;
         }
@@ -1550,13 +1566,10 @@ export function getHexesInStraightLineFrom(state, fromHexId) {
   return result;
 }
 
-export function revealHex(state, rng, cardIndex, hexId, forcedType = null) {
+export function drawCardForHex(state, rng, cardIndex, hexId, forcedType = null) {
   const hex = getHex(state, hexId);
   if (!hex) return null;
-
-  if (hex.token && String(hex.token).startsWith("capital_")) {
-    return null;
-  }
+  if (hex.token && String(hex.token).startsWith("capital_")) return null;
 
   hex.revealed = true;
   const active = getActivePlayer(state);
@@ -1567,7 +1580,7 @@ export function revealHex(state, rng, cardIndex, hexId, forcedType = null) {
 
   if (forcedType) {
     hex.type = forcedType;
-  } else if (hex.type === "unknown") {
+  } else if (hex.type === "unknown" && rng) {
     hex.type = weightedPick(rng, [
       { value: "empty", weight: 55 },
       { value: "system", weight: 30 },
@@ -1582,10 +1595,25 @@ export function revealHex(state, rng, cardIndex, hexId, forcedType = null) {
     return null;
   }
 
-  state.ui.pending = { deckType, card, hexId };
-  logLine(state, `Card drawn (${deckType}): ${card.title}`);
+  if (!state.cardByHex) state.cardByHex = {};
+  state.cardByHex[hexId] = { deckType, cardId: card.id, cardTitle: card.title, resolved: false };
+  logLine(state, `Card drawn (${deckType}): ${card.title} — face up on hex`);
+
   recomputeInfluence(state);
-  return state.ui.pending;
+  return { deckType, card, hexId };
+}
+
+export function revealHex(state, rng, cardIndex, hexId, forcedType = null) {
+  return drawCardForHex(state, rng, cardIndex, hexId, forcedType);
+}
+
+export function ensureCardPendingForHex(state, cardIndex, hexId) {
+  const info = state.cardByHex?.[hexId];
+  if (!info || info.resolved) return false;
+  const card = cardIndex?.[info.cardId];
+  if (!card) return false;
+  state.ui.pending = { deckType: info.deckType, card, hexId };
+  return true;
 }
 
 export function resolveChoice(state, cardIndex, choiceIndex) {
@@ -1633,7 +1661,10 @@ export function resolveChoice(state, cardIndex, choiceIndex) {
   state.ui.pending = null;
 
   if (hexId && !state.cardByHex) state.cardByHex = {};
-  if (hexId) state.cardByHex[hexId] = { deckType, cardId: card.id, cardTitle: card.title };
+  if (hexId) {
+    const existing = state.cardByHex[hexId];
+    state.cardByHex[hexId] = { ...(existing ?? {}), deckType, cardId: card.id, cardTitle: card.title, resolved: true };
+  }
 
   return { ok: true, cardId: card.id, deckType, choiceLabel: choice.label, tokenId: hex?.token ?? null, stateChanged: didStateChange(res.before, res.after) };
 }
@@ -1687,16 +1718,22 @@ export function executeActionNumber(state, rng, cardIndex, actionNumber, selecte
 
 export function revealAdjacentHexes(state, context, count) {
   const candidates = getAdjacentHexes(state, context.hexId);
+  const rng = context?.rng;
+  const cardIndex = context?.cardIndex;
 
   let revealed = 0;
-  const active = getActivePlayer(state);
   for (const neighbor of candidates) {
     if (revealed >= count) break;
     if (neighbor && !neighbor.revealed) {
-      neighbor.revealed = true;
-      if (active) {
-        const visited = ensureVisitedMap(state, active.factionId);
-        visited[neighbor.id] = true;
+      if (rng && cardIndex) {
+        drawCardForHex(state, rng, cardIndex, neighbor.id, null);
+      } else {
+        neighbor.revealed = true;
+        const active = getActivePlayer(state);
+        if (active) {
+          const visited = ensureVisitedMap(state, active.factionId);
+          visited[neighbor.id] = true;
+        }
       }
       revealed++;
     }

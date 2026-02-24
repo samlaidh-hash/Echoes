@@ -5,6 +5,7 @@ import {
   initDeck,
   logLine,
   revealHex,
+  ensureCardPendingForHex,
   resolveChoice,
   didStateChange,
   snapshotState,
@@ -784,6 +785,13 @@ async function boot() {
       }
       replaceStateInPlace(state, res.state);
       state.actionsByFaction = content.actionsByFaction;
+      state.map.width = content.hexMap.width;
+      state.map.height = content.hexMap.height;
+      const savedHexById = Object.fromEntries((res.state.map?.hexes ?? []).map(h => [h.id, h]));
+      state.map.hexes = content.hexMap.hexes.map(h => {
+        const saved = savedHexById[h.id];
+        return saved ? { ...h, revealed: saved.revealed, type: saved.type, token: saved.token } : h;
+      });
       state.cardTextByKey = content.cardTextByKey ?? {};
       if (!state.cardByHex) state.cardByHex = {};
       state.ui.pendingAction = null;
@@ -962,8 +970,11 @@ async function runSmoke(state, rng, cardIndex, handlers) {
 
         // Discard and draw next card from the same forced deck
         state.decks[step.deck].discard.push(card.id);
+        state.cardByHex[step.hexId] = null;
+        delete state.cardByHex[step.hexId];
         state.ui.pending = null;
         revealHex(state, rng, cardIndex, step.hexId, step.deck);
+        ensureCardPendingForHex(state, cardIndex, step.hexId);
         render(state, handlers);
 
         tries++;
