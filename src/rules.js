@@ -867,6 +867,291 @@ export function applyEffects(state, effects, context) {
         break;
       }
 
+      case "flockMove": {
+        if (!player) {
+          logLine(state, "No active player for flock move.");
+          ok = false;
+          break;
+        }
+        const selection = context.fleetSelection ?? state.ui.fleetSelection;
+        const selectedCount = selection?.fleetIds?.length ?? 0;
+        if (!selection?.hexId || selectedCount <= 0) {
+          logLine(state, "Select fleets to move (range = number of fleets).");
+          ok = false;
+          break;
+        }
+        const factionId = String(player.factionId).toLowerCase();
+        const entry = getHexFleets(state, selection.hexId, factionId);
+        const available = entry.undamaged.length + entry.damaged.length;
+        if (available < selectedCount) {
+          logLine(state, "Not enough fleets in that hex.");
+          ok = false;
+          break;
+        }
+        const destinationId = context.selectedHexId ?? state.ui.selectedHexId;
+        if (!destinationId) {
+          logLine(state, "Select a destination hex.");
+          ok = false;
+          break;
+        }
+        const range = selectedCount;
+        const reachable = (() => {
+          let frontier = [getHex(state, selection.hexId)].filter(Boolean);
+          const ids = new Set([selection.hexId]);
+          for (let r = 0; r < range; r++) {
+            const next = [];
+            for (const h of frontier) {
+              for (const n of getAdjacentHexes(state, h.id)) {
+                if (!ids.has(n.id)) { ids.add(n.id); next.push(n); }
+              }
+            }
+            frontier = next;
+          }
+          return ids.has(destinationId);
+        })();
+        if (!reachable) {
+          logLine(state, `Destination must be within ${range} step(s) (one per fleet selected).`);
+          ok = false;
+          break;
+        }
+        const destHexPre = getHex(state, destinationId);
+        const isDebris = destHexPre && (destHexPre.token === "debris_field" || destHexPre.token === "derelict");
+        const isSalvager = factionId === "salvagers" || eff.salvagerMove;
+        if (isDebris && !isSalvager) {
+          const shipCount = selection.fleetIds?.length ?? (entry.undamaged.length + entry.damaged.length);
+          const cost = shipCount;
+          const energy = player.energy ?? 0;
+          if (energy < cost) {
+            logLine(state, `Entering debris costs ${cost} Energy (1 per ship). You have ${energy}.`);
+            ok = false;
+            break;
+          }
+          player.energy = energy - cost;
+          logLine(state, `Paid ${cost} Energy to enter debris.`);
+        }
+        const enemies = state.players
+          .filter(p => String(p.factionId).toLowerCase() !== factionId)
+          .filter(p => countFleets(state, destinationId, p.factionId).total > 0);
+        if (enemies.length > 0) {
+          logLine(state, "Flock move cannot enter enemy-occupied hex.");
+          ok = false;
+          break;
+        }
+        const movingIds = selection.fleetIds.length > 0 ? selection.fleetIds : [...entry.undamaged, ...entry.damaged];
+        moveFleetStack(state, selection.hexId, destinationId, factionId, movingIds);
+        const destHex = destHexPre ?? getHex(state, destinationId);
+        if (destHex && !destHex.revealed) {
+          if (context.rng && context.cardIndex) {
+            revealHex(state, context.rng, context.cardIndex, destinationId, null);
+          } else {
+            logLine(state, "Cannot reveal: missing RNG/context.");
+            ok = false;
+          }
+        }
+        const visited = ensureVisitedMap(state, player.factionId);
+        visited[destinationId] = true;
+        recomputeInfluence(state);
+        state.ui.fleetSelection = { hexId: null, factionId: null, fleetIds: [] };
+        break;
+      }
+
+      case "warpJump": {
+        if (!player) {
+          logLine(state, "No active player for warp jump.");
+          ok = false;
+          break;
+        }
+        const selection = context.fleetSelection ?? state.ui.fleetSelection;
+        const selectedCount = selection?.fleetIds?.length ?? 0;
+        if (!selection?.hexId || selectedCount <= 0) {
+          logLine(state, "Select fleets to warp jump.");
+          ok = false;
+          break;
+        }
+        const factionId = String(player.factionId).toLowerCase();
+        const entry = getHexFleets(state, selection.hexId, factionId);
+        const available = entry.undamaged.length + entry.damaged.length;
+        if (available < selectedCount) {
+          logLine(state, "Not enough fleets in that hex.");
+          ok = false;
+          break;
+        }
+        const destinationId = context.selectedHexId ?? state.ui.selectedHexId;
+        if (!destinationId) {
+          logLine(state, "Select a destination hex (must be in straight line).");
+          ok = false;
+          break;
+        }
+        const lineHexes = getHexesInStraightLineFrom(state, selection.hexId);
+        const inLine = lineHexes.some(h => h.id === destinationId);
+        if (!inLine) {
+          logLine(state, "Warp jump destination must be in a straight line (same row or column).");
+          ok = false;
+          break;
+        }
+        const destHexPre = getHex(state, destinationId);
+        const isDebris = destHexPre && (destHexPre.token === "debris_field" || destHexPre.token === "derelict");
+        const isSalvager = factionId === "salvagers" || eff.salvagerMove;
+        if (isDebris && !isSalvager) {
+          const shipCount = selection.fleetIds?.length ?? (entry.undamaged.length + entry.damaged.length);
+          const cost = shipCount;
+          const energy = player.energy ?? 0;
+          if (energy < cost) {
+            logLine(state, `Entering debris costs ${cost} Energy (1 per ship). You have ${energy}.`);
+            ok = false;
+            break;
+          }
+          player.energy = energy - cost;
+          logLine(state, `Paid ${cost} Energy to enter debris.`);
+        }
+        const enemies = state.players
+          .filter(p => String(p.factionId).toLowerCase() !== factionId)
+          .filter(p => countFleets(state, destinationId, p.factionId).total > 0);
+        if (enemies.length > 0) {
+          logLine(state, "Warp jump cannot enter enemy-occupied hex.");
+          ok = false;
+          break;
+        }
+        const movingIds = selection.fleetIds.length > 0 ? selection.fleetIds : [...entry.undamaged, ...entry.damaged];
+        moveFleetStack(state, selection.hexId, destinationId, factionId, movingIds);
+        const destHex = destHexPre ?? getHex(state, destinationId);
+        if (destHex && !destHex.revealed) {
+          if (context.rng && context.cardIndex) {
+            revealHex(state, context.rng, context.cardIndex, destinationId, null);
+          } else {
+            logLine(state, "Cannot reveal: missing RNG/context.");
+            ok = false;
+          }
+        }
+        const visited = ensureVisitedMap(state, player.factionId);
+        visited[destinationId] = true;
+        recomputeInfluence(state);
+        state.ui.fleetSelection = { hexId: null, factionId: null, fleetIds: [] };
+        break;
+      }
+
+      case "mobiliseMove": {
+        if (!player) {
+          logLine(state, "No active player for mobilise.");
+          ok = false;
+          break;
+        }
+        const selection = context.fleetSelection ?? state.ui.fleetSelection;
+        const destId = selection?.destinationHexId ?? null;
+        const picks = selection?.mobilisePicks ?? [];
+        const factionId = String(player.factionId).toLowerCase();
+        if (!destId || picks.length === 0) {
+          logLine(state, "Select destination, then click adjacent hexes to gather fleets.");
+          ok = false;
+          break;
+        }
+        const destHex = getHex(state, destId);
+        if (!destHex) {
+          logLine(state, "Invalid destination.");
+          ok = false;
+          break;
+        }
+        const enemies = state.players
+          .filter(p => String(p.factionId).toLowerCase() !== factionId)
+          .filter(p => countFleets(state, destId, p.factionId).total > 0);
+        if (enemies.length > 0) {
+          logLine(state, "Mobilise cannot gather into enemy-occupied hex.");
+          ok = false;
+          break;
+        }
+        const adjIds = new Set(getAdjacentHexes(state, destId).map(h => h.id));
+        for (const { hexId, fleetId } of picks) {
+          if (!adjIds.has(hexId)) {
+            logLine(state, "Source hex must be adjacent to destination.");
+            ok = false;
+            break;
+          }
+          const entry = getHexFleets(state, hexId, factionId);
+          const allIds = [...(entry.undamaged ?? []), ...(entry.damaged ?? [])];
+          if (!allIds.includes(fleetId)) {
+            logLine(state, `Fleet ${fleetId} not in ${hexId}.`);
+            ok = false;
+            break;
+          }
+        }
+        if (!ok) break;
+        for (const { hexId, fleetId } of picks) {
+          moveFleetStack(state, hexId, destId, factionId, [fleetId]);
+        }
+        const visited = ensureVisitedMap(state, player.factionId);
+        visited[destId] = true;
+        recomputeInfluence(state);
+        state.ui.fleetSelection = { hexId: null, factionId: null, fleetIds: [], destinationHexId: null, mobilisePicks: [] };
+        logLine(state, `Mobilised ${picks.length} fleet(s) to ${destId}.`);
+        break;
+      }
+
+      case "disperseMove": {
+        if (!player) {
+          logLine(state, "No active player for disperse.");
+          ok = false;
+          break;
+        }
+        const selection = context.fleetSelection ?? state.ui.fleetSelection;
+        const originId = selection?.hexId;
+        const fleetIds = selection?.fleetIds ?? [];
+        const destinationId = context.selectedHexId ?? state.ui.selectedHexId;
+        const factionId = String(player.factionId).toLowerCase();
+        if (!originId || fleetIds.length === 0 || !destinationId) {
+          logLine(state, "Select source cell and fleets, then adjacent destination.");
+          ok = false;
+          break;
+        }
+        const adj = getAdjacentHexes(state, originId).some(h => h.id === destinationId);
+        if (!adj) {
+          logLine(state, "Destination must be adjacent to source.");
+          ok = false;
+          break;
+        }
+        const entry = getHexFleets(state, originId, factionId);
+        const available = [...(entry.undamaged ?? []), ...(entry.damaged ?? [])];
+        const toMove = fleetIds[0];
+        if (!available.includes(toMove)) {
+          logLine(state, "Selected fleet not in source hex.");
+          ok = false;
+          break;
+        }
+        const enemies = state.players
+          .filter(p => String(p.factionId).toLowerCase() !== factionId)
+          .filter(p => countFleets(state, destinationId, p.factionId).total > 0);
+        if (enemies.length > 0) {
+          logLine(state, "Disperse cannot enter enemy-occupied hex.");
+          ok = false;
+          break;
+        }
+        const destHex = getHex(state, destinationId);
+        const isDebris = destHex && (destHex.token === "debris_field" || destHex.token === "derelict");
+        const isSalvager = factionId === "salvagers" || eff.salvagerMove;
+        if (isDebris && !isSalvager) {
+          const energy = player.energy ?? 0;
+          if (energy < 1) {
+            logLine(state, "Entering debris costs 1 Energy. You have none.");
+            ok = false;
+            break;
+          }
+          player.energy = energy - 1;
+          logLine(state, "Paid 1 Energy to enter debris.");
+        }
+        moveFleetStack(state, originId, destinationId, factionId, [toMove]);
+        const remaining = fleetIds.slice(1);
+        state.ui.fleetSelection = remaining.length > 0
+          ? { hexId: originId, factionId, fleetIds: remaining }
+          : { hexId: null, factionId: null, fleetIds: [] };
+        const visited = ensureVisitedMap(state, player.factionId);
+        visited[destinationId] = true;
+        recomputeInfluence(state);
+        if (remaining.length > 0) {
+          state.ui.disperseContinue = true;
+        }
+        logLine(state, `Dispersed 1 fleet to ${destinationId}.`);
+        break;
+      }
+
       case "peekDeckTop": {
         const deckType = context.selectedDeckType ?? eff.deckType ?? "phenomena";
         const deck = state.decks[deckType];
@@ -1230,6 +1515,41 @@ export function getHexesWithinRange(state, hexId, range) {
   return result;
 }
 
+export function getHexesInStraightLine(state, fromHexId, toHexId) {
+  const from = getHex(state, fromHexId);
+  const to = getHex(state, toHexId);
+  if (!from || !to) return [];
+  if (from.col !== to.col && from.row !== to.row) return [];
+  const result = [];
+  if (from.col === to.col) {
+    const minR = Math.min(from.row, to.row);
+    const maxR = Math.max(from.row, to.row);
+    for (let r = minR; r <= maxR; r++) {
+      const h = state.map.hexes.find(x => x.col === from.col && x.row === r);
+      if (h) result.push(h);
+    }
+  } else {
+    const minC = Math.min(from.col, to.col);
+    const maxC = Math.max(from.col, to.col);
+    for (let c = minC; c <= maxC; c++) {
+      const h = state.map.hexes.find(x => x.col === c && x.row === from.row);
+      if (h) result.push(h);
+    }
+  }
+  return result;
+}
+
+export function getHexesInStraightLineFrom(state, fromHexId) {
+  const from = getHex(state, fromHexId);
+  if (!from) return [];
+  const result = [];
+  for (const h of state.map.hexes) {
+    if (h.id === fromHexId) continue;
+    if (h.col === from.col || h.row === from.row) result.push(h);
+  }
+  return result;
+}
+
 export function revealHex(state, rng, cardIndex, hexId, forcedType = null) {
   const hex = getHex(state, hexId);
   if (!hex) return null;
@@ -1358,8 +1678,11 @@ export function executeActionNumber(state, rng, cardIndex, actionNumber, selecte
   const result = applyEffects(state, action.effects ?? [], context);
   if (!result.ok) return { ok: false, reason: "Action failed." };
 
+  const disperseContinue = state.ui.disperseContinue === true;
+  if (disperseContinue) state.ui.disperseContinue = false;
+
   logLine(state, `ACTION: ${factionId} #${actionNumber} ${action.name ?? "Action"}`);
-  return { ok: true, actionNumber };
+  return { ok: true, actionNumber, disperseContinue };
 }
 
 export function revealAdjacentHexes(state, context, count) {

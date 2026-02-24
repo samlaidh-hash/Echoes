@@ -1,4 +1,4 @@
-import { computeAvailableActions, countFleets, getHexesWithinRange } from "./rules.js";
+import { computeAvailableActions, countFleets, getHexesWithinRange, getHexesInStraightLineFrom } from "./rules.js";
 
 function getAdjacentHexIds(state, hexId) {
   const hex = state.map.hexes.find(h => h.id === hexId);
@@ -26,7 +26,9 @@ function factionPriority(factionId) {
 
 function categorizeAction(actionDef) {
   const ops = (actionDef?.effects ?? []).map(e => e.op);
-  if (ops.includes("fastDeploy") || ops.includes("moveFleet") || ops.includes("relayMove")) return "expand";
+  if (ops.includes("fastDeploy") || ops.includes("moveFleet") || ops.includes("relayMove") ||
+      ops.includes("flockMove") || ops.includes("warpJump") || ops.includes("mobiliseMove") ||
+      ops.includes("disperseMove")) return "expand";
   if (ops.includes("gainResource") || ops.includes("gainCreditsFromControlled") ||
       ops.includes("gainCreditsFromBiomass") || ops.includes("gainCreditsFromDebris") ||
       ops.includes("gainFromTradeRoute") || ops.includes("salvageFromHex") ||
@@ -102,11 +104,43 @@ export function aiPickTargetHex(state) {
   const ops = (actionDef.effects ?? []).map(e => e.op);
   const fleetHexes = Object.keys(state.fleetsByHex ?? {}).filter(h => state.fleetsByHex[h]?.[factionId]);
 
-  if (ops.includes("fastDeploy") || ops.includes("moveFleet")) {
+  if (ops.includes("mobiliseMove")) {
+    if (fleetHexes.length === 0) return null;
+    let bestDest = null;
+    let bestPicks = [];
+    for (const destId of fleetHexes) {
+      const adjIds = getAdjacentHexIds(state, destId);
+      const picks = [];
+      for (const hId of adjIds) {
+        const entry = state.fleetsByHex?.[hId]?.[factionId];
+        const ids = [...(entry?.undamaged ?? []), ...(entry?.damaged ?? [])];
+        if (ids.length > 0) picks.push({ hexId: hId, fleetId: ids[0] });
+      }
+      if (picks.length > bestPicks.length) {
+        bestDest = destId;
+        bestPicks = picks;
+      }
+    }
+    if (bestDest && bestPicks.length > 0) {
+      return { mobiliseDest: bestDest, mobilisePicks: bestPicks };
+    }
+    return null;
+  }
+
+  if (ops.includes("fastDeploy") || ops.includes("moveFleet") || ops.includes("flockMove") ||
+      ops.includes("warpJump") || ops.includes("disperseMove")) {
     if (fleetHexes.length === 0) return null;
     const originHex = fleetHexes[0];
-    const range = actionDef.effects.find(e => e.op === "fastDeploy")?.range ?? 1;
-    const reachable = getHexesWithinRange(state, originHex, range).map(h => h.id);
+    let reachable;
+    if (ops.includes("warpJump")) {
+      reachable = getHexesInStraightLineFrom(state, originHex).map(h => h.id);
+    } else {
+      const range = ops.includes("flockMove")
+        ? (state.fleetsByHex?.[originHex]?.[factionId]?.undamaged?.length ?? 0) +
+          (state.fleetsByHex?.[originHex]?.[factionId]?.damaged?.length ?? 0) || 1
+        : actionDef.effects.find(e => e.op === "fastDeploy")?.range ?? 1;
+      reachable = getHexesWithinRange(state, originHex, range).map(h => h.id);
+    }
     const unvisited = reachable.filter(h => !state.visited?.[factionId]?.[h]);
     const unrevealed = reachable.filter(h => !state.map.hexes.find(hx => hx.id === h)?.revealed);
     return { originHex, targetHex: unrevealed[0] ?? unvisited[0] ?? reachable[1] ?? reachable[0] };

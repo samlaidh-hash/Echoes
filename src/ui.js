@@ -1,4 +1,4 @@
-import { computeAvailableActions, countFleets, getHexesWithinRange } from "./rules.js";
+import { computeAvailableActions, countFleets, getHexesWithinRange, getHexesInStraightLineFrom } from "./rules.js";
 
 const FACTION_DESCRIPTIONS = {
   directorate: "Military faction — strong fleets, outposts grant +2 influence, wins ties in combat.",
@@ -148,6 +148,47 @@ const TUTORIAL_STEPS = [
   { phase: "endturn", text: "Dice spent! Click **Next Player** to end your turn. AI opponents will play automatically." },
   { phase: "done", text: "You've got the basics! Explore, expand, and compete for control. Hover over anything for tips." }
 ];
+
+function getActionTip(entry) {
+  if (!entry?.effects?.length) return "";
+  const ops = entry.effects.map(e => e.op);
+  if (ops.includes("moveFleet")) {
+    return "Tip: Click a cell with your fleets (each click selects one more), right-click to deselect, then click an adjacent cell to move.";
+  }
+  if (ops.includes("fastDeploy")) {
+    const range = entry.effects.find(e => e.op === "fastDeploy")?.range ?? 2;
+    return `Tip: Select fleets, then click a hex within ${range} steps. Cannot enter enemy hexes.`;
+  }
+  if (ops.includes("flockMove")) {
+    return "Tip: Select fleets; move range = number selected. Each click adds one fleet to selection.";
+  }
+  if (ops.includes("warpJump")) {
+    return "Tip: Select fleets, then click any hex in the same row or column.";
+  }
+  if (ops.includes("mobiliseMove")) {
+    return "Tip: Click destination first, then click adjacent hexes to gather fleets (one per click). Right-click to deselect.";
+  }
+  if (ops.includes("disperseMove")) {
+    return "Tip: Select source cell and fleets, then click adjacent cells to move one fleet per click. Repeat until done.";
+  }
+  if (ops.includes("relayMove")) {
+    return "Tip: Select fleets at a beacon, then click another beacon to jump instantly.";
+  }
+  if (ops.includes("revealHex")) {
+    const range = entry.effects.find(e => e.op === "revealHex")?.range ?? 1;
+    return `Tip: Select a hex within ${range} step(s) of your fleet to scan.`;
+  }
+  if (ops.includes("repairFleet")) {
+    return "Tip: Select a hex with damaged fleet(s) to repair all.";
+  }
+  if (ops.includes("placeOutpost") || ops.includes("placeBeacon")) {
+    return "Tip: Select a hex with your fleet.";
+  }
+  if (ops.includes("recruitFleetCapital") || ops.includes("forwardDeploy")) {
+    return "Tip: Select a controlled system hex.";
+  }
+  return "";
+}
 
 function getTutorialHint(state) {
   if (!state.ui.tutorialMode || state.ui.tutorialStep < 0) return null;
@@ -351,10 +392,20 @@ function renderMap(state, handlers) {
   const awaitingAction = state.ui.pendingAction?.actionDef ?? null;
   const needsTarget = state.ui.mode === "targeting" && !!awaitingAction?.requiresTarget;
   const fastEffect = (awaitingAction?.effects ?? []).find(e => e.op === "fastDeploy");
+  const flockEffect = (awaitingAction?.effects ?? []).find(e => e.op === "flockMove");
+  const warpEffect = (awaitingAction?.effects ?? []).find(e => e.op === "warpJump");
   const isFast = !!fastEffect;
+  const isFlock = !!flockEffect;
+  const isWarp = !!warpEffect;
   const moveRange = fastEffect?.range ?? 2;
+  const flockRange = (state.ui.fleetSelection?.fleetIds?.length ?? 0) || 1;
   const isRelay = (awaitingAction?.effects ?? []).some(e => e.op === "relayMove");
-  const isMove = (awaitingAction?.effects ?? []).some(e => e.op === "moveFleet" || e.op === "fastDeploy" || e.op === "relayMove");
+  const isMove = (awaitingAction?.effects ?? []).some(e =>
+    e.op === "moveFleet" || e.op === "fastDeploy" || e.op === "relayMove" || e.op === "flockMove" || e.op === "warpJump" ||
+    e.op === "mobiliseMove" || e.op === "disperseMove"
+  );
+  const isMobilise = (awaitingAction?.effects ?? []).some(e => e.op === "mobiliseMove");
+  const isDisperse = (awaitingAction?.effects ?? []).some(e => e.op === "disperseMove");
   const isScan = (awaitingAction?.effects ?? []).some(e => e.op === "revealHex");
   const revealEffect = (awaitingAction?.effects ?? []).find(e => e.op === "revealHex");
   const revealCount = revealEffect?.count ?? 1;
@@ -393,6 +444,15 @@ function renderMap(state, handlers) {
     const isTargetable = needsTarget && (() => {
       if (isMove) {
         const sel = state.ui.fleetSelection;
+        if (isMobilise) {
+          if (!sel.destinationHexId) return true;
+          const destId = sel.destinationHexId;
+          const adjToDest = getAdjacentHexesForUi(state, destId).some(h => h.id === hex.id);
+          const entry = state.fleetsByHex?.[hex.id]?.[activeFaction];
+          const hasFleet = entry && ((entry?.undamaged?.length ?? 0) + (entry?.damaged?.length ?? 0)) > 0;
+          if (hex.id === destId && (sel.mobilisePicks?.length ?? 0) > 0) return true;
+          return adjToDest && hasFleet;
+        }
         if (!sel.hexId) {
           const entry = state.fleetsByHex?.[hex.id]?.[activeFaction];
           const count = (entry?.undamaged?.length ?? 0) + (entry?.damaged?.length ?? 0);
@@ -401,9 +461,14 @@ function renderMap(state, handlers) {
         if (isRelay) {
           return state.beaconsByHex?.[hex.id] === activeFaction && hex.id !== sel.hexId;
         }
+        if (isWarp) {
+          const lineHexes = getHexesInStraightLineFrom(state, sel.hexId);
+          return lineHexes.some(h => h.id === hex.id);
+        }
+        const range = isDisperse ? 1 : (isFlock ? flockRange : moveRange);
         let frontier = [state.map.hexes.find(h => h.id === sel.hexId)].filter(Boolean);
         const reachable = new Set([sel.hexId]);
-        for (let r = 0; r < moveRange; r++) {
+        for (let r = 0; r < range; r++) {
           const next = [];
           for (const h of frontier) {
             for (const n of getAdjacentHexesForUi(state, h.id)) {
@@ -786,7 +851,10 @@ function renderActions(state, handlers) {
     const actionDef = state.ui.pendingAction?.actionDef;
     const isForward = (actionDef?.effects ?? []).some(e => e.op === "forwardDeploy");
     const isRecruitFleet = (actionDef?.effects ?? []).some(e => e.op === "recruitFleetCapital");
-    const isMove = (actionDef?.effects ?? []).some(e => e.op === "moveFleet");
+    const isMove = (actionDef?.effects ?? []).some(e =>
+      e.op === "moveFleet" || e.op === "fastDeploy" || e.op === "flockMove" || e.op === "warpJump" || e.op === "relayMove" ||
+      e.op === "mobiliseMove" || e.op === "disperseMove"
+    );
     const isScan = (actionDef?.effects ?? []).some(e => e.op === "revealHex");
     const revealEffect = (actionDef?.effects ?? []).find(e => e.op === "revealHex");
     const revealCount = revealEffect?.count ?? 1;
@@ -794,7 +862,19 @@ function renderActions(state, handlers) {
     const isRepair = (actionDef?.effects ?? []).some(e => e.op === "repairFleet");
     if (isForward) hint = "Select a controlled system to deploy to.";
     else if (isRecruitFleet) hint = "Select a controlled system to place the fleet.";
-    else if (isMove) hint = "Select an adjacent hex to move into.";
+    else if (isMove) {
+      const hasFlock = (actionDef?.effects ?? []).some(e => e.op === "flockMove");
+      const hasWarp = (actionDef?.effects ?? []).some(e => e.op === "warpJump");
+      const hasRelay = (actionDef?.effects ?? []).some(e => e.op === "relayMove");
+      const hasMobilise = (actionDef?.effects ?? []).some(e => e.op === "mobiliseMove");
+      const hasDisperse = (actionDef?.effects ?? []).some(e => e.op === "disperseMove");
+      if (hasRelay) hint = "Select fleets, then a beacon destination.";
+      else if (hasWarp) hint = "Select fleets, then a hex in straight line.";
+      else if (hasFlock) hint = "Select fleets (range = count), then destination.";
+      else if (hasMobilise) hint = "Click destination, then adjacent hexes to gather fleets.";
+      else if (hasDisperse) hint = "Select source and fleets, then adjacent hexes (repeat until done).";
+      else hint = "Select fleets, then adjacent hex to move.";
+    }
     else if (isScan) {
       if (revealRange > 1) hint = `Select a hex within ${revealRange} steps of a fleet to scan.`;
       else if (revealCount > 1) hint = "Select a fleet hex (origin) to reveal 2 adjacent.";
@@ -822,11 +902,14 @@ function renderActions(state, handlers) {
       ].filter(Boolean).join(" ");
       const reqTarget = entry?.requiresTarget ? "Requires target hex." : "Auto-resolves (no target needed).";
       const diceHint = available ? `Available via: ${options.map(o => o.label).join(", ")}` : "Not available with current dice.";
+      const tip = getActionTip(entry);
+      const titleParts = [`#${key} ${entry?.name ?? "Action"}`, entry?.text ?? "", reqTarget, diceHint];
+      if (tip) titleParts.push(tip);
       const btn = el("button", {
         class: classes,
         type: "button",
         disabled: state.ui.mode === "modal",
-        title: `#${key} ${entry?.name ?? "Action"}\n${entry?.text ?? ""}\n${reqTarget}\n${diceHint}`,
+        title: titleParts.join("\n"),
         "data-testid": `action-${key}`
       }, [
         el("span", { class: "action-num" }, [`#${key}`]),

@@ -21,6 +21,7 @@ import {
   createFleet,
   addFleetToHex,
   getHexesWithinRange,
+  getHexesInStraightLineFrom,
   computePolygonStartPositions
 } from "./rules.js";
 import { render, setSmokeBadge, showSetupScreen } from "./ui.js";
@@ -369,8 +370,13 @@ async function boot() {
           return candidates.some(p => state.map.hexes.find(h => h.col === p.c && h.row === p.r && h.id === hexId));
         };
         const fastEffect = (actionDef?.effects ?? []).find(e => e.op === "fastDeploy");
+        const flockEffect = (actionDef?.effects ?? []).find(e => e.op === "flockMove");
+        const warpEffect = (actionDef?.effects ?? []).find(e => e.op === "warpJump");
         const moveRange = fastEffect?.range ?? 2;
+        const flockRange = (state.ui.fleetSelection?.fleetIds?.length ?? 0) || 1;
         const isRelay = (actionDef?.effects ?? []).some(e => e.op === "relayMove");
+        const isFlock = !!flockEffect;
+        const isWarp = !!warpEffect;
         const isWithinRange = (originId, range) => {
           let frontier = [state.map.hexes.find(h => h.id === originId)].filter(Boolean);
           const seen = new Set([originId]);
@@ -391,7 +397,12 @@ async function boot() {
         const requiresTarget = !!actionDef?.requiresTarget;
         const isScan = (actionDef?.effects ?? []).some(e => e.op === "revealHex");
         const isFast = (actionDef?.effects ?? []).some(e => e.op === "fastDeploy");
-        const isMove = (actionDef?.effects ?? []).some(e => e.op === "moveFleet" || e.op === "fastDeploy");
+        const isMove = (actionDef?.effects ?? []).some(e =>
+          e.op === "moveFleet" || e.op === "fastDeploy" || e.op === "flockMove" || e.op === "warpJump" ||
+          e.op === "mobiliseMove" || e.op === "disperseMove"
+        );
+        const isMobilise = (actionDef?.effects ?? []).some(e => e.op === "mobiliseMove");
+        const isDisperse = (actionDef?.effects ?? []).some(e => e.op === "disperseMove");
         const isAdjToken = (actionDef?.effects ?? []).some(e => e.op === "placeTokenAdjacent");
         const isForward = (actionDef?.effects ?? []).some(e => e.op === "forwardDeploy");
         const isActivate = (actionDef?.effects ?? []).some(e => e.op === "activateSystem");
@@ -411,6 +422,37 @@ async function boot() {
           const entry = getHexFleets(state, hexId, factionId);
           const fleetsHere = entry.undamaged.length + entry.damaged.length;
           const selection = state.ui.fleetSelection;
+
+          if (isMobilise) {
+            if (!selection.destinationHexId) {
+              state.ui.fleetSelection = { ...selection, destinationHexId: hexId };
+              logLine(state, `Mobilise: destination set to ${hexId}. Click adjacent hexes to gather fleets.`);
+              render(state, handlers);
+              return;
+            }
+            const destId = selection.destinationHexId;
+            const adjToDest = getAdjacentHexesLocal(destId).some(h => h.id === hexId);
+            if (hexId === destId && (selection.mobilisePicks?.length ?? 0) > 0) {
+              handlers.onPerformAction();
+              return;
+            }
+            if (adjToDest && fleetsHere > 0) {
+              const allIds = [...entry.undamaged, ...entry.damaged];
+              const picks = selection.mobilisePicks ?? [];
+              const alreadyPickedFromHex = picks.filter(p => p.hexId === hexId).map(p => p.fleetId);
+              const available = allIds.filter(id => !alreadyPickedFromHex.includes(id));
+              if (available.length > 0) {
+                const toAdd = evt?.detail >= 2 ? available : [available[0]];
+                const newPicks = [...picks, ...toAdd.map(fleetId => ({ hexId, fleetId }))];
+                state.ui.fleetSelection = { ...selection, mobilisePicks: newPicks };
+                logLine(state, `Mobilise: added ${toAdd.length} fleet(s) from ${hexId}. Click destination to execute.`);
+                render(state, handlers);
+                return;
+              }
+            }
+            return;
+          }
+
           if (!selection.hexId || selection.hexId === hexId) {
             if (fleetsHere > 0) {
               const allIds = [...entry.undamaged, ...entry.damaged];
@@ -423,7 +465,11 @@ async function boot() {
           } else if (selection.hexId && selection.hexId !== hexId) {
             const validDest = isRelay
               ? (state.beaconsByHex?.[hexId] === activeFaction && hexId !== selection.hexId)
-              : (isFast ? isWithinRange(selection.hexId, moveRange) : isAdjacentTo(selection.hexId));
+              : isWarp
+                ? getHexesInStraightLineFrom(state, selection.hexId).some(h => h.id === hexId)
+                : (isFast || isFlock)
+                  ? isWithinRange(selection.hexId, isFlock ? flockRange : moveRange)
+                  : isAdjacentTo(selection.hexId);
             if (!validDest) {
               logLine(state, "Invalid target. Select a highlighted hex.");
               render(state, handlers);
@@ -492,6 +538,21 @@ async function boot() {
     onHexContextMenu(hexId, evt) {
       if (state.ui.mode !== "targeting") return;
       const selection = state.ui.fleetSelection;
+      const actionDef = state.ui.pendingAction?.actionDef;
+      const isMobilise = (actionDef?.effects ?? []).some(e => e.op === "mobiliseMove");
+      if (isMobilise && selection.destinationHexId) {
+        const picks = selection.mobilisePicks ?? [];
+        const fromHex = picks.filter(p => p.hexId === hexId);
+        if (fromHex.length > 0) {
+          const removeLast = evt?.detail >= 2 ? fromHex : [fromHex[fromHex.length - 1]];
+          const toRemove = new Set(removeLast.map(p => p.fleetId));
+          const newPicks = picks.filter(p => !toRemove.has(p.fleetId));
+          state.ui.fleetSelection = { ...selection, mobilisePicks: newPicks };
+          logLine(state, `Mobilise: deselected ${removeLast.length} fleet(s) from ${hexId}.`);
+          render(state, handlers);
+        }
+        return;
+      }
       if (!selection.hexId || selection.hexId !== hexId) return;
       const clearAll = evt?.detail >= 2;
       if (clearAll || selection.fleetIds.length <= 1) {
@@ -559,7 +620,10 @@ async function boot() {
       const result = executeActionNumber(state, rng, cardIndex, pending.actionNumber, state.ui.selectedHexId);
       if (result.ok) {
         const modalActive = state.ui.mode === "modal" || !!state.ui.pending || !!state.ui.lastResolution;
-        if (modalActive) {
+        if (result.disperseContinue) {
+          state.ui.selectedHexId = null;
+          setMode("targeting", pending.actionDef?.name ?? "action");
+        } else if (modalActive) {
           setMode("modal");
           state.ui.modalType = "card";
         } else {
@@ -616,8 +680,14 @@ async function boot() {
       }
       state.ui.pendingAction = { actionNumber: String(actionNumber), consume: preferred.consume, actionDef: action };
       logLine(state, `ACTION: #${actionNumber} using dice ${preferred.label}`);
-      const isMove = (action?.effects ?? []).some(e => e.op === "moveFleet");
+      const isMove = (action?.effects ?? []).some(e =>
+        e.op === "moveFleet" || e.op === "fastDeploy" || e.op === "flockMove" || e.op === "warpJump" || e.op === "relayMove" ||
+        e.op === "mobiliseMove" || e.op === "disperseMove"
+      );
       if (!isMove) state.ui.fleetSelection = { hexId: null, factionId: null, fleetIds: [] };
+      else if ((action?.effects ?? []).some(e => e.op === "mobiliseMove")) {
+        state.ui.fleetSelection = { hexId: null, factionId: null, fleetIds: [], destinationHexId: null, mobilisePicks: [] };
+      }
       if (action?.requiresTarget) {
         setMode("targeting", action?.name ?? "action");
         render(state, handlers);
@@ -795,14 +865,19 @@ async function boot() {
 
       if (action?.requiresTarget) {
         const target = aiPickTargetHex(state);
-        if (target?.originHex) {
+        const isMobilise = (action?.effects ?? []).some(e => e.op === "mobiliseMove");
+        if (target?.mobiliseDest && target?.mobilisePicks && isMobilise) {
+          state.ui.fleetSelection = { destinationHexId: target.mobiliseDest, mobilisePicks: target.mobilisePicks };
+          state.ui.selectedHexId = target.mobiliseDest;
+        } else if (target?.originHex) {
           const entry = state.fleetsByHex?.[target.originHex]?.[factionId];
           const allIds = [...(entry?.undamaged ?? []), ...(entry?.damaged ?? [])];
           state.ui.fleetSelection = { hexId: target.originHex, factionId, fleetIds: allIds };
         }
         if (target?.targetHex) {
           state.ui.selectedHexId = target.targetHex;
-        } else {
+        }
+        if (!target?.targetHex && !target?.mobiliseDest) {
           state.ui.pendingAction = null;
           advancePlayer();
           renderAll();
