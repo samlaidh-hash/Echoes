@@ -283,19 +283,19 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px 0;
-  padding: 6px 8px;
+  gap: 1px 0;
+  padding: 4px 12px;
   background: rgba(255, 255, 255, 0.92);
   border-radius: 8px;
   border: 1px solid rgba(36, 50, 77, 0.5);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-  min-width: 0;
-  max-width: 90%;
+  min-width: 55%;
+  max-width: 95%;
 }
 .hex .hex-id-type {
-  font-size: 11px;
+  font-size: 10px;
   color: #4a5a7a;
-  line-height: 1.2;
+  line-height: 1.1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -308,7 +308,7 @@ body {
   gap: 2px 4px;
   align-items: center;
   justify-content: center;
-  min-height: 20px;
+  min-height: 16px;
 }
 .hex .hex-structure {
   font-size: 16px;
@@ -317,7 +317,7 @@ body {
 .hex .hex-outpost { color: #2a4a7f; }
 .hex .hex-beacon { color: #5a3a8f; }
 .hex .hex-info-panel .token {
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1;
   color: #2a3a5a;
 }
