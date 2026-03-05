@@ -1148,7 +1148,6 @@ export function applyEffects(state, effects, context) {
           player.energy = energy - 1;
           logLine(state, "Paid 1 Energy to enter debris.");
         }
-        const destHex = getHex(state, destinationId);
         if (destHex && !destHex.revealed && context?.rng && context?.cardIndex) {
           revealHex(state, context.rng, context.cardIndex, destinationId, null);
         }
