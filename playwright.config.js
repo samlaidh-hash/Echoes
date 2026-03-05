@@ -7,7 +7,7 @@ export default defineConfig({
   expect: { timeout: 10_000 },
   reporter: [["list"], ["html", { open: "never" }]],
   use: {
-    baseURL: "http://127.0.0.1:4173",
+    baseURL: "http://127.0.0.1:4174",
     headless: true,
     trace: "on-first-retry",
     screenshot: "only-on-failure",
@@ -16,9 +16,9 @@ export default defineConfig({
     channel: "msedge",
   },
   webServer: {
-    command: "npx http-server . -p 4173 -c-1 --silent",
-    url: "http://127.0.0.1:4173/index.html",
-    reuseExistingServer: true,
+    command: "npx http-server . -p 4174 -c-1 --silent",
+    url: "http://127.0.0.1:4174/index.html",
+    reuseExistingServer: false,
     timeout: 60_000,
   },
 });

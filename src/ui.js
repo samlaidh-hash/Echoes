@@ -129,9 +129,62 @@ function el(tag, attrs = {}, children = []) {
   return node;
 }
 
+const FLEET_LEGEND = [
+  { id: "directorate", name: "Directorate", glyph: "▣" },
+  { id: "choir", name: "Choir", glyph: "◆" },
+  { id: "bloom", name: "Bloom", glyph: "●" },
+  { id: "salvagers", name: "Salvagers", glyph: "⚙" },
+  { id: "gatekeepers", name: "Gatekeepers", glyph: "✶" },
+  { id: "syndicate", name: "Syndicate", glyph: "◇" }
+];
+
+let legendInitialized = false;
+
+function setupLegendTooltip(state) {
+  const btn = document.getElementById("legendBtn");
+  const tip = document.getElementById("legendTooltip");
+  if (!btn || !tip || legendInitialized) return;
+  legendInitialized = true;
+
+  const tokens = state.tokensById ?? {};
+  const tokenRows = Object.entries(tokens)
+    .sort((a, b) => (a[1]?.label ?? "").localeCompare(b[1]?.label ?? ""))
+    .map(([k, v]) => {
+      const label = v?.label ?? k;
+      const glyph = v?.glyph ?? "?";
+      return `<div class="legend-row"><span class="legend-glyph">${glyph}</span><span>${label}</span></div>`;
+    })
+    .join("");
+
+  const fleetRows = FLEET_LEGEND.map(f => {
+    const name = state.factions?.find(x => x.id === f.id)?.name ?? f.name;
+    return `<div class="legend-row"><span class="legend-glyph">${f.glyph}</span><span>${name} fleet</span></div>`;
+  }).join("");
+
+  tip.innerHTML = `
+    <div class="legend-section">
+      <div class="legend-title">FLEET ICONS</div>
+      ${fleetRows}
+    </div>
+    <div class="legend-section">
+      <div class="legend-title">HEX TOKENS</div>
+      ${tokenRows || "<div class=\"legend-row\"><span>—</span></div>"}
+    </div>
+  `;
+
+  let hideTimer = null;
+  const show = () => { clearTimeout(hideTimer); tip.classList.remove("hidden"); };
+  const hide = () => { hideTimer = setTimeout(() => tip.classList.add("hidden"), 120); };
+  btn.addEventListener("mouseenter", show);
+  btn.addEventListener("mouseleave", hide);
+  tip.addEventListener("mouseenter", show);
+  tip.addEventListener("mouseleave", hide);
+}
+
 export function render(state, handlers) {
   renderSeed(state);
   renderHud(state);
+  setupLegendTooltip(state);
   renderMap(state, handlers);
   renderCard(state, handlers);
   renderActions(state, handlers);

@@ -148,7 +148,47 @@ body {
   min-height: 0;
 }
 
-.map-panel { grid-column: 1 / 2; grid-row: 1 / 2; padding: 6px; display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+.map-panel { grid-column: 1 / 2; grid-row: 1 / 2; padding: 6px; display: flex; flex-direction: column; min-height: 0; overflow: hidden; position: relative; }
+.map-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+  flex-shrink: 0;
+}
+.map-panel-header .panel-title { margin: 0; }
+.legend-btn {
+  padding: 4px 10px;
+  font-size: 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(36, 50, 77, 0.9);
+  background: rgba(12, 18, 32, 0.9);
+  color: var(--muted);
+  cursor: pointer;
+}
+.legend-btn:hover { color: var(--accent); border-color: rgba(122, 162, 255, 0.5); }
+.legend-tooltip {
+  position: absolute;
+  top: 36px;
+  right: 8px;
+  z-index: 40;
+  padding: 12px 14px;
+  background: rgba(12, 18, 32, 0.98);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: 12px;
+  line-height: 1.6;
+  max-width: 280px;
+  max-height: 70vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+.legend-tooltip.visible { display: block; }
+.legend-tooltip .legend-section { margin-bottom: 10px; }
+.legend-tooltip .legend-section:last-child { margin-bottom: 0; }
+.legend-tooltip .legend-title { font-weight: 700; color: var(--accent); font-size: 11px; margin-bottom: 6px; letter-spacing: 0.08em; }
+.legend-tooltip .legend-row { display: flex; gap: 10px; align-items: center; margin-bottom: 3px; }
+.legend-tooltip .legend-glyph { font-size: 18px; line-height: 1; min-width: 24px; text-align: center; }
 .right-panel { grid-column: 2 / 3; grid-row: 1 / 2; padding: 8px; display: flex; flex-direction: column; gap: 8px; min-height: 0; }
 .action-panel { grid-column: 1 / 3; grid-row: 2 / 3; padding: 6px 8px; min-height: 0; display: flex; flex-direction: column; gap: 6px; overflow-y: auto; flex-shrink: 0; }
 
@@ -227,13 +267,13 @@ body {
 
 /* Hex layout: grid so id/type/icons have clear zones */
 .hex { display: grid; grid-template: "id type" "icons icons" "token card" 1fr / 1fr 1fr; align-content: start; gap: 0 4px; }
-.hex .id { grid-area: id; font-size: 8px; color: var(--muted); line-height: 1; }
-.hex .type { grid-area: type; font-size: 8px; margin-top: 0; color: var(--text); justify-self: end; line-height: 1; }
+.hex .id { grid-area: id; font-size: 16px; color: var(--muted); line-height: 1; }
+.hex .type { grid-area: type; font-size: 16px; margin-top: 0; color: var(--text); justify-self: end; line-height: 1; }
 .hex .token {
   grid-area: token;
   justify-self: start;
   align-self: end;
-  font-size: 10px;
+  font-size: 20px;
   line-height: 1;
 }
 .hex .hex-icons {
@@ -241,18 +281,18 @@ body {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  gap: 1px 3px;
+  gap: 2px 6px;
   align-items: center;
-  min-height: 12px;
+  min-height: 24px;
 }
 .hex .hex-structure {
-  font-size: 9px;
+  font-size: 18px;
   line-height: 1;
 }
 .hex .hex-outpost { color: #cfe0ff; }
 .hex .hex-beacon { color: #ead5ff; }
 .hex .fleet-icon {
-  font-size: 9px;
+  font-size: 18px;
   line-height: 1;
   display: inline-block;
 }
@@ -261,8 +301,8 @@ body {
 }
 .hex .hex-icons .fleet-selected {
   margin-left: auto;
-  font-size: 8px;
-  padding: 1px 3px;
+  font-size: 14px;
+  padding: 2px 5px;
   border-radius: 6px;
   border: 1px solid rgba(103, 232, 165, 0.8);
   background: rgba(12, 18, 32, 0.9);
@@ -271,10 +311,10 @@ body {
 .hex .hex-card-thumb {
   grid-area: card;
   width: 100%;
-  max-width: 32px;
-  max-height: 42px;
-  min-width: 20px;
-  min-height: 26px;
+  max-width: 48px;
+  max-height: 64px;
+  min-width: 32px;
+  min-height: 42px;
   object-fit: cover;
   border-radius: 4px;
   justify-self: end;

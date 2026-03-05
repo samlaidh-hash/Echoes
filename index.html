@@ -49,7 +49,11 @@
     <div id="hud" class="hud" data-testid="hud"></div>
     <main class="layout">
       <section class="map-panel">
-        <div class="panel-title">GALAXY MAP</div>
+        <div class="map-panel-header">
+          <span class="panel-title">GALAXY MAP</span>
+          <button id="legendBtn" class="legend-btn" type="button" data-testid="legend-btn">Legend</button>
+        </div>
+        <div id="legendTooltip" class="legend-tooltip hidden"></div>
         <div id="map" class="map" data-testid="hex-map"></div>
         <div class="map-hint">Reveal fog via an action (scan) or by moving a fleet into the hex.</div>
       </section>
