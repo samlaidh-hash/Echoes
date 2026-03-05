@@ -1066,8 +1066,11 @@ function start() {
   });
 }
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", start);
-} else {
-  start();
+function bootstrap() {
+  if (document.readyState === "complete") {
+    start();
+  } else {
+    window.addEventListener("load", start);
+  }
 }
+bootstrap();
