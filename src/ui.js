@@ -610,22 +610,23 @@ function renderMap(state, handlers) {
     const outpostLine = state.outpostByHex?.[hex.id] ? `Outpost: ${factionName(state, state.outpostByHex[hex.id])}` : "";
 
     const cardInfo = state.cardByHex?.[hex.id];
-    const hexChildren = [
-      el("div", { class: "id" }, [hex.id]),
-      el("div", { class: "type" }, [labelType]),
+    const infoPanelChildren = [
+      el("div", { class: "hex-id-type" }, [`${hex.id} ${labelType}`]),
       occContainer,
       el("div", { class: "token" }, [glyph])
     ];
+    const infoPanel = el("div", { class: "hex-info-panel" }, infoPanelChildren);
+    const hexChildren = [infoPanel];
     if (cardInfo && hex.revealed && cardInfo.cardTitle) {
       const cardImg = el("img", {
-        class: "hex-card-thumb",
+        class: "hex-card-bg",
         src: `./assets/cards/${encodeURIComponent(cardInfo.cardTitle)}.png`,
         alt: cardInfo.cardTitle,
         title: cardInfo.resolved === false ? "Card face up — enter hex to resolve" : "Hover to read card",
         loading: "lazy"
       });
       cardImg.onerror = () => { cardImg.style.display = "none"; };
-      hexChildren.push(cardImg);
+      hexChildren.unshift(cardImg);
     }
 
     const capitalFaction = Object.entries(state.capitalsByFaction ?? {}).find(([, h]) => h === hex.id)?.[0];
