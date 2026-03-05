@@ -45,6 +45,21 @@ function setReady() {
   document.getElementById("appReady").classList.remove("hidden");
 }
 
+function hideLoadingOverlay() {
+  const el = document.getElementById("loadingOverlay");
+  if (el) el.classList.add("hidden");
+}
+
+function showErrorOverlay(message) {
+  hideLoadingOverlay();
+  const overlay = document.getElementById("errorOverlay");
+  const msgEl = document.getElementById("errorMessage");
+  const retryBtn = document.getElementById("errorRetryBtn");
+  if (msgEl) msgEl.textContent = message || "Unknown error.";
+  if (overlay) overlay.classList.remove("hidden");
+  if (retryBtn) retryBtn.onclick = () => location.reload();
+}
+
 function buildCardIndex(cardsByDeck) {
   const idx = {};
   for (const deckType of Object.keys(cardsByDeck)) {
@@ -122,6 +137,7 @@ async function boot() {
   let tutorialMode = false;
 
   if (!skipSetup) {
+    hideLoadingOverlay();
     const setupResult = await showSetupScreen();
     playerSetup = setupResult.players;
     tutorialMode = setupResult.tutorial;
@@ -918,6 +934,7 @@ async function boot() {
 
   renderAll();
   setReady();
+  hideLoadingOverlay();
   scheduleAI();
 
   if (smoke) {
@@ -1039,9 +1056,13 @@ async function runSmoke(state, rng, cardIndex, handlers) {
 function start() {
   boot().catch(err => {
     console.error(err);
+    const msg = err?.message ?? String(err);
+    showErrorOverlay(`BOOT FAIL: ${msg}\n\nCheck the browser console (F12) and Network tab for failed requests. If deployed on GitHub Pages, ensure the source branch includes data/, src/, and index.html.`);
     const badge = document.getElementById("smokeStatus");
-    badge.textContent = `BOOT FAIL: ${err.message ?? err}`;
-    badge.classList.add("bad");
+    if (badge) {
+      badge.textContent = `BOOT FAIL: ${msg}`;
+      badge.classList.add("bad");
+    }
   });
 }
 

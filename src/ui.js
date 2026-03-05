@@ -393,6 +393,14 @@ function renderMap(state, handlers) {
   map.style.setProperty("--map-rows", String(rows));
   map.innerHTML = "";
 
+  const hexes = state.map.hexes ?? [];
+  if (hexes.length === 0) {
+    map.appendChild(el("div", { class: "map-empty" }, [
+      "Map data failed to load. Check the browser console (F12) and Network tab for 404s. If on GitHub Pages, ensure the deployed branch includes the data/ folder."
+    ]));
+    return;
+  }
+
   const activeFaction = String(state.players?.[state.turn?.activePlayerIndex ?? 0]?.factionId ?? "").toLowerCase();
   const awaitingAction = state.ui.pendingAction?.actionDef ?? null;
   const needsTarget = state.ui.mode === "targeting" && !!awaitingAction?.requiresTarget;
@@ -660,6 +668,16 @@ function renderCard(state, handlers) {
       return;
     }
 
+    const resolvedImgSrc = `./assets/cards/${encodeURIComponent(resolved.cardTitle ?? "")}.png`;
+    const resolvedImg = el("img", {
+      class: "card-image",
+      src: resolvedImgSrc,
+      alt: resolved.cardTitle ?? "",
+      loading: "lazy"
+    });
+    resolvedImg.onerror = () => { resolvedImg.style.display = "none"; };
+    panel.appendChild(resolvedImg);
+
     panel.appendChild(el("div", { class: "card-header" }, [
       el("div", { class: "card-title" }, [resolved.cardTitle]),
       el("div", { class: "card-meta" }, [`Deck: ${resolved.deckType}`])
@@ -713,6 +731,16 @@ function renderCard(state, handlers) {
 
   const { deckType, card } = pending;
   const authored = getAuthoredCard(state, deckType, card.id);
+
+  const cardImgSrc = `./assets/cards/${encodeURIComponent(card.title)}.png`;
+  const cardImg = el("img", {
+    class: "card-image",
+    src: cardImgSrc,
+    alt: card.title,
+    loading: "lazy"
+  });
+  cardImg.onerror = () => { cardImg.style.display = "none"; };
+  panel.appendChild(cardImg);
 
   panel.appendChild(el("div", { class: "card-header" }, [
     el("div", { class: "card-title", "data-testid": "card-title" }, [card.title]),
