@@ -5,6 +5,16 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect fill='%23132a4a' width='32' height='32'/><text x='16' y='22' font-size='18' text-anchor='middle' fill='%237aa2ff'>⛨</text></svg>" />
   <title>Echoes of the Gate (Baseline)</title>
+  <style>
+    /* Critical CSS: prevents layout-before-styles warning */
+    body{margin:0;min-height:100vh;background:#0b0f17}
+    #loadingOverlay{position:fixed;inset:0;z-index:200;background:rgba(11,15,23,.95);display:flex;align-items:center;justify-content:center}
+    .loading-content{text-align:center}
+    .loading-spinner{width:48px;height:48px;margin:0 auto 16px;border:3px solid #24324d;border-top-color:#7aa2ff;border-radius:50%;animation:lspin .9s linear infinite}
+    @keyframes lspin{to{transform:rotate(360deg)}}
+    .loading-text{color:#9fb0cc;font-size:14px}
+    .hidden{display:none!important}
+  </style>
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
