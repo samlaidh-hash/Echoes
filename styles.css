@@ -188,7 +188,7 @@ body {
   box-sizing: border-box;
   background: linear-gradient(180deg, rgba(12, 18, 32, 0.7), rgba(9, 14, 24, 0.9));
   color: var(--text);
-  padding: 2px 4px 12px 4px;
+  padding: 3px 4px 4px 4px;
   cursor: pointer;
   text-align: left;
   scroll-margin: 12px;
@@ -225,42 +225,61 @@ body {
 .map.targeting, .map.targeting * { cursor: crosshair !important; }
 .action-panel.locked { opacity: 0.6; }
 
-.hex .id { font-size: 9px; color: var(--muted); }
-.hex .type { font-size: 9px; margin-top: 2px; color: var(--text); }
+/* Hex layout: grid so id/type/icons have clear zones */
+.hex { display: grid; grid-template: "id type" "icons icons" "token card" 1fr / 1fr 1fr; align-content: start; gap: 0 4px; }
+.hex .id { grid-area: id; font-size: 8px; color: var(--muted); line-height: 1; }
+.hex .type { grid-area: type; font-size: 8px; margin-top: 0; color: var(--text); justify-self: end; line-height: 1; }
 .hex .token {
-  position: absolute;
-  right: 4px; bottom: 4px;
-  font-size: 11px;
+  grid-area: token;
+  justify-self: start;
+  align-self: end;
+  font-size: 10px;
   line-height: 1;
 }
-.hex .fleet-tokens{
-  position:absolute;
-  left:4px;
-  top:4px;
-  display:flex;
+.hex .hex-icons {
+  grid-area: icons;
+  display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  gap:2px;
-  max-width: calc(100% - 8px);
+  gap: 1px 3px;
+  align-items: center;
+  min-height: 12px;
 }
+.hex .hex-structure {
+  font-size: 9px;
+  line-height: 1;
+}
+.hex .hex-outpost { color: #cfe0ff; }
+.hex .hex-beacon { color: #ead5ff; }
 .hex .fleet-icon {
-  font-size: 10px;
+  font-size: 9px;
   line-height: 1;
   display: inline-block;
 }
 .hex .fleet-icon.damaged {
-  opacity: 0.55;
+  opacity: 0.6;
 }
-.hex .fleet-selected {
-  position: absolute;
-  right: 4px;
-  top: 4px;
-  font-size: 9px;
-  padding: 1px 4px;
-  border-radius: 10px;
+.hex .hex-icons .fleet-selected {
+  margin-left: auto;
+  font-size: 8px;
+  padding: 1px 3px;
+  border-radius: 6px;
   border: 1px solid rgba(103, 232, 165, 0.8);
-  background: rgba(12, 18, 32, 0.85);
+  background: rgba(12, 18, 32, 0.9);
   color: #d9ffe9;
+}
+.hex .hex-card-thumb {
+  grid-area: card;
+  width: 100%;
+  max-width: 32px;
+  max-height: 42px;
+  min-width: 20px;
+  min-height: 26px;
+  object-fit: cover;
+  border-radius: 4px;
+  justify-self: end;
+  align-self: end;
+  border: 1px solid rgba(36, 50, 77, 0.8);
 }
 .fleet-token {
   font-size: 10px;
@@ -315,7 +334,8 @@ body {
 }
 .card-image {
   width: 100%;
-  max-height: 140px;
+  max-height: 180px;
+  min-height: 80px;
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 8px;

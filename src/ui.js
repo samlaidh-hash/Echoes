@@ -452,7 +452,17 @@ function renderMap(state, handlers) {
         fleetIcons.push(el("span", { class: `fleet-icon fleet-${fid} damaged` }, [glyph]));
       });
     }
-    const occContainer = el("div", { class: "fleet-tokens" }, fleetIcons);
+    const isSelectedOrigin = state.ui.fleetSelection?.hexId === hex.id;
+    const selectedCount = isSelectedOrigin ? state.ui.fleetSelection?.fleetIds?.length ?? 0 : 0;
+    const hasOutpost = !!state.outpostByHex?.[hex.id];
+    const hasBeacon = !!state.beaconsByHex?.[hex.id];
+    const iconEls = [
+      ...fleetIcons,
+      hasOutpost ? el("span", { class: "hex-structure hex-outpost", title: `Outpost: ${factionName(state, state.outpostByHex[hex.id])}` }, ["⛨"]) : null,
+      hasBeacon ? el("span", { class: "hex-structure hex-beacon", title: `Beacon: ${factionName(state, state.beaconsByHex[hex.id])}` }, ["✶"]) : null,
+      selectedCount > 0 ? el("span", { class: "fleet-selected" }, [`×${selectedCount}`]) : null
+    ].filter(Boolean);
+    const occContainer = el("div", { class: "hex-icons" }, iconEls);
 
     const isTargetable = needsTarget && (() => {
       if (isMove) {
@@ -536,8 +546,6 @@ function renderMap(state, handlers) {
       .join("\n");
     const controlLine = contested ? "Controller: contested" : `Controller: ${controller ?? "none"}`;
 
-    const isSelectedOrigin = state.ui.fleetSelection?.hexId === hex.id;
-    const selectedCount = isSelectedOrigin ? state.ui.fleetSelection?.fleetIds?.length ?? 0 : 0;
     const tokenLine = hex.token ? `Token: ${hex.token}` : "";
     const fleetLines = Object.entries(state.fleetsByHex?.[hex.id] ?? {})
       .map(([f, e]) => {
@@ -553,15 +561,18 @@ function renderMap(state, handlers) {
       el("div", { class: "id" }, [hex.id]),
       el("div", { class: "type" }, [labelType]),
       occContainer,
-      selectedCount > 0 ? el("div", { class: "fleet-selected" }, [`x${selectedCount}`]) : null,
       el("div", { class: "token" }, [glyph])
     ];
-    if (cardInfo && hex.revealed) {
-      const isFaceUp = cardInfo.resolved === false;
-      const cardEl = isFaceUp
-        ? el("div", { class: "hex-card-faceup", title: "Card face up — enter hex to resolve" }, [cardInfo.cardTitle ?? "?"])
-        : el("div", { class: "hex-card-icon", title: "Hover to read card" }, ["📄"]);
-      hexChildren.push(cardEl);
+    if (cardInfo && hex.revealed && cardInfo.cardTitle) {
+      const cardImg = el("img", {
+        class: "hex-card-thumb",
+        src: `./assets/cards/${encodeURIComponent(cardInfo.cardTitle)}.png`,
+        alt: cardInfo.cardTitle,
+        title: cardInfo.resolved === false ? "Card face up — enter hex to resolve" : "Hover to read card",
+        loading: "lazy"
+      });
+      cardImg.onerror = () => { cardImg.style.display = "none"; };
+      hexChildren.push(cardImg);
     }
 
     const capitalFaction = Object.entries(state.capitalsByFaction ?? {}).find(([, h]) => h === hex.id)?.[0];
