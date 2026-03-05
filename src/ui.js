@@ -610,10 +610,12 @@ function renderMap(state, handlers) {
     const outpostLine = state.outpostByHex?.[hex.id] ? `Outpost: ${factionName(state, state.outpostByHex[hex.id])}` : "";
 
     const cardInfo = state.cardByHex?.[hex.id];
+    const hasIcons = iconEls.length > 0;
+    const hasToken = !!glyph;
     const infoPanelChildren = [
       el("div", { class: "hex-id-type" }, [`${hex.id} ${labelType}`]),
-      occContainer,
-      el("div", { class: "token" }, [glyph])
+      ...(hasIcons ? [occContainer] : []),
+      ...(hasToken ? [el("div", { class: "token" }, [glyph])] : [])
     ];
     const infoPanel = el("div", { class: "hex-info-panel" }, infoPanelChildren);
     const hexChildren = [infoPanel];
@@ -633,8 +635,9 @@ function renderMap(state, handlers) {
     const controlFaction = controller ? String(controller).toLowerCase() : null;
     const capitalClass = capitalFaction ? `capital-${capitalFaction}` : "";
     const controlClass = controlFaction ? `controlled-${controlFaction}` : "";
+    const unresolvedCard = cardInfo && hex.revealed && cardInfo.resolved === false;
     const btn = el("button", {
-      class: `hex ${fogged ? "fogged" : ""} ${isTargetable ? "targetable" : ""} ${isSelectedOrigin ? "selected-origin" : ""} ${state.ui.pulseHexId === hex.id ? "pulse" : ""} ${capitalClass} ${controlClass}`.trim(),
+      class: `hex ${fogged ? "fogged" : ""} ${isTargetable ? "targetable" : ""} ${isSelectedOrigin ? "selected-origin" : ""} ${state.ui.pulseHexId === hex.id ? "pulse" : ""} ${unresolvedCard ? "card-unresolved" : ""} ${capitalClass} ${controlClass}`.trim(),
       type: "button",
       disabled: false,
       title: [
@@ -702,7 +705,15 @@ function showHexCardPopover(state, hexId, cardInfo, triggerEl) {
     const opts = [authored.front.line4_optionA, authored.front.line5_optionB, authored.front.line6_optionC].filter(Boolean);
     if (opts.length) lines.push("Options: " + opts.join(" | "));
   }
-  hexCardPopoverEl.innerHTML = lines.map(l => `<div class="hex-card-popover-line">${escapeHtml(l)}</div>`).join("");
+  const imgSrc = `./assets/cards/${encodeURIComponent(cardInfo.cardTitle ?? "")}.png`;
+  hexCardPopoverEl.innerHTML = `
+    <img class="hex-card-popover-img" src="${escapeHtml(imgSrc)}" alt="${escapeHtml(cardInfo.cardTitle ?? "")}" loading="eager" />
+    <div class="hex-card-popover-text">
+      ${lines.map(l => `<div class="hex-card-popover-line">${escapeHtml(l)}</div>`).join("")}
+    </div>
+  `;
+  const img = hexCardPopoverEl.querySelector(".hex-card-popover-img");
+  if (img) img.onerror = () => { img.style.display = "none"; };
   const rect = triggerEl.getBoundingClientRect();
   hexCardPopoverEl.style.left = `${rect.left}px`;
   hexCardPopoverEl.style.top = `${Math.max(8, rect.top - 4)}px`;
@@ -729,7 +740,9 @@ function renderCard(state, handlers) {
   if (!pending) {
     const resolved = state.ui.lastResolution;
     if (!resolved) {
-      panel.appendChild(el("div", { class: "card-placeholder" }, ["Reveal fog via an action (scan) or by moving a fleet into the hex."]));
+      panel.appendChild(el("div", { class: "card-placeholder" }, [
+      "Recon or moving a fleet into a hex reveals that hex. Only a ship entering the hex can choose which option and flip the card."
+    ]));
       return;
     }
 

@@ -262,6 +262,13 @@ body {
   60% { box-shadow: 0 0 0 10px rgba(122, 162, 255, 0); }
   100% { box-shadow: 0 0 0 0 rgba(122, 162, 255, 0); }
 }
+@keyframes cardUnresolvedBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+.hex.card-unresolved {
+  animation: cardUnresolvedBlink 0.4s ease-in-out infinite;
+}
 .map.targeting, .map.targeting * { cursor: crosshair !important; }
 .action-panel.locked { opacity: 0.6; }
 
@@ -284,13 +291,14 @@ body {
   align-items: center;
   justify-content: center;
   gap: 1px 0;
-  padding: 4px 12px;
+  padding: 3px 8px;
   background: rgba(255, 255, 255, 0.92);
-  border-radius: 8px;
+  border-radius: 6px;
   border: 1px solid rgba(36, 50, 77, 0.5);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-  min-width: 55%;
+  width: max-content;
   max-width: 95%;
+  flex-shrink: 0;
 }
 .hex .hex-id-type {
   font-size: 10px;
@@ -308,7 +316,7 @@ body {
   gap: 2px 4px;
   align-items: center;
   justify-content: center;
-  min-height: 16px;
+  min-height: 0;
 }
 .hex .hex-structure {
   font-size: 16px;
@@ -709,8 +717,9 @@ body {
 .hex-card-popover {
   position: fixed;
   z-index: 90;
-  max-width: 280px;
-  padding: 10px 12px;
+  max-width: 260px;
+  padding: 0;
+  overflow: hidden;
   background: rgba(15, 22, 38, 0.98);
   border: 1px solid rgba(122, 162, 255, 0.4);
   border-radius: 10px;
@@ -722,6 +731,17 @@ body {
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.15s, visibility 0.15s;
+  display: flex;
+  flex-direction: column;
+}
+.hex-card-popover-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+.hex-card-popover-text {
+  padding: 10px 12px;
 }
 .hex-card-popover.visible {
   opacity: 1;
