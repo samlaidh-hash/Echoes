@@ -698,12 +698,33 @@ function showHexCardPopover(state, hexId, cardInfo, triggerEl) {
     document.body.appendChild(hexCardPopoverEl);
   }
   const authored = getAuthoredCard(state, cardInfo.deckType, cardInfo.cardId);
-  const lines = [cardInfo.cardTitle];
-  if (authored?.front) {
-    if (authored.front.line2_description) lines.push(authored.front.line2_description);
-    if (authored.front.line3_decision) lines.push(authored.front.line3_decision);
-    const opts = [authored.front.line4_optionA, authored.front.line5_optionB, authored.front.line6_optionC].filter(Boolean);
-    if (opts.length) lines.push("Options: " + opts.join(" | "));
+  let lines = [];
+  if (cardInfo.resolved) {
+    lines.push(cardInfo.cardTitle);
+    if (cardInfo.choiceLabel) lines.push(`Chosen: ${cardInfo.choiceLabel}`);
+    if (cardInfo.resolveText) lines.push(cardInfo.resolveText);
+    if (cardInfo.placeNote) lines.push(cardInfo.placeNote);
+    if (authored) {
+      const idx = Number.isFinite(cardInfo.choiceIndex) ? cardInfo.choiceIndex : 0;
+      const optionKey = ["optionA", "optionB", "optionC"][Math.max(0, Math.min(2, idx))];
+      const opt = authored.instantOptionResults?.[optionKey];
+      if (opt) {
+        lines.push(`Instant: ${opt.effect}`);
+        if (opt.cost) lines.push(`Cost: ${opt.cost}`);
+      }
+      const primary = authored.rear?.primaryAction?.effect ?? "—";
+      const secondary = authored.rear?.secondaryOnActivation?.effect ?? "—";
+      lines.push(`On Activation: ${primary}`);
+      lines.push(`Secondary (auto): ${secondary}`);
+    }
+  } else {
+    lines.push(cardInfo.cardTitle);
+    if (authored?.front) {
+      if (authored.front.line2_description) lines.push(authored.front.line2_description);
+      if (authored.front.line3_decision) lines.push(authored.front.line3_decision);
+      const opts = [authored.front.line4_optionA, authored.front.line5_optionB, authored.front.line6_optionC].filter(Boolean);
+      if (opts.length) lines.push("Options: " + opts.join(" | "));
+    }
   }
   const imgSrc = `./assets/cards/${encodeURIComponent(cardInfo.cardTitle ?? "")}.png`;
   hexCardPopoverEl.innerHTML = `

@@ -1662,7 +1662,18 @@ export function resolveChoice(state, cardIndex, choiceIndex) {
   if (hexId && !state.cardByHex) state.cardByHex = {};
   if (hexId) {
     const existing = state.cardByHex[hexId];
-    state.cardByHex[hexId] = { ...(existing ?? {}), deckType, cardId: card.id, cardTitle: card.title, resolved: true };
+    state.cardByHex[hexId] = {
+      ...(existing ?? {}),
+      deckType,
+      cardId: card.id,
+      cardTitle: card.title,
+      resolved: true,
+      choiceIndex,
+      choiceLabel: choice.label,
+      resolveText: choice.resolveText ?? "",
+      tokenId: hex?.token ?? null,
+      placeNote
+    };
   }
 
   return { ok: true, cardId: card.id, deckType, choiceLabel: choice.label, tokenId: hex?.token ?? null, stateChanged: didStateChange(res.before, res.after) };
